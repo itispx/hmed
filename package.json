@@ -6,8 +6,7 @@
   "scripts": {
     "start": "expo start --dev-client",
     "android": "expo run:android",
-    "ios": "expo run:android",
-    "web": "expo start --web"
+    "ios": "expo run:android"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.17.9",
