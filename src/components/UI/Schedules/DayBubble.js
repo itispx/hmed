@@ -1,22 +1,9 @@
 import React, { useState } from "react";
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 
-import { useDispatch, useSelector } from "react-redux";
-import { selectSchedule } from "../../redux-store/redux-slices/ui-slice";
+import Colors from "../../../constants/Colors";
 
-import Colors from "../../constants/Colors";
-
-const DayBubble = ({ index }) => {
-  const isSelected = useSelector(
-    (state) => state.ui.selectedSchedule === index
-  );
-
-  const dispatch = useDispatch();
-
-  function selectBubble() {
-    dispatch(selectSchedule({ index }));
-  }
-
+const DayBubble = ({ index, isSelected, selectBubble }) => {
   const [title] = useState(() => {
     switch (index) {
       case 0:
@@ -52,7 +39,7 @@ const DayBubble = ({ index }) => {
 
 const styles = StyleSheet.create({
   container: {
-    marginHorizontal: 5,
+    marginHorizontal: 10,
     justifyContent: "center",
     alignItems: "center",
     height: 90,
