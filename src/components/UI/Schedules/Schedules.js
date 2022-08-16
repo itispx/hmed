@@ -1,8 +1,6 @@
 import React from "react";
 import { StyleSheet, View, Text, FlatList } from "react-native";
 
-import Colors from "../../../constants/Colors";
-
 import Next from "./Next";
 import RenderDays from "./RenderDays";
 import SchedulesList from "./SchedulesList";
@@ -29,7 +27,6 @@ const Schedules = () => {
       </View>
 
       {/* Schedule for the day of the week */}
-
       <SchedulesList style={{ marginTop: 15 }} />
     </View>
   );

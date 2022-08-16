@@ -4,12 +4,14 @@ import { StyleSheet, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 
 import schedulesActions from "../../../actions/schedules";
+import toastsActions from "../../../actions/toasts";
 
 import ScheduleItem from "./ScheduleItem";
 
 const SchedulesList = (props) => {
   const selectedDay = useSelector((state) => state.ui.selectedSchedule);
 
+  const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState([]);
 
   useEffect(() => {
@@ -17,9 +19,19 @@ const SchedulesList = (props) => {
   }, [selectedDay]);
 
   async function getSchedule() {
-    const data = await schedulesActions.getScheduleFromDay(selectedDay);
+    try {
+      setIsLoading(true);
 
-    setData(data);
+      const { success } = await schedulesActions.getScheduleFromDay(
+        selectedDay
+      );
+
+      if (success) {
+        setData(success.items);
+      }
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (
