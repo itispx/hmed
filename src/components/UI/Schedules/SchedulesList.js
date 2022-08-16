@@ -4,15 +4,24 @@ import { StyleSheet, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 
 import schedulesActions from "../../../actions/schedules";
-import toastsActions from "../../../actions/toasts";
 
 import ScheduleItem from "./ScheduleItem";
+import Loading from "../Loading";
 
 const SchedulesList = (props) => {
   const selectedDay = useSelector((state) => state.ui.selectedSchedule);
 
   const [isLoading, setIsLoading] = useState(true);
-  const [data, setData] = useState([]);
+  const [data, setData] = useState([
+    {
+      id: 1,
+      time: "10:00",
+      title: "Aplicado às 10:04",
+      name: "Tylenol",
+      amount: 30,
+      taken: true,
+    },
+  ]);
 
   useEffect(() => {
     getSchedule();
@@ -36,13 +45,22 @@ const SchedulesList = (props) => {
 
   return (
     <View style={[styles.container, props.style]}>
-      <ScheduleItem
-        time={"10:00"}
-        title={"Aplicado às 10:04"}
-        name={"Tylenol"}
-        amount={30}
-        taken
-      />
+      {isLoading ? (
+        <Loading />
+      ) : (
+        data.map((item, index) => {
+          return (
+            <ScheduleItem
+              key={item.id}
+              time={item.time}
+              title={item.title}
+              name={item.name}
+              amount={item.amount}
+              taken={item.taken}
+            />
+          );
+        })
+      )}
     </View>
   );
 };
