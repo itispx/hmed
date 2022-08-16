@@ -5,14 +5,14 @@ import KeyboardAwareScrollView from "../components/KeyboardAwareScrollView";
 
 import Header from "../components/UI/Home/Header";
 
-import SchedulesList from "../components/UI/Home/SchedulesList";
+import Schedules from "../components/UI/Schedules/Schedules";
 
 const HomeScreen = () => {
   return (
     <KeyboardAwareScrollView>
       <View style={styles.container}>
         <Header />
-        <SchedulesList />
+        <Schedules />
       </View>
     </KeyboardAwareScrollView>
   );
@@ -21,7 +21,6 @@ const HomeScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
   },
 });
 
