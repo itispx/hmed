@@ -5,6 +5,8 @@ import { RFValue, vw } from "../../../library/viewport-units";
 
 import Colors from "../../../constants/Colors";
 
+import Icon from "react-native-vector-icons/AntDesign";
+
 const ScheduleItem = ({ time, title, name, amount, taken }) => {
   return (
     <View style={styles.container}>
@@ -19,12 +21,11 @@ const ScheduleItem = ({ time, title, name, amount, taken }) => {
             {name}, {amount}mg
           </Text>
         </View>
-        <View
-          style={[
-            styles.checkMark,
-            { backgroundColor: taken ? Colors.accent : Colors.darkGrey },
-          ]}
-        ></View>
+        <Icon
+          name="check"
+          size={RFValue(40)}
+          color={taken ? Colors.accent : Colors.grey}
+        />
       </View>
     </View>
   );
@@ -69,16 +70,13 @@ const styles = StyleSheet.create({
     borderRadius: 3,
     fontSize: RFValue(16),
     color: "#FFF",
-    backgroundColor: Colors.darkGrey,
+    backgroundColor: Colors.grey,
   },
   name: {
     fontSize: RFValue(23),
-    color: Colors.lightGrey,
+    color: Colors.grey,
   },
-  checkMark: {
-    height: 50,
-    aspectRatio: 1,
-  },
+  checkMark: {},
 });
 
 export default ScheduleItem;

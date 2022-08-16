@@ -7,8 +7,8 @@ const Loading = (props) => {
   return (
     <View style={[{ justifyContent: "center" }, props.style]}>
       <ActivityIndicator
-        size={props.size ? props.size : "large"}
-        color={props.color ? props.color : Colors.primary}
+        size={props.size || "large"}
+        color={props.color || Colors.primary}
       />
     </View>
   );
