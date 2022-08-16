@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View, Text, FlatList } from "react-native";
+import { StyleSheet, View, FlatList } from "react-native";
 
 import Next from "./Next";
 import RenderDays from "./RenderDays";
@@ -16,6 +16,7 @@ const Schedules = () => {
 
         {/* Show days of the week */}
         <FlatList
+          overScrollMode="never"
           style={styles.flatlist}
           showsHorizontalScrollIndicator={false}
           horizontal

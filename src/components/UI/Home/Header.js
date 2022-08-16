@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
     height: vh(30),
     maxHeight: 250,
     width: "100%",
-    backgroundColor: Colors.primary,
+    backgroundColor: Colors.background,
   },
   innerContainer: {
     flex: 1,

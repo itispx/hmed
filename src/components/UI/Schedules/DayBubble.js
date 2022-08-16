@@ -28,7 +28,7 @@ const DayBubble = ({ index, isSelected, selectBubble }) => {
       <View
         style={[
           styles.container,
-          { backgroundColor: isSelected ? Colors.accent : Colors.lightGrey },
+          { backgroundColor: isSelected ? Colors.accent : Colors.grey },
         ]}
       >
         <Text style={styles.title}>{title}</Text>
