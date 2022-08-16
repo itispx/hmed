@@ -1,12 +1,28 @@
 import React from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text, FlatList } from "react-native";
+
+import KeyboardAwareScrollView from "../components/KeyboardAwareScrollView";
+
+import Header from "../components/UI/Home/Header";
 
 const HomeScreen = () => {
   return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text>HomeScreen</Text>
-    </View>
+    <KeyboardAwareScrollView>
+      <View style={styles.container}>
+        <Header />
+      </View>
+    </KeyboardAwareScrollView>
   );
 };
+
+const styles = StyleSheet.create({
+  scrollview: {
+    flexGrow: 1,
+  },
+  container: {
+    flex: 1,
+    alignItems: "center",
+  },
+});
 
 export default HomeScreen;
