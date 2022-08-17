@@ -36,6 +36,11 @@ const schedulesActions = (() => {
 
 async function addScheduleHandler(item) {
   try {
+    // Add to async-storage
+
+    // Add to redux store
+
+    // Schedule notification
     return { success: { item: {} } };
   } catch ({ message }) {
     toastsActions.showError(null, message);
@@ -45,6 +50,8 @@ async function addScheduleHandler(item) {
 
 async function getScheduleHandler(id) {
   try {
+    // Get from redux store
+
     return { success: { item: {} } };
   } catch ({ message }) {
     toastsActions.showError(null, message);
@@ -54,6 +61,8 @@ async function getScheduleHandler(id) {
 
 async function getAllSchedulesHandler() {
   try {
+    // Get from redux store
+
     return { success: { items: [] } };
   } catch ({ message }) {
     toastsActions.showError(null, message);
@@ -63,6 +72,8 @@ async function getAllSchedulesHandler() {
 
 async function getScheduleFromDayHandler(day) {
   try {
+    // Get from redux store
+
     return { success: { items: [] } };
   } catch ({ message }) {
     toastsActions.showError(null, message);
@@ -72,6 +83,12 @@ async function getScheduleFromDayHandler(day) {
 
 async function editScheduleHandler(id) {
   try {
+    // Edit in async-storage
+
+    // Edit in redux store
+
+    // Edit notification
+
     return { success: { item: {} } };
   } catch ({ message }) {
     toastsActions.showError(null, message);
@@ -82,6 +99,11 @@ async function editScheduleHandler(id) {
 
 async function deleteScheduleHandler(id) {
   try {
+    // Delete in async-storage
+
+    // Delete in redux store
+
+    // Delete notification
     return { success: { deleted: false } };
   } catch ({ message }) {
     toastsActions.showError(null, message);

@@ -14,7 +14,7 @@ function HomeStack() {
       initialRouteName="HomeScreen"
       screenOptions={{
         headerShown: false,
-        cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+        cardStyleInterpolator: CardStyleInterpolators.forModalPresentationIOS,
       }}
     >
       <Stack.Screen name="HomeScreen" component={HomeScreen} />
