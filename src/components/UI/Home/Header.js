@@ -13,70 +13,34 @@ const Header = () => {
 
     let day = today.getDate();
 
-    let weekday = "";
-    switch (today.getDay()) {
-      case 0:
-        weekday = "Domingo";
-        break;
-      case 1:
-        weekday = "Segunda-feira";
-        break;
-      case 2:
-        weekday = "Terça-feira";
-        break;
-      case 3:
-        weekday = "Quarta-feira";
-        break;
-      case 4:
-        weekday = "Quinta-feira";
-        break;
-      case 5:
-        weekday = "Sexta-feira";
-        break;
-      case 6:
-        weekday = "Sábado";
-        break;
-    }
+    const weekdayValues = [
+      "Domingo",
+      "Segunda-feira",
+      "Terça-feira",
+      "Quarta-feira",
+      "Quinta-feira",
+      "Sexta-feira",
+      "Sábado",
+    ];
 
-    let month = "";
-    switch (today.getMonth()) {
-      case 0:
-        month = "Janeiro";
-        break;
-      case 1:
-        month = "Fevereiro";
-        break;
-      case 2:
-        month = "Março";
-        break;
-      case 3:
-        month = "Abril";
-        break;
-      case 4:
-        month = "Maio";
-        break;
-      case 5:
-        month = "Junho";
-        break;
-      case 6:
-        month = "Julho";
-        break;
-      case 7:
-        month = "Agosto";
-        break;
-      case 8:
-        month = "Setembro";
-        break;
-      case 9:
-        month = "Outubro";
-        break;
-      case 10:
-        month = "Novembro";
-        break;
-      case 11:
-        month = "Dezembro";
-        break;
-    }
+    const weekday = weekdayValues[today.getDay()];
+
+    const monthValues = [
+      "Janeiro",
+      "Fevereiro",
+      "Março",
+      "Abril",
+      "Maio",
+      "Junho",
+      "Julho",
+      "Agosto",
+      "Setembro",
+      "Outubro",
+      "Novembro",
+      "Dezembro",
+    ];
+
+    const month = monthValues[today.getMonth()];
 
     setDate(`${day} de ${month}, ${weekday}`);
   }, []);
