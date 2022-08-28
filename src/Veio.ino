@@ -1,17 +1,18 @@
 #include <SoftwareSerial.h>
 #include <EEPROM.h>
 
-//#define rxPort 10
-//#define txPort 9
+#define rxPort 10
+#define txPort 9
 #define baudRate 9600 // bluetooth
 #define delayTime 500 // ms
 #define checkInterval 40 // segundos
 #define perDayReg 4 // Registros/dia armazenáveis na memória.
-//#define debug
+#define debug
 
-//SoftwareSerial bluetooth(rxPort, txPort);
+SoftwareSerial bluetooth(rxPort, txPort);
 unsigned long lastMs = millis();
 uint32_t currentTime = 0; // Segundos
+uint16_t clockTime = 0; // Segundos
 
 // Referências ao "dia" devem ser interpretados como referências aos dias da semana
 // (domingo, segunda-feira, terça-feita, etc)
@@ -172,6 +173,15 @@ void createReg(const Rule* rule){
     #endif
 }
 
+String getCommand(const String* str){
+    #ifdef debug
+    char buff[2];
+    str->substring(0, 2).toCharArray(buff, 2);
+    Serial.println(buff);
+    #endif
+    return str->substring(0, 2);
+}
+
 void setup(){
     Serial.begin(9600);
     Serial.println("----BEGIN----");
@@ -197,10 +207,82 @@ void setup(){
     createReg(&rule4);
 }
 
+void on_bluetooth(){
+    Serial.print("Bluetooth! ");
+    Serial.println(bluetooth.available());
+
+    char datachar[bluetooth.available()];
+    String datastr = bluetooth.readString();
+    datastr.toCharArray(datachar, datastr.length());
+
+    #ifdef debug
+    Serial.print("Received data: ");
+    Serial.println(datastr);
+    #endif
+
+    String cmd = getCommand(&datastr);
+
+    if (cmd.equals("st")) { // st=setTime. Ex: st1657311350
+        setCurrentTime(&datastr);
+    }
+    else if (cmd.equals("cr")){ // cr=createReg. Ex: cr11635
+        Rule rule;
+        rule.weekday = (uint8_t)datachar[2];
+        rule.hour = (uint8_t)datachar[3];
+        rule.minute = (uint8_t)datachar[4];
+
+        #ifdef debug
+        Serial.println("Rule:");
+        Serial.println(rule.hour);
+        Serial.println(rule.minute);
+        Serial.println(rule.weekday);
+        #endif
+
+        createReg(&rule);
+    }
+    else{
+        bluetooth.write("error: unknown command");
+    }
+
+    delete[] datachar;
+}
+
+void on_serial(){
+    String datastr = Serial.readString();
+
+    #ifdef debug
+    Serial.print("Received data: ");
+    Serial.println(datastr);
+    #endif
+
+    if (datastr.startsWith("st")) { // st=setTime. Ex: st1657311350
+        setCurrentTime(&datastr);
+    }
+    else if (datastr.startsWith("cr")){ // cr=createReg. Ex: cr 0 10:28
+        Rule r;
+        const uint8_t ind = datastr.indexOf(' ');
+        r.weekday = (uint8_t)datastr.substring(ind, datastr.indexOf(' ', ind+1)).toInt();
+        const String sub = datastr.substring(datastr.indexOf(' ', ind+1));
+        r.hour = (uint8_t)sub.substring(0, sub.indexOf(':')).toInt();
+        r.minute = (uint8_t)sub.substring(sub.indexOf(':')+1).toInt();
+
+        if (r.weekday<0 || r.weekday>6 || r.hour<0 || r.hour>23 || r.minute<0 || r.minute>59){
+            Serial.println("Algo de errado aconteceu com a formatação.");
+        }
+        else{
+            #ifdef debug
+            Serial.println("Create reg");
+            #endif
+            createReg(&r);
+        }
+    }
+}
+
 void loop(){
     delay(delayTime);
     unsigned long ms = millis();
     currentTime += (ms - lastMs) / 1000;
+    clockTime += (ms - lastMs);
 
     #ifdef debug
     Serial.print("--Loop ");
@@ -213,77 +295,16 @@ void loop(){
     ruleFromCurrent(currentRule);
 
     if (Serial.available()){
-        String datastr = Serial.readString();
-
-        #ifdef debug
-        Serial.print("Received data: ");
-        Serial.println(datastr);
-        #endif
-
-        if (datastr.startsWith("st")) { // st=setTime. Ex: st1657311350
-            setCurrentTime(&datastr);
-        }
-        else if (datastr.startsWith("cr")){ // cr=createReg. Ex: cr 0 10:28
-            Rule r;
-            const uint8_t ind = datastr.indexOf(' ');
-            r.weekday = (uint8_t)datastr.substring(ind, datastr.indexOf(' ', ind+1)).toInt();
-            const String sub = datastr.substring(datastr.indexOf(' ', ind+1));
-            r.hour = (uint8_t)sub.substring(0, sub.indexOf(':')).toInt();
-            r.minute = (uint8_t)sub.substring(sub.indexOf(':')+1).toInt();
-
-            if (r.weekday<0 || r.weekday>6 || r.hour<0 || r.hour>23 || r.minute<0 || r.minute>59){
-                Serial.println("Algo de errado aconteceu com a formatação.");
-            }
-            else{
-                #ifdef debug
-                Serial.println("Create reg");
-                #endif
-                createReg(&r);
-            }
-        }
+        on_serial();
     }
 
-    /*NÃO TESTADO
     if (bluetooth.available()){
-        Serial.print("Bluetooth! ");
-        Serial.println(bluetooth.available());
-
-        char datachar[bluetooth.available()];
-        String datastr = bluetooth.readString();
-        datastr.toCharArray(datachar, datastr.length());
-
-        #ifdef debug
-        Serial.print("Received data: ");
-        Serial.println(datastr);
-        #endif
-
-        if (datastr.startsWith("st")) { // st=setTime. Ex: st1657311350
-            setCurrentTime(&datastr);
-        }
-        else if (datastr.startsWith("cr")){ // cr=createReg. Ex: cr11635
-            Rule rule;
-            rule.weekday = (uint8_t)datachar[2];
-            rule.hour = (uint8_t)datachar[3];
-            rule.minute = (uint8_t)datachar[4];
-
-            #ifdef debug
-            Serial.println("Rule:");
-            Serial.println(rule.hour);
-            Serial.println(rule.minute);
-            Serial.println(rule.weekday);
-            #endif
-
-            createReg(&rule);
-        }
-        else{
-            bluetooth.write("error: unknown command");
-        }
-
-        delete[] datachar;
+        on_bluetooth();
     }
-    NÃO TESTADO*/
 
-    if (currentTime % checkInterval >= checkInterval-(delayTime/1000)-1){
+    //if (currentTime % checkInterval >= checkInterval-(delayTime/1000)-1){
+    if (clockTime >= checkInterval){
+        clockTime = 0;
         #ifdef debug
         Serial.print("Check! Time (ms):");
         Serial.println(currentTime);
