@@ -282,7 +282,7 @@ void loop(){
     delay(delayTime);
     unsigned long ms = millis();
     currentTime += (ms - lastMs) / 1000;
-    clockTime += (ms - lastMs);
+    clockTime += (ms - lastMs) / 1000;
 
     #ifdef debug
     Serial.print("--Loop ");
