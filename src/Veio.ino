@@ -5,13 +5,13 @@
 #define txPort 9
 #define baudRate 9600 // bluetooth
 #define delayTime 500 // ms
-#define checkInterval 40 // segundos
+#define checkInterval 40000 // Milisegundos
 #define perDayReg 4 // Registros/dia armazenáveis na memória.
 #define debug
 
 SoftwareSerial bluetooth(rxPort, txPort);
 unsigned long lastMs = millis();
-uint32_t currentTime = 0; // Segundos
+unsigned long long currentTime = 0; // Milisegundos
 uint16_t clockTime = 0; // Segundos
 
 // Referências ao "dia" devem ser interpretados como referências aos dias da semana
@@ -43,9 +43,9 @@ Rule* ruleFromCurrent(){
     #endif
 
     Rule* rule = new Rule;
-    rule->weekday = ((currentTime/60/60/24) + 4) % 7; // 0 = domingo, 6 = sabado
-    rule->hour = ((currentTime/60/60) % 24) - 3; // -3 = Horário de Brasília
-    rule->minute = (currentTime/60) % 60;
+    rule->weekday = ((currentTime/1000/60/60/24) + 4) % 7; // 0 = domingo, 6 = sabado
+    rule->hour = ((currentTime/1000/60/60) % 24) - 3; // -3 = Horário de Brasília
+    rule->minute = (currentTime/1000/60) % 60;
 
     #ifdef debug
     Serial.println("--ruleFromCurrent:end");
@@ -58,9 +58,9 @@ void ruleFromCurrent(Rule* rule){
     Serial.println("--ruleFromCurrent:start");
     #endif
 
-    rule->weekday = ((currentTime/60/60/24) + 4) % 7; // 0 = domingo, 6 = sabado
-    rule->hour = ((currentTime/60/60) % 24) - 3; // -3 = Horário de Brasília
-    rule->minute = (currentTime/60) % 60;
+    rule->weekday = ((currentTime/1000/60/60/24) + 4) % 7; // 0 = domingo, 6 = sabado
+    rule->hour = ((currentTime/1000/60/60) % 24) - 3; // -3 = Horário de Brasília
+    rule->minute = (currentTime/1000/60) % 60;
     
     #ifdef debug
     Serial.println("--ruleFromCurrent:end");
@@ -103,12 +103,15 @@ void setCurrentTime(const String* bluetoothData){ // Deve receber um texto tipo 
     #endif
 
     char datachar[bluetoothData->length()];
-    currentTime = strtoul(datachar+2, NULL, 0); // +2 pra pular a caractere inicial "st"
+    currentTime = strtoul(datachar+2, NULL, 0) * 1000; // +2 pra pular a caractere inicial "st"
 
     #ifdef debug
     Serial.print("Set time (seconds): ");
-    Serial.println(currentTime);
+    char buff[32];
+    ltoa(currentTime, buff, 10);
+    Serial.println(buff);
     Serial.println("--setCurrentTime:end");
+    delete[] buff;
     #endif
 
     delete[] datachar;
@@ -118,12 +121,15 @@ void setCurrentTime(char* bluetoothData){
     Serial.println("--setCurrentTime:start");
     #endif
 
-    currentTime = strtoul(bluetoothData+2, NULL, 0);
+    currentTime = strtoul(bluetoothData+2, NULL, 0) * 1000;
 
     #ifdef debug
     Serial.print("Set time (seconds): ");
-    Serial.println(currentTime);
+    char buff[32];
+    ltoa(currentTime, buff, 10);
+    Serial.println(buff);
     Serial.println("--setCurrentTime:end");
+    delete[] buff;
     #endif
 }
 
@@ -281,14 +287,17 @@ void on_serial(){
 void loop(){
     delay(delayTime);
     unsigned long ms = millis();
-    currentTime += (ms - lastMs) / 1000;
-    clockTime += (ms - lastMs) / 1000;
+    currentTime += (ms - lastMs);
+    clockTime += (ms - lastMs);
 
     #ifdef debug
     Serial.print("--Loop ");
     Serial.print(millis() - lastMs);
     Serial.print(' ');
-    Serial.println(currentTime);
+    char buff[32];
+    ltoa(currentTime, buff, 10);
+    Serial.println(buff);
+    delete[] buff;
     #endif
 
     lastMs = ms;
@@ -307,14 +316,20 @@ void loop(){
         clockTime = 0;
         #ifdef debug
         Serial.print("Check! Time (ms):");
-        Serial.println(currentTime);
+        char buff[32];
+        ltoa(currentTime, buff, 10);
+        Serial.println(buff);
+        delete[] buff;
         #endif
 
         int8_t exists = regExists(currentRule);
         if (exists != -1){
             #ifdef debug
             Serial.print("Rule! ");
-            Serial.println(currentTime);
+            char buff[32];
+            ltoa(currentTime, buff, 10);
+            Serial.println(buff);
+            delete[] buff;
 
             Rule rule = Rule();
             rule.weekday = EEPROM.read(exists);
