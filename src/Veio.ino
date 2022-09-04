@@ -107,7 +107,7 @@ void setCurrentTime(const String* bluetoothData){ // Deve receber um texto tipo 
 
     #ifdef debug
     Serial.print("Set time (seconds): ");
-    char buff[32];
+    char buff[64];
     ltoa(currentTime, buff, 10);
     Serial.println(buff);
     Serial.println("--setCurrentTime:end");
@@ -125,7 +125,7 @@ void setCurrentTime(char* bluetoothData){
 
     #ifdef debug
     Serial.print("Set time (seconds): ");
-    char buff[32];
+    char buff[64];
     ltoa(currentTime, buff, 10);
     Serial.println(buff);
     Serial.println("--setCurrentTime:end");
@@ -294,7 +294,7 @@ void loop(){
     Serial.print("--Loop ");
     Serial.print(millis() - lastMs);
     Serial.print(' ');
-    char buff[32];
+    char buff[64];
     ltoa(currentTime, buff, 10);
     Serial.println(buff);
     delete[] buff;
@@ -316,7 +316,7 @@ void loop(){
         clockTime = 0;
         #ifdef debug
         Serial.print("Check! Time (ms):");
-        char buff[32];
+        char buff[64];
         ltoa(currentTime, buff, 10);
         Serial.println(buff);
         delete[] buff;
@@ -326,7 +326,7 @@ void loop(){
         if (exists != -1){
             #ifdef debug
             Serial.print("Rule! ");
-            char buff[32];
+            char buff[64];
             ltoa(currentTime, buff, 10);
             Serial.println(buff);
             delete[] buff;
