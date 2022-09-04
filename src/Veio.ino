@@ -37,6 +37,14 @@ struct Rule{
 };
 Rule* currentRule = new Rule;
 
+void printULL(unsigned long long* l){
+    char buf[128];
+    uint32_t *p = (uint32_t*)&l;
+    sprintf(buf, "%X%08X\n", p[1], p[0]);
+    Serial.print(buf);
+    //printf("%X%08X\n", p[1], p[0]);
+}
+
 Rule* ruleFromCurrent(){
     #ifdef debug
     Serial.println("--ruleFromCurrent:start");
@@ -107,11 +115,8 @@ void setCurrentTime(const String* bluetoothData){ // Deve receber um texto tipo 
 
     #ifdef debug
     Serial.print("Set time (seconds): ");
-    char buff[64];
-    ltoa(currentTime, buff, 10);
-    Serial.println(buff);
+    printULL(&currentTime);
     Serial.println("--setCurrentTime:end");
-    delete[] buff;
     #endif
 
     delete[] datachar;
@@ -125,11 +130,8 @@ void setCurrentTime(char* bluetoothData){
 
     #ifdef debug
     Serial.print("Set time (seconds): ");
-    char buff[64];
-    ltoa(currentTime, buff, 10);
-    Serial.println(buff);
+    printULL(&currentTime);
     Serial.println("--setCurrentTime:end");
-    delete[] buff;
     #endif
 }
 
@@ -294,10 +296,7 @@ void loop(){
     Serial.print("--Loop ");
     Serial.print(millis() - lastMs);
     Serial.print(' ');
-    char buff[64];
-    ltoa(currentTime, buff, 10);
-    Serial.println(buff);
-    delete[] buff;
+    printULL(&currentTime);
     #endif
 
     lastMs = ms;
@@ -316,20 +315,14 @@ void loop(){
         clockTime = 0;
         #ifdef debug
         Serial.print("Check! Time (ms):");
-        char buff[64];
-        ltoa(currentTime, buff, 10);
-        Serial.println(buff);
-        delete[] buff;
+        printULL(&currentTime);
         #endif
 
         int8_t exists = regExists(currentRule);
         if (exists != -1){
             #ifdef debug
             Serial.print("Rule! ");
-            char buff[64];
-            ltoa(currentTime, buff, 10);
-            Serial.println(buff);
-            delete[] buff;
+            printULL(&currentTime);
 
             Rule rule = Rule();
             rule.weekday = EEPROM.read(exists);
