@@ -41,7 +41,7 @@ void printULL(unsigned long long* l){
     char buf[128];
     uint32_t *p = (uint32_t*)&l;
     //sprintf(buf, "%X%08X\n", p[1], p[0]);
-    sprintf(buf, "%llu\n", &l);
+    sprintf(buf, "%I64u\n", &l);
     Serial.print(buf);
     //printf("%X%08X\n", p[1], p[0]);
 }
