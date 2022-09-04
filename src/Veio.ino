@@ -40,7 +40,7 @@ Rule* currentRule = new Rule;
 void printULL(unsigned long long* l){
     char buf[128];
     uint32_t *p = (uint32_t*)&l;
-    sprintf(buf, "%llu\n", &l);
+    sprintf(buf, "%X%08X\n", p[1], p[0]);
     Serial.print(buf);
 }
 
@@ -110,7 +110,7 @@ void setCurrentTime(const String* bluetoothData){ // Deve receber um texto tipo 
     #endif
 
     char datachar[bluetoothData->length()];
-    currentTime = strtoul(datachar+2, NULL, 0) * 1000; // +2 pra pular a caractere inicial "st"
+    currentTime = strtoul(datachar+2, NULL, 0); // +2 pra pular a caractere inicial "st"
 
     #ifdef debug
     Serial.print("Set time (seconds): ");
@@ -125,7 +125,7 @@ void setCurrentTime(char* bluetoothData){
     Serial.println("--setCurrentTime:start");
     #endif
 
-    currentTime = strtoul(bluetoothData+2, NULL, 0) * 1000;
+    currentTime = strtoul(bluetoothData+2, NULL, 0);
 
     #ifdef debug
     Serial.print("Set time (seconds): ");
@@ -202,8 +202,8 @@ void setup(){
 
     // Para fim de testes. 1657311350 equivale a 20:15:50 no horário GMT. 17:15:50 no horário de Brasília.
     // Para o sistema, hoje é 08/07/2022, as 17:15:50, numa sexta-feira.
-    // O número deve ser um timestamp UNIX.
-    setCurrentTime("st1657311350");
+    // O número deve ser um timestamp UNIX * 1000.
+    setCurrentTime("st1657311350000");
     Rule rule1 = Rule{5, 17, 16}; // Sexta-feira, as 17:16 // Apenas esse deve disparar "hoje".
     Rule rule2 = Rule{2, 17, 16}; // Terça-feira, as 17:16
     Rule rule3 = Rule{6, 8, 21}; // Sábado, as 8:21
