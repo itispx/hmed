@@ -40,9 +40,8 @@ Rule* currentRule = new Rule;
 void printULL(unsigned long long* l){
     char buf[128];
     uint32_t *p = (uint32_t*)&l;
-    sprintf(buf, "%lu%lu\n", p[1], p[0]);
+    sprintf(buf, "%llu\n", &l);
     Serial.print(buf);
-    //printf("%X%08X\n", p[1], p[0]);
 }
 
 Rule* ruleFromCurrent(){
