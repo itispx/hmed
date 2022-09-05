@@ -11,7 +11,7 @@
 
 SoftwareSerial bluetooth(rxPort, txPort);
 unsigned long lastMs = millis();
-unsigned long long currentTime = 0; // Milisegundos
+uint32_t currentTime = 0; // Segundos
 uint16_t clockTime = 0; // Segundos
 
 // Referências ao "dia" devem ser interpretados como referências aos dias da semana
@@ -37,22 +37,15 @@ struct Rule{
 };
 Rule* currentRule = new Rule;
 
-void printULL(unsigned long long* l){
-    char buf[128];
-    uint32_t *p = (uint32_t*)&l;
-    sprintf(buf, "%X%08X\n", p[1], p[0]);
-    Serial.print(buf);
-}
-
 Rule* ruleFromCurrent(){
     #ifdef debug
     Serial.println("--ruleFromCurrent:start");
     #endif
 
     Rule* rule = new Rule;
-    rule->weekday = ((currentTime/1000/60/60/24) + 4) % 7; // 0 = domingo, 6 = sabado
-    rule->hour = ((currentTime/1000/60/60) % 24) - 3; // -3 = Horário de Brasília
-    rule->minute = (currentTime/1000/60) % 60;
+    rule->weekday = ((currentTime/60/60/24) + 4) % 7; // 0 = domingo, 6 = sabado
+    rule->hour = ((currentTime/60/60) % 24) - 3; // -3 = Horário de Brasília
+    rule->minute = (currentTime/60) % 60;
 
     #ifdef debug
     Serial.println("--ruleFromCurrent:end");
@@ -65,9 +58,9 @@ void ruleFromCurrent(Rule* rule){
     Serial.println("--ruleFromCurrent:start");
     #endif
 
-    rule->weekday = ((currentTime/1000/60/60/24) + 4) % 7; // 0 = domingo, 6 = sabado
-    rule->hour = ((currentTime/1000/60/60) % 24) - 3; // -3 = Horário de Brasília
-    rule->minute = (currentTime/1000/60) % 60;
+    rule->weekday = ((currentTime/60/60/24) + 4) % 7; // 0 = domingo, 6 = sabado
+    rule->hour = ((currentTime/60/60) % 24) - 3; // -3 = Horário de Brasília
+    rule->minute = (currentTime/60) % 60;
     
     #ifdef debug
     Serial.println("--ruleFromCurrent:end");
@@ -114,7 +107,7 @@ void setCurrentTime(const String* bluetoothData){ // Deve receber um texto tipo 
 
     #ifdef debug
     Serial.print("Set time (seconds): ");
-    printULL(&currentTime);
+    Serial.println(currentTime);
     Serial.println("--setCurrentTime:end");
     #endif
 
@@ -129,7 +122,7 @@ void setCurrentTime(char* bluetoothData){
 
     #ifdef debug
     Serial.print("Set time (seconds): ");
-    printULL(&currentTime);
+    Serial.println(currentTime);
     Serial.println("--setCurrentTime:end");
     #endif
 }
@@ -202,8 +195,8 @@ void setup(){
 
     // Para fim de testes. 1657311350 equivale a 20:15:50 no horário GMT. 17:15:50 no horário de Brasília.
     // Para o sistema, hoje é 08/07/2022, as 17:15:50, numa sexta-feira.
-    // O número deve ser um timestamp UNIX * 1000.
-    setCurrentTime("st1657311350000");
+    // O número deve ser um timestamp UNIX.
+    setCurrentTime("st1657311350");
     Rule rule1 = Rule{5, 17, 16}; // Sexta-feira, as 17:16 // Apenas esse deve disparar "hoje".
     Rule rule2 = Rule{2, 17, 16}; // Terça-feira, as 17:16
     Rule rule3 = Rule{6, 8, 21}; // Sábado, as 8:21
@@ -295,7 +288,7 @@ void loop(){
     Serial.print("--Loop ");
     Serial.print(ms - lastMs);
     Serial.print(' ');
-    printULL(&currentTime);
+    Serial.println(currentTime);
     #endif
 
     lastMs = ms;
@@ -314,14 +307,14 @@ void loop(){
         clockTime = 0;
         #ifdef debug
         Serial.print("Check! Time (ms):");
-        printULL(&currentTime);
+        Serial.println(currentTime);
         #endif
 
         int8_t exists = regExists(currentRule);
         if (exists != -1){
             #ifdef debug
             Serial.print("Rule! ");
-            printULL(&currentTime);
+            Serial.println(currentTime);
 
             Rule rule = Rule();
             rule.weekday = EEPROM.read(exists);
