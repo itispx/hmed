@@ -34,7 +34,7 @@ cr<x><h><m>
 
 - **x**: Dia da semana de 0-6. 0 corresponde à domingo, e 6 à sabado
 - **h**: Hora de 0-23. Se for menor menor que *10*, deve conter um *0* no início.
-- **m**: Minuto de 0-23. Se for menor menor que *10*, deve conter um *0* no início.
+- **m**: Minuto de 0-59. Se for menor menor que *10*, deve conter um *0* no início.
 
 Retorna:
 
@@ -43,7 +43,7 @@ Retorna:
 - **-1** caso não tenha mais espaços disponíveis para armazenar novos registros nesse dia da semana.
 - **-2** caso a formatação do comando esteja errado.
 
-### Listar registros:
+### Listar registros
 Retorna os horários registrados. O formato de saída depende da entrada (*bluetooth* ou *serial*).
 
 Pelo monitor serial:
@@ -61,7 +61,7 @@ Pelo bluetooth (as caracteres *\n* são literais):
 0-23-59\n2-17-16\n5-17-16\n6-8-21
 ```
 
-### Deletar registro:
+### Deletar registro
 
 Pelo monitor serial:
 ```vim
@@ -93,7 +93,7 @@ cr<x><h><m>
 
 - **x**: Dia da semana de 0-6. 0 corresponde à domingo, e 6 à sabado
 - **h**: Hora de 0-23. Se for menor menor que *10*, deve conter um *0* no início.
-- **m**: Minuto de 0-23. Se for menor menor que *10*, deve conter um *0* no início.
+- **m**: Minuto de 0-59. Se for menor menor que *10*, deve conter um *0* no início.
 
 Retorna:
 
@@ -101,7 +101,7 @@ Retorna:
 - **-1** caso tal registro não exista.
 - **-2** caso a formatação do comando esteja errado.
 
-### Modificar relógio interno:
+### Modificar relógio interno
 
 Pelo monitor serial:
 ```vim
