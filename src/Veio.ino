@@ -259,12 +259,10 @@ void setup(){
     Serial.begin(9600);
     Serial.println("----BEGIN----");
 
-    //pinMode(rxPort, INPUT);
-    //pinMode(txPort, OUTPUT);
-    //pinMode(8, OUTPUT); // Energia adicional pro modulo.
-    //digitalWrite(8, HIGH); // Energia adicional pro modulo.
-    //delay(1200);
-    //bluetooth.begin(baudRate);
+    pinMode(rxPort, INPUT);
+    pinMode(txPort, OUTPUT);
+    delay(1200);
+    bluetooth.begin(baudRate);
 
     // Para fim de testes. 1657311350 equivale a 20:15:50 no horário GMT. 17:15:50 no horário de Brasília.
     // Para o sistema, hoje é 08/07/2022, as 17:15:50, numa sexta-feira.
