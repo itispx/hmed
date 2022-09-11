@@ -100,6 +100,7 @@ void setCurrentTime(char* data){
     Serial.println("--setCurrentTime:start");
     #endif
 
+    timeOffset = millis();
     currentTime = strtoul(data+2, NULL, 0);
 
     #ifdef debug
@@ -109,7 +110,6 @@ void setCurrentTime(char* data){
     #endif
 }
 uint32_t get_current_time(){
-    timeOffset = millis();
     return currentTime + ((millis() - timeOffset) / 1000);
 }
 #pragma endregion
