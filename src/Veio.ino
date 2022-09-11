@@ -357,6 +357,7 @@ void on_bluetooth(){
 
     if (strcmp(cmd, "st") == 0) { // st=setTime. Ex: st1657311350
         setCurrentTime(datachar);
+        bluetooth.print(currentTime);
     }
     else if (strcmp(cmd, "cr") == 0){ // cr=createReg. Ex: cr11630
         Rule rule;
