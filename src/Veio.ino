@@ -10,7 +10,8 @@
 #define debug
 
 SoftwareSerial bluetooth(rxPort, txPort);
-unsigned long lastMs = millis();
+unsigned long lastMs = millis(); // Milisegundos
+unsigned long timeOffset = 0; // Milisegundos
 uint32_t currentTime = 0; // Segundos
 uint16_t clockTime = 0; // Segundos
 
@@ -108,7 +109,8 @@ void setCurrentTime(char* data){
     #endif
 }
 uint32_t get_current_time(){
-    return currentTime + (millis() / 1000);
+    timeOffset = millis();
+    return currentTime + ((millis() - timeOffset) / 1000);
 }
 #pragma endregion
 
