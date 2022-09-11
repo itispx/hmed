@@ -297,14 +297,16 @@ void loop(){
     ruleFromCurrent(currentRule);
 
     if (Serial.available()){
+        Serial.println("Serial!");
         on_serial();
     }
 
     if (bluetooth.available()){
+        Serial.println("Bluetooth!");
         on_bluetooth();
     }
 
-    //if (currentTime % checkInterval >= checkInterval-(delayTime/1000)-1){
+    /*
     if (clockTime >= checkInterval){
         clockTime = 0;
         #ifdef debug
@@ -330,20 +332,16 @@ void loop(){
             Serial.println();
             #endif
 
-            /*
-
-            Aqui vai qualquer código que deva funcionar quando atinge o horário.
-
-            */
+            // Aqui vai qualquer código que deva funcionar quando atinge o horário.
 
             delay(60000-(millis()-lastMs)); // Pra não repetir a mesma regra
         }
     }
+    */
 }
 
 
 void on_bluetooth(){
-    Serial.print("Bluetooth! ");
     int available = bluetooth.available();
 
     char datachar[available];
