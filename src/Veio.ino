@@ -24,12 +24,8 @@ uint16_t clockTime = 0; // Segundos
 // procurando um novo "próxima regra" apenas quando a atual for validada, mas não estou familiarizado com a eficiência de cada método.
 
 // Exemplo de um registro: {enumerador do dia da semana 0-6}{hora 0-23}{minutos 0-59}
-// 11635. As 16:30, numa segunda-feira
+// 11630. As 16:30, numa segunda-feira.
 
-// Teoricamente, é necessário o transporte de somente 3 bytes de informações,
-// sendo que cada byte pode armazenar um número no alcance 0-255.
-// Uma compactação pode ser feita para armazenar em 14 bits. 3 (0-7) para armazenar o dia,
-// 5 (0-31) para armazenar a hora e 6 (0-63) para armazenar os minutos.
 struct Rule{
     uint8_t weekday;
     uint8_t hour;
@@ -43,9 +39,9 @@ Rule* ruleFromCurrent(){
     #endif
 
     Rule* rule = new Rule;
-    rule->weekday = ((currentTime/60/60/24) + 4) % 7; // 0 = domingo, 6 = sabado
-    rule->hour = ((currentTime/60/60) % 24) - 3; // -3 = Horário de Brasília
-    rule->minute = (currentTime/60) % 60;
+    rule->weekday = ((get_current_time()/60/60/24) + 4) % 7; // 0 = domingo, 6 = sabado
+    rule->hour = ((get_current_time()/60/60) % 24) - 3; // -3 = Horário de Brasília
+    rule->minute = (get_current_time()/60) % 60;
 
     #ifdef debug
     Serial.println("--ruleFromCurrent:end");
@@ -58,9 +54,9 @@ void ruleFromCurrent(Rule* rule){
     Serial.println("--ruleFromCurrent:start");
     #endif
 
-    rule->weekday = ((currentTime/60/60/24) + 4) % 7; // 0 = domingo, 6 = sabado
-    rule->hour = ((currentTime/60/60) % 24) - 3; // -3 = Horário de Brasília
-    rule->minute = (currentTime/60) % 60;
+    rule->weekday = ((get_current_time()/60/60/24) + 4) % 7; // 0 = domingo, 6 = sabado
+    rule->hour = ((get_current_time()/60/60) % 24) - 3; // -3 = Horário de Brasília
+    rule->minute = (get_current_time()/60) % 60;
     
     #ifdef debug
     Serial.println("--ruleFromCurrent:end");
@@ -97,22 +93,22 @@ void ruleFromTimestamp(Rule* rule, uint32_t timestamp){
     #endif
 }
 
-void setCurrentTime(const String* bluetoothData){ // Deve receber um texto tipo "t1657055229", sendo os números os segundos.
-    #ifdef debug
-    Serial.println("--setCurrentTime:start");
-    #endif
-
-    char datachar[bluetoothData->length()];
-    currentTime = strtoul(datachar+2, NULL, 0); // +2 pra pular a caractere inicial "st"
-
-    #ifdef debug
-    Serial.print("Set time (seconds): ");
-    Serial.println(currentTime);
-    Serial.println("--setCurrentTime:end");
-    #endif
-
-    delete[] datachar;
-}
+//void setCurrentTime(const String* bluetoothData){ // Deve receber um texto tipo "t1657055229", sendo os números os segundos.
+//    #ifdef debug
+//    Serial.println("--setCurrentTime:start");
+//    #endif
+//
+//    char datachar[bluetoothData->length()];
+//    currentTime = strtoul(datachar+2, NULL, 0); // +2 pra pular a caractere inicial "st"
+//
+//    #ifdef debug
+//    Serial.print("Set time (seconds): ");
+//    Serial.println(get_current_time());
+//    Serial.println("--setCurrentTime:end");
+//    #endif
+//
+//    delete[] datachar;
+//}
 void setCurrentTime(char* bluetoothData){
     #ifdef debug
     Serial.println("--setCurrentTime:start");
@@ -122,7 +118,7 @@ void setCurrentTime(char* bluetoothData){
 
     #ifdef debug
     Serial.print("Set time (seconds): ");
-    Serial.println(currentTime);
+    Serial.println(get_current_time());
     Serial.println("--setCurrentTime:end");
     #endif
 }
@@ -173,13 +169,15 @@ void createReg(const Rule* rule){
     #endif
 }
 
-String getCommand(const String* str){
+void getCommand(char* str, char* buffer){
+    strncpy(buffer, str, 2);
     #ifdef debug
-    char buff[2];
-    str->substring(0, 2).toCharArray(buff, 2);
-    Serial.println(buff);
+    Serial.println(buffer);
     #endif
-    return str->substring(0, 2);
+}
+
+uint32_t get_current_time(){
+    return currentTime + (millis() / 1000);
 }
 
 void setup(){
@@ -206,26 +204,62 @@ void setup(){
     createReg(&rule3);
     createReg(&rule4);
 }
+bool is_valid_rule(Rule* rule){
+    if (rule->weekday < 0 || rule->weekday > 6) return false;
+    if (rule->hour < 0 || rule->hour > 23) return false;
+    if (rule->minute < 0 || rule->minute > 59) return false;
+    return true;
+}
+uint8_t count_rules(){
+    #define mult perDayReg * 3
+    uint8_t count = 0;
+
+    for(uint8_t i = 0; i < 7*mult; i+=3){
+        uint8_t d = EEPROM.read(i);
+        if (d >= 0 && d <= 6){
+            count++;
+        }
+    }
+    return count;
+}
+void list_rules(Rule* ruleArray){
+    #define mult perDayReg * 3
+    uint8_t count = 0;
+
+    for(uint8_t i = 0; i < 7*mult; i+=3){
+        uint8_t d = EEPROM.read(i);
+        if (d >= 0 && d <= 6){
+            Rule r;
+            r.weekday = d;
+            r.hour = EEPROM.read(i+1);
+            r.minute = EEPROM.read(i+2);
+            if (is_valid_rule(&r)){
+                ruleArray[count] = r;
+                count++;
+            }
+        }
+    }
+}
 
 void on_bluetooth(){
     Serial.print("Bluetooth! ");
-    Serial.println(bluetooth.available());
+    int available = bluetooth.available();
 
-    char datachar[bluetooth.available()];
-    String datastr = bluetooth.readString();
-    datastr.toCharArray(datachar, datastr.length());
+    char datachar[available];
+    bluetooth.readBytes(datachar, available);
 
     #ifdef debug
     Serial.print("Received data: ");
-    Serial.println(datastr);
+    Serial.println(datachar);
     #endif
 
-    String cmd = getCommand(&datastr);
+    char cmd[3] = {0};
+    getCommand(datachar, cmd);
 
-    if (cmd.equals("st")) { // st=setTime. Ex: st1657311350
-        setCurrentTime(&datastr);
+    if (strcmp(cmd, "st") == 0) { // st=setTime. Ex: st1657311350
+        setCurrentTime(datachar);
     }
-    else if (cmd.equals("cr")){ // cr=createReg. Ex: cr11635
+    else if (strcmp(cmd, "cr") == 0){ // cr=createReg. Ex: cr11630
         Rule rule;
         rule.weekday = (uint8_t)datachar[2];
         rule.hour = (uint8_t)datachar[3];
@@ -248,47 +282,84 @@ void on_bluetooth(){
 }
 
 void on_serial(){
-    String datastr = Serial.readString();
+    int available = Serial.available();
+    char datachar[available];
+    Serial.readBytesUntil('\n', datachar, available);
 
     #ifdef debug
     Serial.print("Received data: ");
-    Serial.println(datastr);
+    Serial.println(datachar);
     #endif
 
-    if (datastr.startsWith("st")) { // st=setTime. Ex: st1657311350
-        setCurrentTime(&datastr);
-    }
-    else if (datastr.startsWith("cr")){ // cr=createReg. Ex: cr 0 10:28
-        Rule r;
-        const uint8_t ind = datastr.indexOf(' ');
-        r.weekday = (uint8_t)datastr.substring(ind, datastr.indexOf(' ', ind+1)).toInt();
-        const String sub = datastr.substring(datastr.indexOf(' ', ind+1));
-        r.hour = (uint8_t)sub.substring(0, sub.indexOf(':')).toInt();
-        r.minute = (uint8_t)sub.substring(sub.indexOf(':')+1).toInt();
+    char cmd[3] = {0};
+    getCommand(datachar, cmd);
 
-        if (r.weekday<0 || r.weekday>6 || r.hour<0 || r.hour>23 || r.minute<0 || r.minute>59){
+    if (strcmp(cmd, "st") == 0) { // st=setTime. Ex: st1657311350
+        setCurrentTime(datachar);
+    }
+    else if (strcmp(cmd, "cr") == 0){ // cr=createReg. Ex: cr 0 10:28
+        Rule r;
+        //const uint8_t ind = datachar.indexOf(' ');
+        //r.weekday = (uint8_t)datastr.substring(ind, datastr.indexOf(' ', ind+1)).toInt();
+        //const String sub = datastr.substring(datastr.indexOf(' ', ind+1));
+        //r.hour = (uint8_t)sub.substring(0, sub.indexOf(':')).toInt();
+        //r.minute = (uint8_t)sub.substring(sub.indexOf(':')+1).toInt();
+        char buff[3] = {0};
+        strncpy(buff, datachar+3, 1);
+        r.weekday = (uint8_t)atoi(buff);
+        memset(buff, 0, 2);
+
+        strncpy(buff, datachar+5, 2);
+        r.hour = (uint8_t)atoi(buff);
+        memset(buff, 0, 2);
+
+        strncpy(buff, datachar+8, 2);
+        r.minute = (uint8_t)atoi(buff);
+        memset(buff, 0, 2);
+
+        if (!is_valid_rule(&r)){
             Serial.println("Algo de errado aconteceu com a formatação.");
         }
         else{
             #ifdef debug
-            Serial.println("Create reg");
+            Serial.print("Create reg ");
+            Serial.print(r.weekday);
+            Serial.print(' ');
+            Serial.print(r.hour);
+            Serial.print(' ');
+            Serial.print(r.minute);
+            Serial.println();
             #endif
             createReg(&r);
         }
+    }
+    else if (strcmp(cmd, "ls") == 0){
+        Rule rules[count_rules()];
+        list_rules(rules);
+        Serial.println("List reg");
+        for (Rule r : rules){
+            Serial.print(r.weekday);
+            Serial.print(' ');
+            Serial.print(r.hour);
+            Serial.print(' ');
+            Serial.print(r.minute);
+            Serial.println();
+        }
+        delete[] rules;
     }
 }
 
 void loop(){
     delay(delayTime);
     unsigned long ms = millis();
-    currentTime += (ms - lastMs);
+    //currentTime += (ms - lastMs);
     clockTime += (ms - lastMs);
 
     #ifdef debug
     Serial.print("--Loop ");
     Serial.print(ms - lastMs);
     Serial.print(' ');
-    Serial.println(currentTime);
+    Serial.println(get_current_time());
     #endif
 
     lastMs = ms;
@@ -307,14 +378,14 @@ void loop(){
         clockTime = 0;
         #ifdef debug
         Serial.print("Check! Time (ms):");
-        Serial.println(currentTime);
+        Serial.println(get_current_time());
         #endif
 
         int8_t exists = regExists(currentRule);
         if (exists != -1){
             #ifdef debug
             Serial.print("Rule! ");
-            Serial.println(currentTime);
+            Serial.println(get_current_time());
 
             Rule rule = Rule();
             rule.weekday = EEPROM.read(exists);
