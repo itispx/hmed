@@ -362,26 +362,23 @@ void on_bluetooth(){
     }
     else if (strcmp(cmd, "cr") == 0){ // cr=createReg. Ex: cr11630
         Rule rule;
-        //const uint8_t ind = datachar.indexOf(' ');
-        //r.weekday = (uint8_t)datastr.substring(ind, datastr.indexOf(' ', ind+1)).toInt();
-        //const String sub = datastr.substring(datastr.indexOf(' ', ind+1));
-        //r.hour = (uint8_t)sub.substring(0, sub.indexOf(':')).toInt();
-        //r.minute = (uint8_t)sub.substring(sub.indexOf(':')+1).toInt();
+        // cr02222
         char buff[3] = {0};
-        strncpy(buff, datachar+3, 1);
+        strncpy(buff, datachar+2, 1);
         rule.weekday = (uint8_t)atoi(buff);
         memset(buff, 0, 2);
 
-        strncpy(buff, datachar+5, 2);
+        strncpy(buff, datachar+3, 2);
         rule.hour = (uint8_t)atoi(buff);
         memset(buff, 0, 2);
 
-        strncpy(buff, datachar+8, 2);
+        strncpy(buff, datachar+5, 2);
         rule.minute = (uint8_t)atoi(buff);
         memset(buff, 0, 2);
 
         if (!is_valid_rule(&rule)){
             Serial.println("Algo de errado aconteceu com a formatação.");
+            bluetooth.print(-2);
         }
         else{
             #ifdef debug
@@ -405,41 +402,42 @@ void on_bluetooth(){
                     Serial.println("Espaco para registros desse dia da semana esta cheio.");
                     break;
             }
+            bluetooth.print(res);
         }
     }
     else if (strcmp(cmd, "ls") == 0){
         Rule rules[count_rules()];
         list_rules(rules);
-        Serial.println("List reg");
         for (Rule r : rules){
-            Serial.print(r.weekday);
-            Serial.print(' ');
-            Serial.print(r.hour);
-            Serial.print(' ');
-            Serial.print(r.minute);
-            Serial.println();
+            bluetooth.print(r.weekday);
+            bluetooth.print('-');
+            bluetooth.print(r.hour);
+            bluetooth.print('-');
+            bluetooth.print(r.minute);
+            bluetooth.println();
         }
         delay(150);
         delete[] rules;
     }
     else if (strcmp(cmd, "dr") == 0){
         Rule rule;
-        
+        // dr02222
         char buff[3] = {0};
-        strncpy(buff, datachar+3, 1);
+        strncpy(buff, datachar+2, 1);
         rule.weekday = (uint8_t)atoi(buff);
         memset(buff, 0, 2);
 
-        strncpy(buff, datachar+5, 2);
+        strncpy(buff, datachar+3, 2);
         rule.hour = (uint8_t)atoi(buff);
         memset(buff, 0, 2);
 
-        strncpy(buff, datachar+8, 2);
+        strncpy(buff, datachar+5, 2);
         rule.minute = (uint8_t)atoi(buff);
         memset(buff, 0, 2);
 
         if (!is_valid_rule(&rule)){
             Serial.println("Algo de errado aconteceu com a formatação.");
+            bluetooth.print(-2);
         }
         else{
             #ifdef debug
@@ -460,10 +458,11 @@ void on_bluetooth(){
                     Serial.println("Registro deletado com sucesso");
                     break;
             }
+            bluetooth.print(res);
         }
     }
     else{
-        bluetooth.write("error: unknown command");
+        bluetooth.print("error: unknown command");
     }
 
     delete[] datachar;
