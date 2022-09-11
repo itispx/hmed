@@ -121,3 +121,15 @@ st<x>
 - **x**: Um timestamp Unix. Você pode obter um online [aqui](https://www.unixtimestamp.com), ou a partir do sistema interno de um dispositivo mais capaz do que um Arduino.
 
 Retorna o horário interno depois de modificado.
+
+# Valores padrão
+Por padrão, o horário interno segue a timestamp *1657311350*, que corresponde à 06/07/2022, 17:15:30
+
+Já possui 4 horários registrados:
+
+- Sexta-feira, as 17:16
+- Terça-feira, as 17:16
+- Sábado, as 8:21
+- Domingo, as 23:59
+
+Em 30 segundos após a inicialização do Arduino, o primeiro horário deverá tocar.
