@@ -188,6 +188,7 @@ int8_t delete_rule(const Rule* rule){
     EEPROM.write(pos, 255);
     EEPROM.write(pos+1, 255);
     EEPROM.write(pos+2, 255);
+    return 0;
 }
 #pragma endregion
 
@@ -406,6 +407,61 @@ void on_bluetooth(){
             }
         }
     }
+    else if (strcmp(cmd, "ls") == 0){
+        Rule rules[count_rules()];
+        list_rules(rules);
+        Serial.println("List reg");
+        for (Rule r : rules){
+            Serial.print(r.weekday);
+            Serial.print(' ');
+            Serial.print(r.hour);
+            Serial.print(' ');
+            Serial.print(r.minute);
+            Serial.println();
+        }
+        delay(150);
+        delete[] rules;
+    }
+    else if (strcmp(cmd, "dr") == 0){
+        Rule rule;
+        
+        char buff[3] = {0};
+        strncpy(buff, datachar+3, 1);
+        rule.weekday = (uint8_t)atoi(buff);
+        memset(buff, 0, 2);
+
+        strncpy(buff, datachar+5, 2);
+        rule.hour = (uint8_t)atoi(buff);
+        memset(buff, 0, 2);
+
+        strncpy(buff, datachar+8, 2);
+        rule.minute = (uint8_t)atoi(buff);
+        memset(buff, 0, 2);
+
+        if (!is_valid_rule(&rule)){
+            Serial.println("Algo de errado aconteceu com a formatação.");
+        }
+        else{
+            #ifdef debug
+            Serial.print("Delete reg ");
+            Serial.print(rule.weekday);
+            Serial.print(' ');
+            Serial.print(rule.hour);
+            Serial.print(' ');
+            Serial.print(rule.minute);
+            Serial.println();
+            #endif
+            int8_t res = delete_rule(&rule);
+            switch (res){
+                case -1:
+                    Serial.println("Registro nao existe.");
+                    break;
+                case 0:
+                    Serial.println("Registro deletado com sucesso");
+                    break;
+            }
+        }
+    }
     else{
         bluetooth.write("error: unknown command");
     }
@@ -488,6 +544,47 @@ void on_serial(){
             Serial.print(r.minute);
             Serial.println();
         }
+        delay(150);
         delete[] rules;
+    }
+    else if (strcmp(cmd, "dr") == 0){
+        Rule rule;
+
+        char buff[3] = {0};
+        strncpy(buff, datachar+3, 1);
+        rule.weekday = (uint8_t)atoi(buff);
+        memset(buff, 0, 2);
+
+        strncpy(buff, datachar+5, 2);
+        rule.hour = (uint8_t)atoi(buff);
+        memset(buff, 0, 2);
+
+        strncpy(buff, datachar+8, 2);
+        rule.minute = (uint8_t)atoi(buff);
+        memset(buff, 0, 2);
+
+        if (!is_valid_rule(&rule)){
+            Serial.println("Algo de errado aconteceu com a formatação.");
+        }
+        else{
+            #ifdef debug
+            Serial.print("Delete reg ");
+            Serial.print(rule.weekday);
+            Serial.print(' ');
+            Serial.print(rule.hour);
+            Serial.print(' ');
+            Serial.print(rule.minute);
+            Serial.println();
+            #endif
+            int8_t res = delete_rule(&rule);
+            switch (res){
+                case -1:
+                    Serial.println("Registro nao existe.");
+                    break;
+                case 0:
+                    Serial.println("Registro deletado com sucesso");
+                    break;
+            }
+        }
     }
 }
