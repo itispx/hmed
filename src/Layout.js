@@ -1,9 +1,8 @@
-import React, { useLayoutEffect } from "react";
+import React, { useLayoutEffect, useRef } from "react";
 import { StatusBar } from "react-native";
 
-import { NavigationContainer } from "@react-navigation/native";
-
-import HomeStack from "./navigation/HomeStack";
+import HomeScreen from "./screens/HomeScreen";
+import AddScreen from "./screens/AddScreen";
 
 const Layout = () => {
   useLayoutEffect(() => {
@@ -12,10 +11,13 @@ const Layout = () => {
     StatusBar.setBarStyle("light-content");
   }, []);
 
+  const addScreenRef = useRef();
+
   return (
-    <NavigationContainer>
-      <HomeStack />
-    </NavigationContainer>
+    <>
+      <HomeScreen addScreenRef={addScreenRef} />
+      <AddScreen modalizeRef={addScreenRef} />
+    </>
   );
 };
 export default Layout;

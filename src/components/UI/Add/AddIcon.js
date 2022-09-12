@@ -5,13 +5,9 @@ import { RFValue } from "../../../library/viewport-units";
 
 import Colors from "../../../constants/Colors";
 
-const AddIcon = ({ navigate }) => {
+const AddIcon = ({ onPress }) => {
   return (
-    <TouchableHighlight
-      underlayColor={false}
-      activeOpacity={0.75}
-      onPress={navigate}
-    >
+    <TouchableHighlight underlayColor={false} onPress={onPress}>
       <View style={[styles.container, styles.shadow]}>
         <Text style={styles.icon}>+</Text>
       </View>
