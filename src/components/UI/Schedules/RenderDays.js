@@ -1,9 +1,10 @@
 import React from "react";
 
 import { useDispatch, useSelector } from "react-redux";
+
 import { selectSchedule } from "../../../redux-store/redux-slices/ui-slice";
 
-import DayBubble from "./DayBubble";
+import DayBubble from "../DayBubble";
 
 const RenderDays = ({ index }) => {
   const isSelected = useSelector(

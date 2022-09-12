@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { StyleSheet, View, Text, TouchableHighlight } from "react-native";
 
-import Colors from "../../../constants/Colors";
+import Colors from "../../constants/Colors";
 
-const DayBubble = ({ index, isSelected, selectBubble }) => {
+const DayBubble = ({ style, index, isSelected, selectBubble }) => {
   const [title] = useState(() => {
     const values = ["DOM", "SEG", "TER", "QUA", "QUI", "SEX", "SAB"];
 
@@ -21,6 +21,7 @@ const DayBubble = ({ index, isSelected, selectBubble }) => {
           styles.container,
           styles.shadow,
           { backgroundColor: isSelected ? Colors.accent : Colors.grey },
+          style
         ]}
       >
         <Text style={styles.title}>{title}</Text>
