@@ -5,6 +5,7 @@ import { vh } from "../library/viewport-units";
 
 import { Modalize } from "react-native-modalize";
 
+import TimePicker from "../components/UI/Add/TimePicker";
 import DayBubble from "../components/UI/DayBubble";
 
 const AddScreen = ({ modalizeRef }) => {
@@ -22,7 +23,9 @@ const AddScreen = ({ modalizeRef }) => {
 
   return (
     <Modalize ref={modalizeRef} modalHeight={vh(100)}>
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <View style={{ flex: 1, alignItems: "center" }}>
+        <TimePicker />
+
         <FlatList
           overScrollMode="never"
           style={styles.flatlist}

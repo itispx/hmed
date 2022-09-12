@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Text, TouchableHighlight } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableHighlight,
+  TextInput,
+} from "react-native";
 
 import Colors from "../../constants/Colors";
 
@@ -21,7 +27,7 @@ const DayBubble = ({ style, index, isSelected, selectBubble }) => {
           styles.container,
           styles.shadow,
           { backgroundColor: isSelected ? Colors.accent : Colors.grey },
-          style
+          style,
         ]}
       >
         <Text style={styles.title}>{title}</Text>
