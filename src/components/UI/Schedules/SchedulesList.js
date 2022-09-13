@@ -19,8 +19,20 @@ const SchedulesList = (props) => {
   function getSchedules() {
     schedules.forEach((item) => {
       if (item.days.includes(selectedDay)) {
-        // Calculate title
-        setData((prev) => [...prev, item]);
+        const currentTime = new Date().toLocaleTimeString();
+
+        const time = item.time.split(":");
+        const now = new Date();
+        const scheduleTime = new Date(
+          now.getFullYear(),
+          now.getMonth(),
+          now.getDate(),
+          ...time
+        ).toLocaleTimeString();
+
+        const taken = currentTime > scheduleTime;
+
+        setData((prev) => [...prev, { ...item, taken }]);
       }
     });
   }

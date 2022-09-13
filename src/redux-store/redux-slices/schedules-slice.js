@@ -2,7 +2,15 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   initialized: false,
-  schedules: [],
+  schedules: [
+    {
+      id: "a1b2c3",
+      time: "10:00",
+      name: "Tylenol",
+      quantity: 65,
+      days: [1, 2, 3],
+    },
+  ],
 };
 
 const schedulesSlice = createSlice({
@@ -13,7 +21,7 @@ const schedulesSlice = createSlice({
       state.initialized = payload.value;
     },
     addSchedule(state, { payload }) {
-      state.schedules.push(payload.item);
+      state.schedules.unshift(payload.item);
     },
     removeSchedule(state, { payload }) {
       state.schedules = state.schedules.filter(

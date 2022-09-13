@@ -22,7 +22,12 @@ const ScheduleItem = ({ id, time, title, name, quantity, taken }) => {
       <View style={styles.innerContainer}>
         <View style={styles.titleContainer}>
           {/* <Text style={styles.title}>{title}</Text> */}
-          <Text style={styles.name}>
+          <Text
+            style={[
+              styles.name,
+              { color: taken ? Colors.grey : Colors.primary },
+            ]}
+          >
             {name}, {quantity}mg
           </Text>
         </View>
@@ -79,7 +84,6 @@ const styles = StyleSheet.create({
   },
   name: {
     fontSize: RFValue(23),
-    color: Colors.grey,
   },
   checkMark: {},
 });
