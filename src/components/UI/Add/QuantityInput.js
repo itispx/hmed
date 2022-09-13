@@ -33,7 +33,7 @@ const QuantityInput = ({ setQuantity }) => {
             <View
               style={{
                 flexDirection: "row",
-                borderWidth: 1,
+                borderWidth: 3,
                 borderColor: Colors.primary,
               }}
             >

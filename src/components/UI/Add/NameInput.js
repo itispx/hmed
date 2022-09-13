@@ -28,21 +28,21 @@ const NameInput = ({ setName }) => {
       >
         {(fprops) => (
           <>
-            <TextInput
-              style={{
-                height: 50,
-                width: vw(75),
-                padding: 10,
-                borderWidth: 1,
-                borderColor: Colors.primary,
-                fontSize: 20,
-                color: Colors.background,
-              }}
-              placeholder="Nome do remédio"
-              onChangeText={fprops.handleChange("name")}
-              value={fprops.values.name}
-              onBlur={() => fprops.handleSubmit()}
-            />
+            <View style={{ borderWidth: 3, borderColor: Colors.primary }}>
+              <TextInput
+                style={{
+                  height: 50,
+                  width: vw(75),
+                  padding: 10,
+                  fontSize: 20,
+                  color: Colors.background,
+                }}
+                placeholder="Nome do remédio"
+                onChangeText={fprops.handleChange("name")}
+                value={fprops.values.name}
+                onBlur={() => fprops.handleSubmit()}
+              />
+            </View>
             <Text
               style={{
                 color: "#B00020",
