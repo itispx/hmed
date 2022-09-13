@@ -5,7 +5,7 @@ import { RFValue, vw } from "../../../library/viewport-units";
 
 import Colors from "../../../constants/Colors";
 
-import Icon from "react-native-vector-icons/AntDesign";
+import Icon from "react-native-vector-icons/Feather";
 
 const ScheduleItem = ({ id, time, title, name, quantity, taken }) => {
   return (
