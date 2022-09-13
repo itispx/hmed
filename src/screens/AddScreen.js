@@ -7,6 +7,7 @@ import { Modalize } from "react-native-modalize";
 
 import TimePicker from "../components/UI/Add/TimePicker";
 import NameInput from "../components/UI/Add/NameInput";
+import QuantityInput from "../components/UI/Add/QuantityInput";
 import DayBubble from "../components/UI/DayBubble";
 
 const AddScreen = ({ modalizeRef }) => {
@@ -15,6 +16,7 @@ const AddScreen = ({ modalizeRef }) => {
   const [hour, setHour] = useState("00");
   const [minutes, setMinutes] = useState("00");
   const [name, setName] = useState("");
+  const [quantity, setQuantity] = useState(0);
   const [selectedDays, setSelectedDays] = useState([]);
 
   function selectDayHandler(day) {
@@ -31,6 +33,8 @@ const AddScreen = ({ modalizeRef }) => {
         <TimePicker setHour={setHour} setMinutes={setMinutes} />
 
         <NameInput value={name} setName={setName} />
+
+        <QuantityInput setQuantity={setQuantity} />
 
         <FlatList
           overScrollMode="never"
@@ -54,7 +58,7 @@ const AddScreen = ({ modalizeRef }) => {
 
 const styles = StyleSheet.create({
   flatlist: {
-    marginTop: 60,
+    marginTop: 15,
   },
 });
 

@@ -9,7 +9,7 @@ import {
 
 import Colors from "../../constants/Colors";
 
-const DayBubble = ({ style, index, isSelected, selectBubble }) => {
+const DayBubble = ({ index, isSelected, selectBubble }) => {
   const [title] = useState(() => {
     const values = ["DOM", "SEG", "TER", "QUA", "QUI", "SEX", "SAB"];
 
@@ -27,7 +27,6 @@ const DayBubble = ({ style, index, isSelected, selectBubble }) => {
           styles.container,
           styles.shadow,
           { backgroundColor: isSelected ? Colors.accent : Colors.grey },
-          style,
         ]}
       >
         <Text style={styles.title}>{title}</Text>

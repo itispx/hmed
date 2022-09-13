@@ -9,17 +9,23 @@ import * as yup from "yup";
 import Colors from "../../../constants/Colors";
 
 const NameInput = ({ setName }) => {
-  const nameSchema = yup.object({
-    name: yup.string().required("Preencha o nome"),
-  });
+  // TODO Do not submit if empty
 
   function submitHandler(name) {
     setName(name);
   }
 
+  const nameSchema = yup.object({
+    name: yup.string().required("Preencha o nome"),
+  });
+
   return (
     <View>
-      <Formik initialValues={{ name: "" }} validationSchema={nameSchema}>
+      <Formik
+        initialValues={{ name: "" }}
+        validationSchema={nameSchema}
+        onSubmit={(values) => submitHandler(values.name)}
+      >
         {(fprops) => (
           <>
             <TextInput
@@ -35,7 +41,7 @@ const NameInput = ({ setName }) => {
               placeholder="Nome do remédio"
               onChangeText={fprops.handleChange("name")}
               value={fprops.values.name}
-              onBlur={() => submitHandler(fprops.values.name)}
+              onBlur={() => fprops.handleSubmit()}
             />
             <Text
               style={{
