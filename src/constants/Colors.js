@@ -3,4 +3,5 @@ export default {
   accent: "#1F8A70",
   background: "#011826",
   grey: "#a9a9a9",
+  error: "#B00020",
 };

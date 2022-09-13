@@ -6,6 +6,7 @@ import { vw } from "../../../library/viewport-units";
 import { Formik } from "formik";
 import * as yup from "yup";
 
+import Styles from "../../../constants/Styles";
 import Colors from "../../../constants/Colors";
 
 const NameInput = ({ setName }) => {
@@ -43,14 +44,7 @@ const NameInput = ({ setName }) => {
                 onBlur={() => fprops.handleSubmit()}
               />
             </View>
-            <Text
-              style={{
-                color: "#B00020",
-                marginTop: 2,
-                marginBottom: 3,
-                textAlign: "left",
-              }}
-            >
+            <Text style={Styles.errorText}>
               {fprops.touched.name && fprops.errors.name}
             </Text>
           </>

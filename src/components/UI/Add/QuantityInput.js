@@ -6,6 +6,7 @@ import { vw } from "../../../library/viewport-units";
 import { Formik } from "formik";
 import * as yup from "yup";
 
+import Styles from "../../../constants/Styles";
 import Colors from "../../../constants/Colors";
 
 const QuantityInput = ({ setQuantity }) => {
@@ -62,14 +63,7 @@ const QuantityInput = ({ setQuantity }) => {
                 <Text style={{ fontSize: 20, color: Colors.grey }}>mg</Text>
               </View>
             </View>
-            <Text
-              style={{
-                color: "#B00020",
-                marginTop: 2,
-                marginBottom: 3,
-                textAlign: "left",
-              }}
-            >
+            <Text style={Styles.errorText}>
               {fprops.touched.quantity && fprops.errors.quantity}
             </Text>
           </>

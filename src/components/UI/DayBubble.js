@@ -1,12 +1,7 @@
 import React, { useState } from "react";
-import {
-  StyleSheet,
-  View,
-  Text,
-  TouchableHighlight,
-  TextInput,
-} from "react-native";
+import { StyleSheet, View, Text, TouchableHighlight } from "react-native";
 
+import Styles from "../../constants/Styles";
 import Colors from "../../constants/Colors";
 
 const DayBubble = ({ height, fontSize, index, isSelected, selectBubble }) => {
@@ -25,7 +20,7 @@ const DayBubble = ({ height, fontSize, index, isSelected, selectBubble }) => {
       <View
         style={[
           styles.container,
-          styles.shadow,
+          Styles.shadow,
           { backgroundColor: isSelected ? Colors.accent : Colors.grey },
           { height: height ?? 90 },
         ]}
@@ -49,16 +44,6 @@ const styles = StyleSheet.create({
   title: {
     fontWeight: "bold",
     color: "#FFF",
-  },
-  shadow: {
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
   },
 });
 
