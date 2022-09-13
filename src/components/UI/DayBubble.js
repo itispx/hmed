@@ -13,6 +13,8 @@ const DayBubble = ({ height, fontSize, index, isSelected, selectBubble }) => {
 
   return (
     <TouchableHighlight
+      // Padding for shadow
+      style={{ paddingBottom: 5 }}
       underlayColor={false}
       activeOpacity={0.75}
       onPress={selectBubble}
