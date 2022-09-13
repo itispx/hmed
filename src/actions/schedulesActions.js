@@ -14,7 +14,7 @@ import { v4 as uuidv4 } from "uuid";
 const schedulesActions = (() => {
   const hasBeenInitialized = getState().schedules.initialized;
 
-  console.log("hasBeenInitialized:", hasBeenInitialized);
+  // Get data from local-storage
 
   if (!hasBeenInitialized) {
     // Initialize store
@@ -53,8 +53,6 @@ async function removeSchedule(id) {
 
     // Delete in local state
     const { payload } = removeScheduleStateQuery(id);
-
-    console.log("payload:", payload);
 
     // Delete notification
     return { deleted: true };
