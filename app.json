@@ -4,12 +4,12 @@
     "slug": "HMED",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/to-be-icon.jpg",
+    "icon": "./assets/icon.jpg",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/to-be-splash.jpg",
+      "image": "./assets/splash.jpg",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#004358"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -22,7 +22,7 @@
     "android": {
       "package": "com.hmed",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/to-be-icon.jpg",
+        "foregroundImage": "./assets/icon.jpg",
         "backgroundColor": "#FFFFFF"
       }
     }
