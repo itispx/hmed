@@ -5,7 +5,7 @@ import { vw } from "../../../library/viewport-units";
 
 import VerticalSwipe from "../VerticalSwipe";
 
-const TimePicker = () => {
+const TimePicker = ({ setHour, setMinutes }) => {
   const hours = [...Array(24).keys()].map((v) =>
     v < 10 ? `0${v}` : v.toString()
   );
@@ -18,15 +18,17 @@ const TimePicker = () => {
     <View style={styles.container}>
       <VerticalSwipe
         items={hours}
-        onChange={(value) => console.log("hour:", value)}
+        onChange={(value) => setHour(value.item)}
         height={250}
         width={75}
         fontSize={30}
       />
-      <Text style={{ marginTop: -5, fontSize: 45 }}>:</Text>
+
+      <Text style={{ marginTop: -2.5, fontSize: 45 }}>:</Text>
+
       <VerticalSwipe
         items={minutes}
-        onChange={(value) => console.log("minutes:", value)}
+        onChange={(value) => setMinutes(value.item)}
         height={250}
         width={75}
         fontSize={30}
@@ -42,7 +44,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     height: 300,
     width: vw(60),
-
   },
 });
 
