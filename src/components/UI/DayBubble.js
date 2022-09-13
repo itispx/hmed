@@ -9,7 +9,7 @@ import {
 
 import Colors from "../../constants/Colors";
 
-const DayBubble = ({ index, isSelected, selectBubble }) => {
+const DayBubble = ({ height, fontSize, index, isSelected, selectBubble }) => {
   const [title] = useState(() => {
     const values = ["DOM", "SEG", "TER", "QUA", "QUI", "SEX", "SAB"];
 
@@ -27,9 +27,12 @@ const DayBubble = ({ index, isSelected, selectBubble }) => {
           styles.container,
           styles.shadow,
           { backgroundColor: isSelected ? Colors.accent : Colors.grey },
+          { height: height ?? 90 },
         ]}
       >
-        <Text style={styles.title}>{title}</Text>
+        <Text style={[styles.title, { fontSize: fontSize ?? 20 }]}>
+          {title}
+        </Text>
       </View>
     </TouchableHighlight>
   );
@@ -40,12 +43,10 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     justifyContent: "center",
     alignItems: "center",
-    height: 90,
     aspectRatio: 1,
     borderRadius: 45,
   },
   title: {
-    fontSize: 20,
     fontWeight: "bold",
     color: "#FFF",
   },

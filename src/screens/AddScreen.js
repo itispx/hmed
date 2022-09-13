@@ -44,6 +44,8 @@ const AddScreen = ({ modalizeRef }) => {
           data={days}
           renderItem={({ item, index }) => (
             <DayBubble
+              height={60}
+              fontSize={15}
               key={index}
               index={index}
               isSelected={selectedDays.includes(item)}
