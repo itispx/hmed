@@ -7,18 +7,23 @@ import Colors from "../../../constants/Colors";
 
 import Icon from "react-native-vector-icons/AntDesign";
 
-const ScheduleItem = ({ time, title, name, amount, taken }) => {
+const ScheduleItem = ({ id, time, title, name, quantity, taken }) => {
   return (
     <View style={styles.container}>
-      <View style={styles.timeContainer}>
+      <View
+        style={[
+          styles.timeContainer,
+          { backgroundColor: taken ? Colors.accent : Colors.primary },
+        ]}
+      >
         <Text style={styles.timeText}>{time}</Text>
       </View>
 
       <View style={styles.innerContainer}>
         <View style={styles.titleContainer}>
-          <Text style={styles.title}>{title}</Text>
+          {/* <Text style={styles.title}>{title}</Text> */}
           <Text style={styles.name}>
-            {name}, {amount}mg
+            {name}, {quantity}mg
           </Text>
         </View>
         <Icon
@@ -34,6 +39,7 @@ const ScheduleItem = ({ time, title, name, amount, taken }) => {
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
+    marginVertical: 9,
     height: 90,
     width: vw(90),
     borderRadius: 9,
@@ -45,7 +51,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     height: "100%",
     width: "30%",
-    backgroundColor: Colors.accent,
   },
   timeText: {
     fontSize: RFValue(30),
