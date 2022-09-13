@@ -1,7 +1,9 @@
 import React from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text, TouchableHighlight } from "react-native";
 
 import { RFValue, vw } from "../../../library/viewport-units";
+
+import schedulesActions from "../../../actions/schedulesActions";
 
 import Colors from "../../../constants/Colors";
 
@@ -9,35 +11,40 @@ import Icon from "react-native-vector-icons/Feather";
 
 const ScheduleItem = ({ id, time, title, name, quantity, taken }) => {
   return (
-    <View style={styles.container}>
-      <View
-        style={[
-          styles.timeContainer,
-          { backgroundColor: taken ? Colors.accent : Colors.primary },
-        ]}
-      >
-        <Text style={styles.timeText}>{time}</Text>
-      </View>
-
-      <View style={styles.innerContainer}>
-        <View style={styles.titleContainer}>
-          {/* <Text style={styles.title}>{title}</Text> */}
-          <Text
-            style={[
-              styles.name,
-              { color: taken ? Colors.grey : Colors.primary },
-            ]}
-          >
-            {name}, {quantity}mg
-          </Text>
+    <TouchableHighlight
+      underlayColor="none"
+      onPress={() => schedulesActions.removeSchedule(id)}
+    >
+      <View style={styles.container}>
+        <View
+          style={[
+            styles.timeContainer,
+            { backgroundColor: taken ? Colors.accent : Colors.primary },
+          ]}
+        >
+          <Text style={styles.timeText}>{time}</Text>
         </View>
-        <Icon
-          name="check"
-          size={RFValue(40)}
-          color={taken ? Colors.accent : Colors.grey}
-        />
+
+        <View style={styles.innerContainer}>
+          <View style={styles.titleContainer}>
+            {/* <Text style={styles.title}>{title}</Text> */}
+            <Text
+              style={[
+                styles.name,
+                { color: taken ? Colors.grey : Colors.primary },
+              ]}
+            >
+              {name}, {quantity}mg
+            </Text>
+          </View>
+          <Icon
+            name="check"
+            size={RFValue(40)}
+            color={taken ? Colors.accent : Colors.grey}
+          />
+        </View>
       </View>
-    </View>
+    </TouchableHighlight>
   );
 };
 
