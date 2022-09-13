@@ -9,15 +9,21 @@ const schedulesSlice = createSlice({
   name: "schedules",
   initialState,
   reducers: {
+    updateInitialize(state, { payload }) {
+      state.initialized = payload.value;
+    },
     addSchedule(state, { payload }) {
       state.schedules.push(payload.item);
     },
-    editSchedule(state, { payload }) {},
-    removeSchedule(state, { payload }) {},
+    removeSchedule(state, { payload }) {
+      state.schedules = state.schedules.filter(
+        (item) => item.id !== payload.id
+      );
+    },
   },
 });
 
-export const { addSchedule, editSchedule, removeSchedule } =
+export const { updateInitialize, addSchedule, removeSchedule } =
   schedulesSlice.actions;
 
 export default schedulesSlice.reducer;

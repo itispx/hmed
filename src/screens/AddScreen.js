@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { StyleSheet, View, Text, FlatList } from "react-native";
 
-import { vh } from "../library/viewport-units";
+import schedulesActions from "../actions/schedulesActions";
 
 import Styles from "../constants/Styles";
 
@@ -62,20 +62,21 @@ const AddScreen = ({ navigation }) => {
         <SaveIcon
           onPress={() => {
             if (selectedDays.length === 0) {
-              console.log("empty");
               setDaysError("Selecione pelo menos 1 dia");
               return;
             }
             if (daysError !== "") {
-              console.log("clean");
               setDaysError("");
             }
 
-            // console.log("save schedule:");
-            // console.log(`time: ${hour}:${minutes}`);
-            // console.log("name:", name);
-            // console.log("quantity:", quantity);
-            // console.log("days:", selectedDays);
+            schedulesActions.addSchedule(
+              `${hour}:${minutes}`,
+              name,
+              quantity,
+              selectedDays
+            );
+
+            navigation.goBack();
           }}
         />
       </View>
