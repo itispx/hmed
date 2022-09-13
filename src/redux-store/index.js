@@ -10,4 +10,6 @@ const store = configureStore({
   },
 });
 
+export const { dispatch, getState } = store;
+
 export default store;
