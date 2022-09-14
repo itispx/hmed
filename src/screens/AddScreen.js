@@ -31,7 +31,7 @@ const AddScreen = ({ navigation }) => {
   }
 
   return (
-    <View style={{ flex: 1, alignItems: "center" }}>
+    <View style={styles.container}>
       <TimePicker setHour={setHour} setMinutes={setMinutes} />
 
       <NameInput value={name} setName={setName} />
@@ -85,6 +85,11 @@ const AddScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: "center",
+    backgroundColor: "#FFF",
+  },
   flatlist: {
     marginTop: 15,
   },
