@@ -16,20 +16,21 @@ interface Props {
 
 const HomeScreen: React.FC<Props> = ({ navigation }) => {
   return (
-    <KeyboardAwareScrollView>
-      <View style={styles.container}>
-        <Header />
-        <Schedules />
-        <AddIcon onPress={() => navigation.navigate("AddScreen")} />
-      </View>
-    </KeyboardAwareScrollView>
+    <>
+      <KeyboardAwareScrollView>
+        <View style={styles.container}>
+          <Header />
+          <Schedules />
+        </View>
+      </KeyboardAwareScrollView>
+      <AddIcon onPress={() => navigation.navigate("AddScreen")} />
+    </>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "grey",
   },
 });
 
