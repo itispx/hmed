@@ -7,6 +7,8 @@ import ScheduleItem from "./ScheduleItem";
 
 import ScheduleDisplayInterface from "../../../interfaces/schedule-display-interface";
 
+import { stringToDate } from "../../../library/string-to-date";
+
 interface Props {
   style: StyleProp<ViewStyle>;
 }
@@ -23,20 +25,12 @@ const SchedulesList: React.FC<Props> = ({ style }) => {
   }, [selectedDay, schedules]);
 
   function setSchedules() {
-    const now = new Date();
-
     let schedulesArr = schedules
       .filter((item) => item.days.includes(selectedDay))
       .map((item) => {
         const currentTime = new Date().toLocaleTimeString();
 
-        const time = item.time.split(":").map((v) => parseInt(v));
-        const scheduleTime = new Date(
-          now.getFullYear(),
-          now.getMonth(),
-          now.getDate(),
-          ...time
-        ).toLocaleTimeString();
+        const scheduleTime = stringToDate(item.time).toLocaleTimeString();
 
         const taken = currentTime > scheduleTime;
 
@@ -45,23 +39,10 @@ const SchedulesList: React.FC<Props> = ({ style }) => {
         return { ...item, taken };
       })
       .sort((a, b) => {
-        const aTime = a.time.split(":").map((v) => parseInt(v));
-        const aConverted = new Date(
-          now.getFullYear(),
-          now.getMonth(),
-          now.getDate(),
-          ...aTime
-        ).getTime();
+        const aConverted = stringToDate(a.time).getTime();
+        const bConverted = stringToDate(b.time).getTime();
 
-        const bTime = b.time.split(":").map((v) => parseInt(v));
-        const bConverted = new Date(
-          now.getFullYear(),
-          now.getMonth(),
-          now.getDate(),
-          ...bTime
-        ).getTime();
-
-        return bConverted - aConverted;
+        return aConverted - bConverted;
       });
 
     setData((prev) => [...prev, ...schedulesArr]);
