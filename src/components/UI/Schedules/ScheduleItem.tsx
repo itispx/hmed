@@ -7,7 +7,7 @@ import { removeSchedule } from "../../../actions/schedulesActions";
 
 import Colors from "../../../constants/Colors";
 
-import Icon from "react-native-vector-icons/Feather";
+import Icon from "react-native-vector-icons/FontAwesome5";
 
 import ScheduleDisplayInterface from "../../../interfaces/schedule-display-interface";
 
@@ -44,6 +44,7 @@ const ScheduleItem: React.FC<ScheduleDisplayInterface> = ({
               {name}, {quantity}mg
             </Text>
           </View>
+
           <Icon
             name="check"
             size={RFValue(40)}
@@ -81,7 +82,8 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     width: "70%",
-    paddingHorizontal: 10,
+    paddingLeft: 10,
+    paddingRight: 15,
   },
   titleContainer: {
     justifyContent: "space-evenly",

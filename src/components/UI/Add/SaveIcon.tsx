@@ -3,7 +3,7 @@ import { StyleSheet, View, TouchableHighlight } from "react-native";
 
 import { RFValue } from "../../../library/viewport-units";
 
-import Icon from "react-native-vector-icons/Feather";
+import Icon from "react-native-vector-icons/FontAwesome5";
 
 import Styles from "../../../constants/Styles";
 import Colors from "../../../constants/Colors";

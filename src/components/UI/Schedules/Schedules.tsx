@@ -40,6 +40,7 @@ const styles = StyleSheet.create({
   },
   flatlist: {
     paddingVertical: 15,
+    backgroundColor: "#FFF",
   },
 });
 

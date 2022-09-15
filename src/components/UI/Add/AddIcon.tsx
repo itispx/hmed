@@ -6,6 +6,8 @@ import { RFValue } from "../../../library/viewport-units";
 import Styles from "../../../constants/Styles";
 import Colors from "../../../constants/Colors";
 
+import Icon from "react-native-vector-icons/FontAwesome5";
+
 interface Props {
   onPress: () => void;
 }
@@ -14,7 +16,7 @@ const AddIcon: React.FC<Props> = ({ onPress }) => {
   return (
     <TouchableHighlight underlayColor="none" onPress={onPress}>
       <View style={[styles.container, Styles.shadow]}>
-        <Text style={styles.icon}>+</Text>
+        <Icon name="plus" solid size={RFValue(40)} color="#FFF" />
       </View>
     </TouchableHighlight>
   );

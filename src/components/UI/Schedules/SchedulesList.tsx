@@ -39,6 +39,8 @@ const SchedulesList: React.FC<Props> = ({ style }) => {
 
         const taken = currentTime > scheduleTime;
 
+        // TODO Calculate title
+
         setData((prev) => [...prev, { ...item, taken }]);
       }
     });

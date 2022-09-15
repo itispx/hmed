@@ -27,6 +27,7 @@ const schedulesSlice = createSlice({
       state.initialized = action.payload.value;
     },
     addSchedule(state, action: PayloadAction<{ item: ScheduleInterface }>) {
+      // TODO Proper order based on time
       state.schedules.unshift(action.payload.item);
     },
     removeSchedule(state, action: PayloadAction<{ id: string }>) {
