@@ -20,7 +20,6 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
       <View style={styles.container}>
         <Header />
         <Schedules />
-        {/* <AddIcon onPress={() => navigation.navigate("AddScreen")} /> */}
         <AddIcon onPress={() => navigation.navigate("AddScreen")} />
       </View>
     </KeyboardAwareScrollView>
