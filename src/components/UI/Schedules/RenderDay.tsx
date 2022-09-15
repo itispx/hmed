@@ -2,7 +2,7 @@ import React from "react";
 
 import useAppSelector from "../../../hooks/useAppSelector";
 
-import uiActions from "../../../actions/uiActions";
+import { selectedScheduleDay } from "../../../actions/uiActions";
 
 import DayBubble from "../DayBubble";
 
@@ -16,7 +16,7 @@ const RenderDay: React.FC<Props> = ({ index }) => {
   );
 
   function selectBubble(): void {
-    uiActions.selectedScheduleDay(index);
+    selectedScheduleDay(index);
   }
 
   return (
