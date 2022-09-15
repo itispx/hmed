@@ -8,15 +8,7 @@ interface SchedulesSliceState {
 
 const initialState: SchedulesSliceState = {
   initialized: false,
-  schedules: [
-    {
-      id: "a1b2c3",
-      time: "10:00",
-      name: "Tylenol",
-      quantity: 65,
-      days: [1, 2, 3],
-    },
-  ],
+  schedules: [],
 };
 
 const schedulesSlice = createSlice({
@@ -27,7 +19,6 @@ const schedulesSlice = createSlice({
       state.initialized = action.payload.value;
     },
     addSchedule(state, action: PayloadAction<{ item: ScheduleInterface }>) {
-      // TODO Proper order based on time
       state.schedules.unshift(action.payload.item);
     },
     removeSchedule(state, action: PayloadAction<{ id: string }>) {
