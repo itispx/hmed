@@ -6,7 +6,7 @@ import {
 } from "../../redux-store/redux-slices/schedules-slice";
 
 import ScheduleInterface from "../../interfaces/schedule-interface";
-import StateQueryResponseInterface from "../../interfaces/state-query-response-interface";
+import StateQueryResponseInterface from "./state-query-response-interface";
 
 export function updateInitializeStateQuery(
   value: boolean

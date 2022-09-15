@@ -6,29 +6,25 @@ import {
   removeScheduleStateQuery,
 } from "../queries/local-state/schedulesQueries";
 
+import {
+  initiateStorageQuery,
+  addScheduleStorageQuery,
+  getSchedulesStorageQuery,
+} from "../queries/local-storage/schedulesQueries";
+
 import toastsActions from "./toastsActions";
 
 import "react-native-get-random-values";
 import { v4 as uuidv4 } from "uuid";
 
 const schedulesActions = (() => {
-  const hasBeenInitialized = getState().schedules.initialized;
-
-  // Get data from local-storage
-
-  if (!hasBeenInitialized) {
-    // Initialize store
-    // Set store initialized to true
-    // updateInitializeStateQuery(true);
-  }
-
   return {
     addSchedule,
     removeSchedule,
   };
 })();
 
-async function addSchedule(
+export async function addSchedule(
   time: string,
   name: string,
   quantity: number,
@@ -40,6 +36,7 @@ async function addSchedule(
     const item = { id, time, name, quantity, days };
 
     // Add to local storage
+    await addScheduleStorageQuery(item);
 
     // Add to local state
     const { payload } = addScheduleStateQuery(item);
@@ -47,17 +44,12 @@ async function addSchedule(
     // Schedule notification
     return { item: payload };
   } catch ({ message }) {
-    if (typeof message === "string") {
-      toastsActions.showError(message);
-      return { error: { message } };
-    } else {
-      toastsActions.showError("Falha ao adicionar");
-      return { error: { message: "Failed to add schedule" } };
-    }
+    toastsActions.showError("Falha ao adicionar");
+    return { error: { message: "Failed to add schedule" } };
   }
 }
 
-async function removeSchedule(id: string) {
+export async function removeSchedule(id: string) {
   try {
     // Delete in local storage
 
@@ -67,13 +59,36 @@ async function removeSchedule(id: string) {
     // Delete notification
     return { deleted: true };
   } catch ({ message }) {
-    if (typeof message === "string") {
-      toastsActions.showError(message);
-      return { error: { message } };
-    } else {
-      toastsActions.showError("Falha ao remover");
-      return { error: { message: "Failed to remove schedule" } };
+    toastsActions.showError("Falha ao remover");
+    return { error: { message: "Failed to remove schedule" } };
+  }
+}
+
+export async function initializeStateAction(): Promise<void> {
+  try {
+    const hasBeenInitialized = getState().schedules.initialized;
+
+    // Get data from local-storage
+    if (!hasBeenInitialized) {
+      // Initialize store
+      const { data, error } = await getSchedulesStorageQuery();
+
+      if (error) {
+        initiateStorageQuery();
+
+        updateInitializeStateQuery(true);
+      }
+
+      if (data) {
+        for (let i = 0; i < data.length; i++) {
+          addScheduleStateQuery(data[i]);
+        }
+
+        updateInitializeStateQuery(true);
+      }
     }
+  } catch ({ message }) {
+    toastsActions.showError("Algo deu errado");
   }
 }
 
