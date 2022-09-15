@@ -19,17 +19,18 @@ const SchedulesList: React.FC<Props> = ({ style }) => {
 
   useEffect(() => {
     setData([]);
-    getSchedules();
+    setSchedules();
   }, [selectedDay, schedules]);
 
-  function getSchedules() {
-    schedules.forEach((item) => {
-      if (item.days.includes(selectedDay)) {
+  function setSchedules() {
+    const now = new Date();
+
+    let schedulesArr = schedules
+      .filter((item) => item.days.includes(selectedDay))
+      .map((item) => {
         const currentTime = new Date().toLocaleTimeString();
 
         const time = item.time.split(":").map((v) => parseInt(v));
-
-        const now = new Date();
         const scheduleTime = new Date(
           now.getFullYear(),
           now.getMonth(),
@@ -41,9 +42,29 @@ const SchedulesList: React.FC<Props> = ({ style }) => {
 
         // TODO Calculate title
 
-        setData((prev) => [...prev, { ...item, taken }]);
-      }
-    });
+        return { ...item, taken };
+      })
+      .sort((a, b) => {
+        const aTime = a.time.split(":").map((v) => parseInt(v));
+        const aConverted = new Date(
+          now.getFullYear(),
+          now.getMonth(),
+          now.getDate(),
+          ...aTime
+        ).getTime();
+
+        const bTime = b.time.split(":").map((v) => parseInt(v));
+        const bConverted = new Date(
+          now.getFullYear(),
+          now.getMonth(),
+          now.getDate(),
+          ...bTime
+        ).getTime();
+
+        return bConverted - aConverted;
+      });
+
+    setData((prev) => [...prev, ...schedulesArr]);
   }
 
   return (
