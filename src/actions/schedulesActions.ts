@@ -12,7 +12,7 @@ import {
   getSchedulesStorageQuery,
 } from "../queries/local-storage/schedulesQueries";
 
-import toastsActions from "./toastsActions";
+import { showError } from "./toastsActions";
 
 import "react-native-get-random-values";
 import { v4 as uuidv4 } from "uuid";
@@ -44,7 +44,7 @@ export async function addSchedule(
     // Schedule notification
     return { item: payload };
   } catch ({ message }) {
-    toastsActions.showError("Falha ao adicionar");
+    showError("Falha ao adicionar");
     return { error: { message: "Failed to add schedule" } };
   }
 }
@@ -59,7 +59,7 @@ export async function removeSchedule(id: string) {
     // Delete notification
     return { deleted: true };
   } catch ({ message }) {
-    toastsActions.showError("Falha ao remover");
+    showError("Falha ao remover");
     return { error: { message: "Failed to remove schedule" } };
   }
 }
@@ -88,7 +88,7 @@ export async function initializeStateAction(): Promise<void> {
       }
     }
   } catch ({ message }) {
-    toastsActions.showError("Algo deu errado");
+    showError("Algo deu errado");
   }
 }
 
