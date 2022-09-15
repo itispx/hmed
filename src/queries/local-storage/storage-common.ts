@@ -1,58 +1,30 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+import ScheduleInterface from "../../interfaces/schedule-interface";
+
 export async function getAsyncStorage(
-  key: string = getKey()
-): Promise<object | { error: { message: string } }> {
-  try {
-    const jsonValue = await AsyncStorage.getItem(key);
-    return jsonValue !== null ? JSON.parse(jsonValue) : null;
-  } catch ({ message }) {
-    if (typeof message === "string") {
-      return { error: { message } };
-    } else {
-      return { error: { message: "Failed to get async storage" } };
-    }
-  }
+  key: string
+): Promise<ScheduleInterface[]> {
+  const jsonValue = await AsyncStorage.getItem(key);
+  return jsonValue !== null ? JSON.parse(jsonValue) : null;
 }
 
 export async function setAsyncStorage(
   value: object,
-  key: string = getKey()
-): Promise<undefined | { error: { message: string } }> {
-  try {
-    const jsonValue = JSON.stringify(value);
-    await AsyncStorage.setItem(key, jsonValue);
-  } catch ({ message }) {
-    if (typeof message === "string") {
-      return { error: { message } };
-    }
-  }
+  key: string
+): Promise<void> {
+  const jsonValue = JSON.stringify(value);
+  await AsyncStorage.setItem(key, jsonValue);
 }
 
 export async function mergeAsyncStorage(
   value: object,
-  key: string = getKey()
-): Promise<undefined | { error: { message: string } }> {
-  try {
-    const jsonValue = JSON.stringify(value);
-    await AsyncStorage.mergeItem(key, jsonValue);
-  } catch ({ message }) {
-    if (typeof message === "string") {
-      return { error: { message } };
-    }
-  }
+  key: string
+): Promise<void> {
+  const jsonValue = JSON.stringify(value);
+  await AsyncStorage.mergeItem(key, jsonValue);
 }
 
-export async function deleteAsyncStorage(key: string = getKey()) {
-  try {
-    await AsyncStorage.removeItem(key);
-  } catch ({ message }) {
-    if (typeof message === "string") {
-      return { error: { message } };
-    }
-  }
-}
-
-export function getKey(): string {
-  return "user:device";
+export async function deleteAsyncStorage(key: string): Promise<void> {
+  await AsyncStorage.removeItem(key);
 }
