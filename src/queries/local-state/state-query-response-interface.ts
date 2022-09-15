@@ -1,5 +1,5 @@
-interface StateQueryResponse {
+interface StateQueryResponseInterface {
   payload: object;
 }
 
-export default StateQueryResponse;
+export default StateQueryResponseInterface;

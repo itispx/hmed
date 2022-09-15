@@ -1,4 +1,4 @@
-interface Schedule {
+interface ScheduleInterface {
   id: string;
   time: string;
   name: string;
@@ -6,4 +6,4 @@ interface Schedule {
   days: number[];
 }
 
-export default Schedule;
+export default ScheduleInterface;

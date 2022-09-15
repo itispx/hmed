@@ -1,8 +1,8 @@
 import ScheduleInterface from "./schedule-interface";
 
-interface ScheduleDisplay extends ScheduleInterface {
+interface ScheduleDisplayInterface extends ScheduleInterface {
   taken: boolean;
   title?: string;
 }
 
-export default ScheduleDisplay;
+export default ScheduleDisplayInterface
