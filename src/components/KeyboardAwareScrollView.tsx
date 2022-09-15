@@ -1,24 +1,32 @@
 import React from "react";
-import { KeyboardAvoidingView, ScrollView } from "react-native";
+import {
+  KeyboardAvoidingView,
+  KeyboardAvoidingViewProps,
+  ScrollView,
+  ScrollViewProps,
+} from "react-native";
 
 interface Props {
-  [x: string]: any;
+  keyboardAvoidingViewProps?: KeyboardAvoidingViewProps;
+  scrollViewProps?: ScrollViewProps;
+  children: React.ReactNode;
 }
 
-const KeyboardAwareScrollView: React.FC<Props> = (props) => {
+const KeyboardAwareScrollView: React.FC<Props> = ({
+  keyboardAvoidingViewProps,
+  scrollViewProps,
+  children,
+}) => {
   return (
-    <KeyboardAvoidingView
-      style={{ flex: 1 }}
-      {...props.keyboardAvoidingViewProps}
-    >
+    <KeyboardAvoidingView style={{ flex: 1 }} {...keyboardAvoidingViewProps}>
       <ScrollView
         overScrollMode="never"
         contentContainerStyle={{ flexGrow: 1 }}
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="handled"
-        {...props.scrollViewProps}
+        {...scrollViewProps}
       >
-        {props.children}
+        {children}
       </ScrollView>
     </KeyboardAvoidingView>
   );
