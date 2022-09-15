@@ -27,7 +27,8 @@ const SchedulesList: React.FC<Props> = ({ style }) => {
       if (item.days.includes(selectedDay)) {
         const currentTime = new Date().toLocaleTimeString();
 
-        const time = item.time.split(":")
+        const time = item.time.split(":").map((v) => parseInt(v));
+
         const now = new Date();
         const scheduleTime = new Date(
           now.getFullYear(),
