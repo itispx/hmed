@@ -3,7 +3,7 @@ import { StyleSheet, View, Text, TouchableHighlight } from "react-native";
 
 import { RFValue, vw } from "../../../library/viewport-units";
 
-import schedulesActions from "../../../actions/schedulesActions";
+import { removeSchedule } from "../../../actions/schedulesActions";
 
 import Colors from "../../../constants/Colors";
 
@@ -21,10 +21,7 @@ const ScheduleItem: React.FC<ScheduleDisplayInterface> = ({
   title,
 }) => {
   return (
-    <TouchableHighlight
-      underlayColor="none"
-      onPress={() => schedulesActions.removeSchedule(id)}
-    >
+    <TouchableHighlight underlayColor="none" onPress={() => removeSchedule(id)}>
       <View style={styles.container}>
         <View
           style={[

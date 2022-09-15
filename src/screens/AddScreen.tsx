@@ -4,7 +4,7 @@ import { StyleSheet, View, Text, FlatList } from "react-native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { HomeStackParamsList } from "../navigation/HomeStack";
 
-import schedulesActions from "../actions/schedulesActions";
+import { addSchedule } from "../actions/schedulesActions";
 
 import Styles from "../constants/Styles";
 
@@ -76,12 +76,7 @@ const AddScreen: React.FC<Props> = ({ navigation }) => {
               setDaysError("");
             }
 
-            schedulesActions.addSchedule(
-              `${hour}:${minutes}`,
-              name,
-              quantity,
-              selectedDays
-            );
+            addSchedule(`${hour}:${minutes}`, name, quantity, selectedDays);
 
             navigation.goBack();
           }}
