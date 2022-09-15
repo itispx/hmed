@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, View, FlatList } from "react-native";
 
 import Next from "./Next";
-import RenderDays from "./RenderDays";
+import RenderDay from "./RenderDay";
 import SchedulesList from "./SchedulesList";
 
 const Schedules: React.FC = () => {
@@ -22,7 +22,7 @@ const Schedules: React.FC = () => {
           horizontal
           data={days}
           renderItem={({ item, index }) => (
-            <RenderDays key={index} index={item} />
+            <RenderDay key={index} index={item} />
           )}
         />
       </View>
