@@ -12,7 +12,7 @@ import {
   getSchedulesStorageQuery,
 } from "../queries/local-storage/schedulesQueries";
 
-import { showError } from "./toastsActions";
+import { showError, showSuccess } from "./toastsActions";
 
 import "react-native-get-random-values";
 import { v4 as uuidv4 } from "uuid";
@@ -42,6 +42,8 @@ export async function addSchedule(
     const { payload } = addScheduleStateQuery(item);
 
     // Schedule notification
+
+    showSuccess("Alerta adicionado");
     return { item: payload };
   } catch ({ message }) {
     showError("Falha ao adicionar");
@@ -57,6 +59,8 @@ export async function removeSchedule(id: string) {
     const { payload } = removeScheduleStateQuery(id);
 
     // Delete notification
+
+    showSuccess("Alerta removido");
     return { deleted: true };
   } catch ({ message }) {
     showError("Falha ao remover");
