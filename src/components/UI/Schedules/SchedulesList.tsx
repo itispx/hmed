@@ -12,7 +12,7 @@ interface Props {
 }
 
 const SchedulesList: React.FC<Props> = ({ style }) => {
-  const selectedDay = useAppSelector((state) => state.ui.selectedSchedule);
+  const selectedDay = useAppSelector((state) => state.ui.selectedScheduleDay);
   const schedules = useAppSelector((state) => state.schedules.schedules);
 
   const [data, setData] = useState<ScheduleDisplayInterface[]>([]);
