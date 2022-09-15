@@ -38,6 +38,23 @@ export async function addScheduleStorageQuery(
   }
 }
 
+export async function removeScheduleStorageQuery(id: string): Promise<void> {
+  try {
+    const result = await getSchedulesStorageQuery();
+
+    if (result.data) {
+      const newSchedulesArr = result.data.filter((i) => i.id !== id);
+
+      await setAsyncStorage(newSchedulesArr, "schedules");
+    }
+  } catch ({ message }) {
+    if (typeof message === "string") {
+      throw new Error(message);
+    }
+    throw new Error("Failed to add schedule to storage");
+  }
+}
+
 export async function initiateStorageQuery(): Promise<void> {
   try {
     await setAsyncStorage([], "schedules");

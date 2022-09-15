@@ -8,8 +8,9 @@ import {
 
 import {
   initiateStorageQuery,
-  addScheduleStorageQuery,
   getSchedulesStorageQuery,
+  addScheduleStorageQuery,
+  removeScheduleStorageQuery,
 } from "../queries/local-storage/schedulesQueries";
 
 import { showError, showSuccess } from "./toastsActions";
@@ -34,8 +35,9 @@ export async function addSchedule(
     // Add to local state
     const { payload } = addScheduleStateQuery(item);
 
-    // Schedule notification
+    // TODO Schedule notification
 
+    // Show success message
     showSuccess("Alerta adicionado");
     return { item: payload };
   } catch ({ message }) {
@@ -47,12 +49,14 @@ export async function addSchedule(
 export async function removeSchedule(id: string) {
   try {
     // Delete in local storage
+    await removeScheduleStorageQuery(id);
 
     // Delete in local state
     const { payload } = removeScheduleStateQuery(id);
 
-    // Delete notification
+    // TODO Delete notification
 
+    // Show success message
     showSuccess("Alerta removido");
     return { deleted: true };
   } catch ({ message }) {
