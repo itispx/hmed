@@ -13,7 +13,9 @@
       }
     },
     "preview": {
+      "developmentClient": true,
       "android": {
+        "gradleCommand": ":app:assembleRelease",
         "buildType": "apk"
       },
       "distribution": "internal"
