@@ -13,7 +13,7 @@ import Icon from "react-native-vector-icons/FontAwesome5";
 
 const Next: React.FC = () => {
   const schedule = useAppSelector((state) => {
-    let schedulesArr = state.schedules.schedules
+    return state.schedules.schedules
       .filter((item) => {
         const currentTime = new Date().toLocaleTimeString();
         const scheduleTime = stringToDate(item.time).toLocaleTimeString();
@@ -29,9 +29,7 @@ const Next: React.FC = () => {
         const bConverted = stringToDate(b.time).getTime();
 
         return aConverted - bConverted;
-      });
-
-    return schedulesArr[0];
+      })[0];
   });
 
   return (
@@ -48,7 +46,7 @@ const Next: React.FC = () => {
             Próximo remédio{" "}
           </Text>
           <Text style={{ fontSize: RFValue(18), color: Colors.grey }}>
-            - {schedule.name} {schedule.quantity}mg
+            - {schedule.name}, {schedule.quantity}mg
           </Text>
         </View>
 
