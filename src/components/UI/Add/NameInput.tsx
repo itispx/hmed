@@ -3,7 +3,7 @@ import { View, Text, TextInput } from "react-native";
 
 import { vw } from "../../../library/viewport-units";
 
-import { Formik } from "formik";
+import { Formik, FormikProps } from "formik";
 import * as yup from "yup";
 
 import Styles from "../../../constants/Styles";
@@ -11,22 +11,26 @@ import Colors from "../../../constants/Colors";
 
 interface Props {
   setName: (name: string) => void;
+  inputRef: React.Ref<FormikProps<{ name: string }>>;
 }
 
-const NameInput: React.FC<Props> = ({ setName }) => {
-  // TODO Do not submit if empty
+const ErrorMessages = {
+  empty: "Preencha o nome",
+};
 
+const NameInput: React.FC<Props> = ({ setName, inputRef }) => {
   function submitHandler(name: string) {
     setName(name);
   }
 
   const nameSchema = yup.object({
-    name: yup.string().required("Preencha o nome"),
+    name: yup.string().required(ErrorMessages.empty),
   });
 
   return (
     <View>
       <Formik
+        innerRef={inputRef}
         initialValues={{ name: "" }}
         validationSchema={nameSchema}
         onSubmit={(values) => submitHandler(values.name)}
@@ -45,7 +49,10 @@ const NameInput: React.FC<Props> = ({ setName }) => {
                 placeholder="Nome do remédio"
                 onChangeText={fprops.handleChange("name")}
                 value={fprops.values.name}
-                onBlur={() => fprops.handleSubmit()}
+                onBlur={() => {
+                  fprops.handleBlur("name");
+                  submitHandler(fprops.values.name);
+                }}
               />
             </View>
             <Text style={Styles.errorText}>

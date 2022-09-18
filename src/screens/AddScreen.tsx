@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { StyleSheet, View, Text, FlatList } from "react-native";
 
 import { StackNavigationProp } from "@react-navigation/stack";
 import { HomeStackParamsList } from "../navigation/HomeStack";
+
+import { FormikProps } from "formik";
 
 import { addSchedule } from "../actions/schedulesActions";
 
@@ -24,7 +26,7 @@ const AddScreen: React.FC<Props> = ({ navigation }) => {
   const [hour, setHour] = useState("00");
   const [minutes, setMinutes] = useState("00");
   const [name, setName] = useState("");
-  const [quantity, setQuantity] = useState(0);
+  const [quantity, setQuantity] = useState(-1);
   const [selectedDays, setSelectedDays] = useState<number[]>([]);
 
   const [daysError, setDaysError] = useState("");
@@ -37,13 +39,24 @@ const AddScreen: React.FC<Props> = ({ navigation }) => {
     }
   }
 
+  const nameInputRef = useRef<FormikProps<{ name: string }>>(null);
+  const quantityInputRef = useRef<FormikProps<{ quantity: string }>>(null);
+
   async function addScheduleHandler(): Promise<void> {
-    if (selectedDays.length === 0) {
+    if (selectedDays.length <= 0) {
       setDaysError("Selecione pelo menos 1 dia");
-      return;
+    } else {
+      if (daysError !== "") {
+        setDaysError("");
+      }
     }
-    if (daysError !== "") {
-      setDaysError("");
+
+    nameInputRef.current?.handleSubmit();
+
+    quantityInputRef.current?.handleSubmit();
+
+    if (selectedDays.length <= 0 || name.length <= 0 || quantity <= 0) {
+      return;
     }
 
     await addSchedule(`${hour}:${minutes}`, name, quantity, selectedDays);
@@ -55,9 +68,9 @@ const AddScreen: React.FC<Props> = ({ navigation }) => {
     <View style={styles.container}>
       <TimePicker setHour={setHour} setMinutes={setMinutes} />
 
-      <NameInput setName={setName} />
+      <NameInput setName={setName} inputRef={nameInputRef} />
 
-      <QuantityInput setQuantity={setQuantity} />
+      <QuantityInput setQuantity={setQuantity} inputRef={quantityInputRef} />
 
       <FlatList
         overScrollMode="never"

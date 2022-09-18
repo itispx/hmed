@@ -3,7 +3,7 @@ import { View, Text, TextInput } from "react-native";
 
 import { vw } from "../../../library/viewport-units";
 
-import { Formik } from "formik";
+import { Formik, FormikProps } from "formik";
 import * as yup from "yup";
 
 import Styles from "../../../constants/Styles";
@@ -11,23 +11,27 @@ import Colors from "../../../constants/Colors";
 
 interface Props {
   setQuantity: (quantity: number) => void;
+  inputRef: React.Ref<FormikProps<{ quantity: string }>>;
 }
 
-const QuantityInput: React.FC<Props> = ({ setQuantity }) => {
-  // TODO Do not submit if empty
+const ErrorMessages = {
+  empty: "Preencha a quantidade",
+};
 
-  function submitHandler(quantity: number) {
-    setQuantity(quantity);
+const QuantityInput: React.FC<Props> = ({ setQuantity, inputRef }) => {
+  function submitHandler(quantity: string) {
+    setQuantity(parseFloat(quantity));
   }
 
   const quantitySchema = yup.object({
-    quantity: yup.number().required("Preencha a quantidade"),
+    quantity: yup.number().required(ErrorMessages.empty),
   });
 
   return (
     <View>
       <Formik
-        initialValues={{ quantity: 0 }}
+        innerRef={inputRef}
+        initialValues={{ quantity: "" }}
         validationSchema={quantitySchema}
         onSubmit={(values) => {
           submitHandler(values.quantity);
@@ -54,7 +58,10 @@ const QuantityInput: React.FC<Props> = ({ setQuantity }) => {
                 placeholder="Quantidade"
                 onChangeText={fprops.handleChange("quantity")}
                 value={fprops.values.quantity.toString()}
-                onBlur={() => fprops.handleSubmit()}
+                onBlur={() => {
+                  fprops.handleBlur("quantity");
+                  submitHandler(fprops.values.quantity);
+                }}
               />
               <View
                 style={{
