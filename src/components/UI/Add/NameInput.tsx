@@ -37,7 +37,7 @@ const NameInput: React.FC<Props> = ({ setName, inputRef }) => {
       >
         {(fprops) => (
           <>
-            <View style={{ borderWidth: 3, borderColor: Colors.primary }}>
+            <View style={{ borderWidth: 2, borderColor: Colors.primary }}>
               <TextInput
                 style={{
                   height: 50,

@@ -42,7 +42,7 @@ const QuantityInput: React.FC<Props> = ({ setQuantity, inputRef }) => {
             <View
               style={{
                 flexDirection: "row",
-                borderWidth: 3,
+                borderWidth: 2,
                 borderColor: Colors.primary,
               }}
             >
@@ -67,11 +67,14 @@ const QuantityInput: React.FC<Props> = ({ setQuantity, inputRef }) => {
                 style={{
                   justifyContent: "center",
                   alignItems: "center",
+                  paddingRight: 10,
                   height: 50,
                   width: vw(10),
                 }}
               >
-                <Text style={{ fontSize: 20, color: Colors.grey }}>mg</Text>
+                <Text style={{ fontSize: 20, fontWeight: "500", color: Colors.grey }}>
+                  mg
+                </Text>
               </View>
             </View>
             <Text style={Styles.errorText}>
