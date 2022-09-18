@@ -1,11 +1,9 @@
-import React, { useEffect, useLayoutEffect } from "react";
+import React, { useLayoutEffect } from "react";
 import { StatusBar } from "react-native";
 
 import { NavigationContainer } from "@react-navigation/native";
 
 import HomeStack from "./navigation/HomeStack";
-
-import { initializeStateAction } from "./actions/schedulesActions";
 
 const Layout: React.FC = () => {
   useLayoutEffect(() => {
@@ -14,13 +12,6 @@ const Layout: React.FC = () => {
     StatusBar.setBarStyle("light-content");
   }, []);
 
-  useEffect(() => {
-    initializeStateHandler;
-  }, []);
-
-  async function initializeStateHandler() {
-    await initializeStateAction();
-  }
   return (
     <NavigationContainer>
       <HomeStack />

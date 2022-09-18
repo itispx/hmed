@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { StyleSheet, View } from "react-native";
 
 import { StackNavigationProp } from "@react-navigation/stack";
@@ -6,7 +6,10 @@ import { HomeStackParamsList } from "../navigation/HomeStack";
 
 import KeyboardAwareScrollView from "../components/KeyboardAwareScrollView";
 
+import { initializeStateAction } from "../actions/schedulesActions";
+
 import Header from "../components/UI/Home/Header";
+import Loading from "../components/UI/Loading";
 import Schedules from "../components/UI/Schedules/Schedules";
 import AddIcon from "../components/UI/Add/AddIcon";
 
@@ -15,7 +18,21 @@ interface Props {
 }
 
 const HomeScreen: React.FC<Props> = ({ navigation }) => {
-  return (
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    void initializeStateHandler();
+  }, []);
+
+  async function initializeStateHandler() {
+    await initializeStateAction();
+
+    setIsLoading(false);
+  }
+
+  return isLoading ? (
+    <Loading />
+  ) : (
     <>
       <KeyboardAwareScrollView>
         <View style={styles.container}>
