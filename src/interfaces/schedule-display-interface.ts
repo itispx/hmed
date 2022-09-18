@@ -5,4 +5,4 @@ interface ScheduleDisplayInterface extends ScheduleInterface {
   title?: string;
 }
 
-export default ScheduleDisplayInterface
+export default ScheduleDisplayInterface;

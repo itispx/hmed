@@ -19,9 +19,7 @@ export async function getSchedulesStorageQuery(): Promise<{
   }
 }
 
-export async function addScheduleStorageQuery(
-  item: ScheduleInterface
-): Promise<void> {
+export async function addScheduleStorageQuery(item: ScheduleInterface): Promise<void> {
   try {
     const result = await getSchedulesStorageQuery();
 

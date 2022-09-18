@@ -22,14 +22,11 @@ const schedulesSlice = createSlice({
       state.schedules.unshift(action.payload.item);
     },
     removeSchedule(state, action: PayloadAction<{ id: string }>) {
-      state.schedules = state.schedules.filter(
-        (item) => item.id !== action.payload.id
-      );
+      state.schedules = state.schedules.filter((item) => item.id !== action.payload.id);
     },
   },
 });
 
-export const { updateInitialize, addSchedule, removeSchedule } =
-  schedulesSlice.actions;
+export const { updateInitialize, addSchedule, removeSchedule } = schedulesSlice.actions;
 
 export default schedulesSlice.reducer;

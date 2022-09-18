@@ -22,7 +22,7 @@ export async function addSchedule(
   time: string,
   name: string,
   quantity: number,
-  days: number[]
+  days: number[],
 ) {
   try {
     const id = uuidv4();

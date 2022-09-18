@@ -11,21 +11,13 @@ interface Props {
 }
 
 const RenderDay: React.FC<Props> = ({ index }) => {
-  const isSelected = useAppSelector(
-    (state) => state.ui.selectedScheduleDay === index
-  );
+  const isSelected = useAppSelector((state) => state.ui.selectedScheduleDay === index);
 
   function selectBubble(): void {
     selectedScheduleDay(index);
   }
 
-  return (
-    <DayBubble
-      index={index}
-      isSelected={isSelected}
-      selectBubble={selectBubble}
-    />
-  );
+  return <DayBubble index={index} isSelected={isSelected} selectBubble={selectBubble} />;
 };
 
 export default RenderDay;

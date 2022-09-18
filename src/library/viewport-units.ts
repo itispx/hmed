@@ -11,14 +11,14 @@ export function vh(number: number): number {
 export function vmin(number: number): number {
   return Math.min(
     Dimensions.get("window").width * (number / 100),
-    Dimensions.get("window").height * (number / 100)
+    Dimensions.get("window").height * (number / 100),
   );
 }
 
 export function vmax(number: number): number {
   return Math.max(
     Dimensions.get("window").width * (number / 100),
-    Dimensions.get("window").height * (number / 100)
+    Dimensions.get("window").height * (number / 100),
   );
 }
 
@@ -30,8 +30,7 @@ export function rfValue(fontSize: number, standardScreenHeight = 680): number {
 
   let offset = 0;
   if (StatusBar.currentHeight !== undefined) {
-    offset =
-      width > height ? 0 : Platform.OS === "ios" ? 78 : StatusBar.currentHeight;
+    offset = width > height ? 0 : Platform.OS === "ios" ? 78 : StatusBar.currentHeight;
   }
 
   const deviceHeight =

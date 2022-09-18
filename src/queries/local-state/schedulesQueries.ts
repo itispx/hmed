@@ -8,20 +8,16 @@ import {
 import ScheduleInterface from "../../interfaces/schedule-interface";
 import StateQueryResponseInterface from "./state-query-response-interface";
 
-export function updateInitializeStateQuery(
-  value: boolean
-): StateQueryResponseInterface {
+export function updateInitializeStateQuery(value: boolean): StateQueryResponseInterface {
   return dispatch(updateInitialize({ value }));
 }
 
 export function addScheduleStateQuery(
-  item: ScheduleInterface
+  item: ScheduleInterface,
 ): StateQueryResponseInterface {
   return dispatch(addSchedule({ item }));
 }
 
-export function removeScheduleStateQuery(
-  id: string
-): StateQueryResponseInterface {
+export function removeScheduleStateQuery(id: string): StateQueryResponseInterface {
   return dispatch(removeSchedule({ id }));
 }

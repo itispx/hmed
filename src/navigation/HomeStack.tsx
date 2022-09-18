@@ -1,8 +1,5 @@
 import React from "react";
-import {
-  createStackNavigator,
-  CardStyleInterpolators,
-} from "@react-navigation/stack";
+import { createStackNavigator, CardStyleInterpolators } from "@react-navigation/stack";
 
 export type HomeStackParamsList = {
   HomeScreen: undefined;

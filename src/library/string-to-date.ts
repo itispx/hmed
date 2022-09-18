@@ -3,10 +3,5 @@ export function stringToDate(time: string) {
 
   const timeTemp = time.split(":").map((v) => parseInt(v));
 
-  return new Date(
-    now.getFullYear(),
-    now.getMonth(),
-    now.getDate(),
-    ...timeTemp
-  );
+  return new Date(now.getFullYear(), now.getMonth(), now.getDate(), ...timeTemp);
 }

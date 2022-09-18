@@ -14,7 +14,7 @@ import Colors from "../../../constants/Colors";
 
 import logoImage from "../../../../assets/logo-light.png";
 
-function Header() {
+const Header: React.FC = () => {
   const [date, setDate] = useState("");
 
   useLayoutEffect(() => {
@@ -65,7 +65,7 @@ function Header() {
       </View>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {

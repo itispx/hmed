@@ -21,9 +21,7 @@ const Schedules: React.FC = () => {
           showsHorizontalScrollIndicator={false}
           horizontal
           data={days}
-          renderItem={({ item, index }) => (
-            <RenderDay key={index} index={item} />
-          )}
+          renderItem={({ item, index }) => <RenderDay key={index} index={item} />}
         />
       </View>
 

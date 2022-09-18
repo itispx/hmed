@@ -11,7 +11,7 @@ import Colors from "../../../constants/Colors";
 
 import Icon from "react-native-vector-icons/FontAwesome5";
 
-function Next() {
+const Next: React.FC = () => {
   const schedule = useAppSelector((state) => {
     return state.schedules.schedules
       .filter((item) => {
@@ -72,6 +72,6 @@ function Next() {
       </View>
     )
   );
-}
+};
 
 export default Next;

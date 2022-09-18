@@ -2,9 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import ScheduleInterface from "../../interfaces/schedule-interface";
 
-export async function getAsyncStorage(
-  key: string
-): Promise<ScheduleInterface[] | null> {
+export async function getAsyncStorage(key: string): Promise<ScheduleInterface[] | null> {
   const jsonValue = await AsyncStorage.getItem(key);
 
   if (jsonValue !== null) {
@@ -14,18 +12,12 @@ export async function getAsyncStorage(
   return null;
 }
 
-export async function setAsyncStorage(
-  value: object,
-  key: string
-): Promise<void> {
+export async function setAsyncStorage(value: object, key: string): Promise<void> {
   const jsonValue = JSON.stringify(value);
   await AsyncStorage.setItem(key, jsonValue);
 }
 
-export async function mergeAsyncStorage(
-  value: object,
-  key: string
-): Promise<void> {
+export async function mergeAsyncStorage(value: object, key: string): Promise<void> {
   const jsonValue = JSON.stringify(value);
   await AsyncStorage.mergeItem(key, jsonValue);
 }
