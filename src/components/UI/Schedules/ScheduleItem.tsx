@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, View, Text, TouchableHighlight } from "react-native";
 
-import { RFValue, vw } from "../../../library/viewport-units";
+import { rfValue, vw } from "../../../library/viewport-units";
 
 import { removeSchedule } from "../../../actions/schedulesActions";
 
@@ -16,7 +16,6 @@ const ScheduleItem: React.FC<ScheduleDisplayInterface> = ({
   time,
   name,
   quantity,
-  days,
   taken,
   title,
 }) => {
@@ -47,7 +46,7 @@ const ScheduleItem: React.FC<ScheduleDisplayInterface> = ({
 
           <Icon
             name="check"
-            size={RFValue(40)}
+            size={rfValue(40)}
             color={taken ? Colors.accent : Colors.grey}
           />
         </View>
@@ -73,7 +72,7 @@ const styles = StyleSheet.create({
     width: "30%",
   },
   timeText: {
-    fontSize: RFValue(30),
+    fontSize: rfValue(30),
     fontWeight: "bold",
     color: "#FFF",
   },
@@ -94,14 +93,13 @@ const styles = StyleSheet.create({
     paddingVertical: 3,
     paddingHorizontal: 6,
     borderRadius: 3,
-    fontSize: RFValue(16),
+    fontSize: rfValue(16),
     color: "#FFF",
     backgroundColor: Colors.grey,
   },
   name: {
-    fontSize: RFValue(23),
+    fontSize: rfValue(23),
   },
-  checkMark: {},
 });
 
 export default ScheduleItem;

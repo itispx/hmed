@@ -25,7 +25,7 @@ const SchedulesList: React.FC<Props> = ({ style }) => {
   }, [selectedDay, schedules]);
 
   function setSchedules() {
-    let schedulesArr = schedules
+    const schedulesArr = schedules
       .filter((item) => item.days.includes(selectedDay))
       .map((item) => {
         const currentTime = new Date().toLocaleTimeString();
@@ -50,7 +50,7 @@ const SchedulesList: React.FC<Props> = ({ style }) => {
 
   return (
     <View style={[styles.container, style]}>
-      {data.map((item, index) => {
+      {data.map((item) => {
         return (
           <ScheduleItem
             key={item.id}

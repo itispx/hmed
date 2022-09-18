@@ -7,10 +7,16 @@ interface Props {
   label: string | number;
 }
 
-const ListItem: React.FC<Props> = React.memo(({ style, fontSize, label }) => (
-  <View style={style}>
-    <Text style={{ fontSize }}>{label}</Text>
-  </View>
-));
+const ListItem = React.memo(function ListItem({
+  style,
+  fontSize,
+  label,
+}: Props) {
+  return (
+    <View style={style}>
+      <Text style={{ fontSize }}>{label}</Text>
+    </View>
+  );
+});
 
 export default ListItem;

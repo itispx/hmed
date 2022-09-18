@@ -37,6 +37,20 @@ const AddScreen: React.FC<Props> = ({ navigation }) => {
     }
   }
 
+  async function addScheduleHandler(): Promise<void> {
+    if (selectedDays.length === 0) {
+      setDaysError("Selecione pelo menos 1 dia");
+      return;
+    }
+    if (daysError !== "") {
+      setDaysError("");
+    }
+
+    await addSchedule(`${hour}:${minutes}`, name, quantity, selectedDays);
+
+    navigation.goBack();
+  }
+
   return (
     <View style={styles.container}>
       <TimePicker setHour={setHour} setMinutes={setMinutes} />
@@ -66,21 +80,7 @@ const AddScreen: React.FC<Props> = ({ navigation }) => {
       <Text style={Styles.errorText}>{daysError}</Text>
 
       <View style={{ marginTop: 10 }}>
-        <SaveIcon
-          onPress={() => {
-            if (selectedDays.length === 0) {
-              setDaysError("Selecione pelo menos 1 dia");
-              return;
-            }
-            if (daysError !== "") {
-              setDaysError("");
-            }
-
-            addSchedule(`${hour}:${minutes}`, name, quantity, selectedDays);
-
-            navigation.goBack();
-          }}
-        />
+        <SaveIcon onPress={addScheduleHandler} />
       </View>
     </View>
   );

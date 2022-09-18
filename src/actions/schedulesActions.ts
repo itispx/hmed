@@ -52,7 +52,7 @@ export async function removeSchedule(id: string) {
     await removeScheduleStorageQuery(id);
 
     // Delete in local state
-    const { payload } = removeScheduleStateQuery(id);
+    removeScheduleStateQuery(id);
 
     // TODO Delete notification
 
@@ -75,7 +75,7 @@ export async function initializeStateAction(): Promise<void> {
       const { data, error } = await getSchedulesStorageQuery();
 
       if (error) {
-        initiateStorageQuery();
+        await initiateStorageQuery();
 
         updateInitializeStateQuery(true);
       }

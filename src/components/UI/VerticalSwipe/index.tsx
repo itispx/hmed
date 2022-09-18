@@ -8,7 +8,7 @@ import ListItem from "./ListItem";
 
 interface Props {
   items: string[];
-  onChange: (item: string, index: number) => any;
+  onChange: (item: string, index: number) => void;
   // onChange: { item: string; index: number };
   initialSelectedIndex?: number | null | undefined;
   width: number;
@@ -32,11 +32,11 @@ const VerticalSwipe: React.FC<Props> = ({
     itemHeight = listHeight / 5;
   }
 
-  let pickerGradientHeight = itemHeight * 2;
+  const pickerGradientHeight = itemHeight * 2;
 
   const flatList = useRef(null);
 
-  let extendedItems = ["", "", ...items, "", ""];
+  const extendedItems = ["", "", ...items, "", ""];
 
   const onEndReachedCalledDuringMomentum = useRef(true);
 
@@ -51,9 +51,7 @@ const VerticalSwipe: React.FC<Props> = ({
         onMomentumScrollEnd={(event) => {
           if (!onEndReachedCalledDuringMomentum.current) {
             onEndReachedCalledDuringMomentum.current = true;
-            let index = Math.round(
-              event.nativeEvent.contentOffset.y / itemHeight
-            );
+            const index = Math.round(event.nativeEvent.contentOffset.y / itemHeight);
             onChange(items[index], index);
           }
         }}
@@ -85,10 +83,7 @@ const VerticalSwipe: React.FC<Props> = ({
           "rgba( 255, 255, 255, 0.7 )",
           "rgba( 255, 255, 255, 0.5 )",
         ]}
-        style={[
-          styles.pickerGradient,
-          { height: pickerGradientHeight, top: 0 },
-        ]}
+        style={[styles.pickerGradient, { height: pickerGradientHeight, top: 0 }]}
         pointerEvents="none"
       />
       <LinearGradient
@@ -98,10 +93,7 @@ const VerticalSwipe: React.FC<Props> = ({
           "rgba( 255, 255, 255, 0.9 )",
           "rgba( 255, 255, 255, 1 )",
         ]}
-        style={[
-          styles.pickerGradient,
-          { height: pickerGradientHeight, bottom: 0 },
-        ]}
+        style={[styles.pickerGradient, { height: pickerGradientHeight, bottom: 0 }]}
         pointerEvents="none"
       />
     </View>

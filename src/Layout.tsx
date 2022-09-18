@@ -15,9 +15,12 @@ const Layout: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    initializeStateAction();
+    initializeStateHandler;
   }, []);
 
+  async function initializeStateHandler() {
+    await initializeStateAction();
+  }
   return (
     <NavigationContainer>
       <HomeStack />

@@ -24,10 +24,7 @@ export function vmax(number: number): number {
 
 // From ---> https://github.com/heyman333/react-native-responsive-fontsize
 // Guideline height for standard 5" device screen is 680
-export function RFValue(
-  fontSize: number,
-  standardScreenHeight: number = 680
-): number {
+export function rfValue(fontSize: number, standardScreenHeight = 680): number {
   const { height, width } = Dimensions.get("window");
   const standardLength = width > height ? width : height;
 

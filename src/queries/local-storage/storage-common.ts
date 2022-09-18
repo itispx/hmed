@@ -4,9 +4,14 @@ import ScheduleInterface from "../../interfaces/schedule-interface";
 
 export async function getAsyncStorage(
   key: string
-): Promise<ScheduleInterface[]> {
+): Promise<ScheduleInterface[] | null> {
   const jsonValue = await AsyncStorage.getItem(key);
-  return jsonValue !== null ? JSON.parse(jsonValue) : null;
+
+  if (jsonValue !== null) {
+    return JSON.parse(jsonValue) as ScheduleInterface[];
+  }
+
+  return null;
 }
 
 export async function setAsyncStorage(

@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import { View, Text } from "react-native";
 
-import { RFValue } from "../../../library/viewport-units";
+import { rfValue } from "../../../library/viewport-units";
 
 import useAppSelector from "../../../hooks/useAppSelector";
 
@@ -11,7 +11,7 @@ import Colors from "../../../constants/Colors";
 
 import Icon from "react-native-vector-icons/FontAwesome5";
 
-const Next: React.FC = () => {
+function Next() {
   const schedule = useAppSelector((state) => {
     return state.schedules.schedules
       .filter((item) => {
@@ -38,14 +38,14 @@ const Next: React.FC = () => {
         <View style={{ flexDirection: "row", alignItems: "center" }}>
           <Text
             style={{
-              fontSize: RFValue(18),
+              fontSize: rfValue(18),
               color: Colors.grey,
               fontWeight: "bold",
             }}
           >
             Próximo remédio{" "}
           </Text>
-          <Text style={{ fontSize: RFValue(18), color: Colors.grey }}>
+          <Text style={{ fontSize: rfValue(18), color: Colors.grey }}>
             - {schedule.name}, {schedule.quantity}mg
           </Text>
         </View>
@@ -54,14 +54,14 @@ const Next: React.FC = () => {
           <Icon
             name="clock"
             solid
-            size={RFValue(40)}
+            size={rfValue(40)}
             color={Colors.primary}
             style={{ padding: 5 }}
           />
           <Text
             style={{
               marginBottom: 5,
-              fontSize: RFValue(60),
+              fontSize: rfValue(60),
               fontWeight: "bold",
               color: Colors.primary,
             }}
@@ -72,6 +72,6 @@ const Next: React.FC = () => {
       </View>
     )
   );
-};
+}
 
 export default Next;

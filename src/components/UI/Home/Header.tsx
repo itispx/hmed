@@ -1,17 +1,26 @@
 import React, { useState, useLayoutEffect } from "react";
-import { StyleSheet, View, Text, Image, StatusBar } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Text,
+  Image,
+  StatusBar,
+  ImageSourcePropType,
+} from "react-native";
 
-import { vh, RFValue } from "../../../library/viewport-units";
+import { vh, rfValue } from "../../../library/viewport-units";
 
 import Colors from "../../../constants/Colors";
 
-const Header: React.FC = () => {
+import logoImage from "../../../../assets/logo-light.png";
+
+function Header() {
   const [date, setDate] = useState("");
 
   useLayoutEffect(() => {
     const today = new Date();
 
-    let day = today.getDate();
+    const day = today.getDate();
 
     const weekdayValues = [
       "Domingo",
@@ -48,10 +57,7 @@ const Header: React.FC = () => {
   return (
     <View style={styles.container}>
       <View style={styles.innerContainer}>
-        <Image
-          style={styles.logo}
-          source={require("../../../../assets/logo-light.png")}
-        />
+        <Image style={styles.logo} source={logoImage as ImageSourcePropType} />
         <View>
           <Text style={styles.welcome}>Bem-vindo</Text>
           <Text style={styles.date}>{date}</Text>
@@ -59,7 +65,7 @@ const Header: React.FC = () => {
       </View>
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -80,12 +86,12 @@ const styles = StyleSheet.create({
     resizeMode: "contain",
   },
   welcome: {
-    fontSize: RFValue(30),
+    fontSize: rfValue(30),
     color: "#FFF",
     fontWeight: "bold",
   },
   date: {
-    fontSize: RFValue(15),
+    fontSize: rfValue(15),
     color: Colors.accent,
   },
 });

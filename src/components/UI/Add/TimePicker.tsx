@@ -23,7 +23,7 @@ const TimePicker: React.FC<Props> = ({ setHour, setMinutes }) => {
     <View style={styles.container}>
       <VerticalSwipe
         items={hours}
-        onChange={(item, index) => setHour(item)}
+        onChange={(item) => setHour(item)}
         height={250}
         width={75}
         fontSize={30}
@@ -33,7 +33,7 @@ const TimePicker: React.FC<Props> = ({ setHour, setMinutes }) => {
 
       <VerticalSwipe
         items={minutes}
-        onChange={(item, index) => setMinutes(item)}
+        onChange={(item) => setMinutes(item)}
         height={250}
         width={75}
         fontSize={30}
