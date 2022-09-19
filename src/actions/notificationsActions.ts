@@ -30,7 +30,7 @@ export async function addScheduleNotificationAction(schedule: {
         body: `${schedule.name}, ${schedule.quantity}mg - ${schedule.time}`,
       },
       trigger: {
-        weekday: schedule.days[i],
+        weekday: schedule.days[i] + 1,
         hour,
         minute,
         repeats: true,
