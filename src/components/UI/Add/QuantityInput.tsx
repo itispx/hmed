@@ -24,11 +24,11 @@ const QuantityInput: React.FC<Props> = ({ setQuantity, inputRef }) => {
   }
 
   const quantitySchema = yup.object({
-    quantity: yup.number().required(ErrorMessages.empty),
+    quantity: yup.number().typeError("Número inválido").required(ErrorMessages.empty),
   });
 
   return (
-    <View>
+    <View style={{ width: vw(80) }}>
       <Formik
         innerRef={inputRef}
         initialValues={{ quantity: "" }}
@@ -42,15 +42,17 @@ const QuantityInput: React.FC<Props> = ({ setQuantity, inputRef }) => {
             <View
               style={{
                 flexDirection: "row",
+                justifyContent: "space-between",
+                width: vw(80),
                 borderWidth: 2,
                 borderColor: Colors.primary,
               }}
             >
               <TextInput
                 style={{
-                  height: 50,
-                  width: vw(65),
                   padding: 10,
+                  width: vw(69),
+                  height: 50,
                   fontSize: 20,
                   color: Colors.background,
                 }}
@@ -68,8 +70,8 @@ const QuantityInput: React.FC<Props> = ({ setQuantity, inputRef }) => {
                   justifyContent: "center",
                   alignItems: "center",
                   paddingRight: 10,
-                  height: 50,
                   width: vw(10),
+                  height: 50,
                 }}
               >
                 <Text style={{ fontSize: 20, fontWeight: "500", color: Colors.grey }}>

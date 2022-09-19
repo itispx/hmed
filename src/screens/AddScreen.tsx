@@ -55,7 +55,13 @@ const AddScreen: React.FC<Props> = ({ navigation }) => {
 
     quantityInputRef.current?.handleSubmit();
 
-    if (selectedDays.length <= 0 || name.length <= 0 || quantity <= 0) {
+    if (
+      selectedDays.length <= 0 ||
+      name.length <= 0 ||
+      quantity <= 0 ||
+      nameInputRef.current?.errors.name ||
+      quantityInputRef.current?.errors.quantity
+    ) {
       return;
     }
 

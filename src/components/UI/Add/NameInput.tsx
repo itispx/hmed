@@ -24,11 +24,11 @@ const NameInput: React.FC<Props> = ({ setName, inputRef }) => {
   }
 
   const nameSchema = yup.object({
-    name: yup.string().required(ErrorMessages.empty),
+    name: yup.string().typeError("Nome inválido").required(ErrorMessages.empty),
   });
 
   return (
-    <View>
+    <View style={{ width: vw(80) }}>
       <Formik
         innerRef={inputRef}
         initialValues={{ name: "" }}
@@ -41,7 +41,6 @@ const NameInput: React.FC<Props> = ({ setName, inputRef }) => {
               <TextInput
                 style={{
                   height: 50,
-                  width: vw(75),
                   padding: 10,
                   fontSize: 20,
                   color: Colors.background,
