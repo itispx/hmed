@@ -32,7 +32,13 @@ const SchedulesList: React.FC<Props> = ({ style }) => {
 
         const scheduleTime = stringToDate(item.time).toLocaleTimeString();
 
-        const taken = currentTime > scheduleTime;
+        const today = new Date().getDay();
+        let taken = false;
+        if (today === selectedDay) {
+          taken = currentTime > scheduleTime;
+        } else if (today > selectedDay) {
+          taken = true;
+        }
 
         // TODO Calculate title
 
