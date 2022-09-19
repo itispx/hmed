@@ -6,7 +6,7 @@ import { HomeStackParamsList } from "../navigation/HomeStack";
 
 import { FormikProps } from "formik";
 
-import { addSchedule } from "../actions/schedulesActions";
+import { addScheduleAction } from "../actions/schedulesActions";
 
 import Styles from "../constants/Styles";
 
@@ -59,7 +59,7 @@ const AddScreen: React.FC<Props> = ({ navigation }) => {
       return;
     }
 
-    await addSchedule(`${hour}:${minutes}`, name, quantity, selectedDays);
+    await addScheduleAction(`${hour}:${minutes}`, name, quantity, selectedDays);
 
     navigation.goBack();
   }

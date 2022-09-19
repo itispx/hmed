@@ -23,7 +23,7 @@ import { showError, showSuccess } from "./toastsActions";
 import "react-native-get-random-values";
 import { v4 as uuidv4 } from "uuid";
 
-export async function addSchedule(
+export async function addScheduleAction(
   time: string,
   name: string,
   quantity: number,
@@ -49,7 +49,6 @@ export async function addSchedule(
     showSuccess("Alerta adicionado");
     return { item: payload };
   } catch ({ message }) {
-    console.log("message:", message);
     showError("Falha ao adicionar");
     return { error: { message: "Failed to add schedule" } };
   }
@@ -72,7 +71,6 @@ export async function removeScheduleAction(id: string, notificationIDs: string[]
     showSuccess("Alerta removido");
     return { deleted: true };
   } catch ({ message }) {
-    console.log("message:", message);
     showError("Falha ao remover");
     return { error: { message: "Failed to remove schedule" } };
   }
