@@ -26,9 +26,14 @@ const Next: React.FC = () => {
   const schedule = useAppSelector((state) => {
     const today = new Date().getDay();
 
-    const schedulesToday = state.schedules.schedules.filter((i) =>
-      i.days.includes(today),
-    );
+    const schedulesToday = state.schedules.schedules
+      .filter((i) => i.days.includes(today))
+      .sort((a, b) => {
+        const aConverted = stringToDate(a.time).getTime();
+        const bConverted = stringToDate(b.time).getTime();
+
+        return aConverted - bConverted;
+      });
 
     for (let i = 0; i < schedulesToday.length; i++) {
       const schedule = findNotTaken(schedulesToday[i]);
@@ -39,16 +44,17 @@ const Next: React.FC = () => {
 
     let index = today + 1;
     while (index !== today) {
-      const schedulesIndex = state.schedules.schedules.filter((i) =>
-        i.days.includes(index),
-      );
+      const schedulesIndex = state.schedules.schedules
+        .filter((i) => i.days.includes(index))
+        .sort((a, b) => {
+          const aConverted = stringToDate(a.time).getTime();
+          const bConverted = stringToDate(b.time).getTime();
 
-      // TODO
-      for (let i = 0; i < schedulesIndex.length; i++) {
-        const schedule = findNotTaken(schedulesIndex[i]);
-        if (schedule) {
-          return schedule;
-        }
+          return aConverted - bConverted;
+        });
+
+      if (schedulesIndex[0]) {
+        return schedulesIndex[0];
       }
 
       index = index === 6 ? 0 : index + 1;
