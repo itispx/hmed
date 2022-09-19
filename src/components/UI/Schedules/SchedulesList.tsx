@@ -51,18 +51,7 @@ const SchedulesList: React.FC<Props> = ({ style }) => {
   return (
     <View style={[styles.container, style]}>
       {data.map((item) => {
-        return (
-          <ScheduleItem
-            key={item.id}
-            id={item.id}
-            time={item.time}
-            name={item.name}
-            quantity={item.quantity}
-            days={item.days}
-            taken={item.taken}
-            title={item.title}
-          />
-        );
+        return <ScheduleItem key={item.id} {...item} />;
       })}
     </View>
   );

@@ -13,6 +13,11 @@ import {
   removeScheduleStorageQuery,
 } from "../queries/local-storage/schedulesQueries";
 
+import {
+  addScheduleNotificationAction,
+  removeScheduleNotificationAction,
+} from "./notificationsActions";
+
 import { showError, showSuccess } from "./toastsActions";
 
 import "react-native-get-random-values";
@@ -29,37 +34,45 @@ export async function addSchedule(
 
     const item = { id, time, name, quantity, days };
 
+    // Schedule notification
+    const schedule = await addScheduleNotificationAction(item);
+
+    console.log("schedule:", schedule);
+
     // Add to local storage
-    await addScheduleStorageQuery(item);
+    await addScheduleStorageQuery(schedule);
 
     // Add to local state
-    const { payload } = addScheduleStateQuery(item);
-
-    // TODO Schedule notification
+    const { payload } = addScheduleStateQuery(schedule);
 
     // Show success message
     showSuccess("Alerta adicionado");
     return { item: payload };
   } catch ({ message }) {
+    console.log("message:", message);
     showError("Falha ao adicionar");
     return { error: { message: "Failed to add schedule" } };
   }
 }
 
-export async function removeSchedule(id: string) {
+export async function removeScheduleAction(id: string, notificationIDs: string[]) {
   try {
+    // Delete notifications
+    for (let i = 0; i < notificationIDs.length; i++) {
+      await removeScheduleNotificationAction(notificationIDs[i]);
+    }
+
     // Delete in local storage
     await removeScheduleStorageQuery(id);
 
     // Delete in local state
     removeScheduleStateQuery(id);
 
-    // TODO Delete notification
-
     // Show success message
     showSuccess("Alerta removido");
     return { deleted: true };
   } catch ({ message }) {
+    console.log("message:", message);
     showError("Falha ao remover");
     return { error: { message: "Failed to remove schedule" } };
   }

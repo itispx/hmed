@@ -43,6 +43,7 @@ const Next: React.FC = () => {
         i.days.includes(index),
       );
 
+      // TODO
       for (let i = 0; i < schedulesIndex.length; i++) {
         const schedule = findNotTaken(schedulesIndex[i]);
         if (schedule) {

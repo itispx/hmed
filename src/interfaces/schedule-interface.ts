@@ -1,5 +1,6 @@
 interface ScheduleInterface {
   id: string;
+  notificationIDs: string[];
   time: string;
   name: string;
   quantity: number;

@@ -14,9 +14,7 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "bundleIdentifier": "com.hmed",
       "supportsTablet": true
@@ -28,6 +26,9 @@
         "backgroundColor": "#FFFFFF"
       }
     },
+    "plugins": [
+      ["expo-notifications", { "icon": ".//assets/icon.png", "color": "#004358" }]
+    ],
     "extra": {
       "eas": {
         "projectId": "ed4bd3b8-fc65-4efb-a93e-29b86cf537ab"
