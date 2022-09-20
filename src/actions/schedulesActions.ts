@@ -37,8 +37,6 @@ export async function addScheduleAction(
     // Schedule notification
     const schedule = await addScheduleNotificationAction(item);
 
-    console.log("schedule:", schedule);
-
     // Add to local storage
     await addScheduleStorageQuery(schedule);
 
