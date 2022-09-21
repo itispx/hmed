@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { StyleSheet, View, Text, FlatList } from "react-native";
+import { StyleSheet, View, Text, FlatList, ScrollView } from "react-native";
 
 import { StackNavigationProp } from "@react-navigation/stack";
 import { HomeStackParamsList } from "../navigation/HomeStack";
@@ -10,6 +10,7 @@ import { addScheduleAction } from "../actions/schedulesActions";
 
 import Styles from "../constants/Styles";
 
+import KeyboardAwareScrollView from "../components/KeyboardAwareScrollView";
 import TimePicker from "../components/UI/Add/TimePicker";
 import NameInput from "../components/UI/Add/NameInput";
 import QuantityInput from "../components/UI/Add/QuantityInput";
@@ -23,6 +24,7 @@ interface Props {
 const AddScreen: React.FC<Props> = ({ navigation }) => {
   const days = [...Array(7).keys()];
 
+  const [isLoading, setIsLoading] = useState(false);
   const [hour, setHour] = useState("00");
   const [minutes, setMinutes] = useState("00");
   const [name, setName] = useState("");
@@ -43,65 +45,77 @@ const AddScreen: React.FC<Props> = ({ navigation }) => {
   const quantityInputRef = useRef<FormikProps<{ quantity: string }>>(null);
 
   async function addScheduleHandler(): Promise<void> {
-    if (selectedDays.length <= 0) {
-      setDaysError("Selecione pelo menos 1 dia");
-    } else {
-      if (daysError !== "") {
-        setDaysError("");
+    try {
+      if (selectedDays.length <= 0) {
+        setDaysError("Selecione pelo menos 1 dia");
+      } else {
+        if (daysError !== "") {
+          setDaysError("");
+        }
       }
+
+      nameInputRef.current?.handleSubmit();
+
+      quantityInputRef.current?.handleSubmit();
+
+      if (
+        selectedDays.length <= 0 ||
+        name.length <= 0 ||
+        quantity <= 0 ||
+        nameInputRef.current?.errors.name ||
+        quantityInputRef.current?.errors.quantity
+      ) {
+        return;
+      }
+
+      setIsLoading(true);
+
+      await addScheduleAction(`${hour}:${minutes}`, name, quantity, selectedDays);
+
+      navigation.goBack();
+    } finally {
+      setIsLoading(false);
     }
-
-    nameInputRef.current?.handleSubmit();
-
-    quantityInputRef.current?.handleSubmit();
-
-    if (
-      selectedDays.length <= 0 ||
-      name.length <= 0 ||
-      quantity <= 0 ||
-      nameInputRef.current?.errors.name ||
-      quantityInputRef.current?.errors.quantity
-    ) {
-      return;
-    }
-
-    await addScheduleAction(`${hour}:${minutes}`, name, quantity, selectedDays);
-
-    navigation.goBack();
   }
 
   return (
-    <View style={styles.container}>
-      <TimePicker setHour={setHour} setMinutes={setMinutes} />
+    <KeyboardAwareScrollView scrollViewProps={{ nestedScrollEnabled: true }}>
+      <View style={styles.container}>
+        <ScrollView horizontal>
+          <TimePicker setHour={setHour} setMinutes={setMinutes} />
+        </ScrollView>
 
-      <NameInput setName={setName} inputRef={nameInputRef} />
+        <NameInput setName={setName} inputRef={nameInputRef} />
 
-      <QuantityInput setQuantity={setQuantity} inputRef={quantityInputRef} />
+        <QuantityInput setQuantity={setQuantity} inputRef={quantityInputRef} />
 
-      <FlatList
-        overScrollMode="never"
-        style={styles.flatlist}
-        showsHorizontalScrollIndicator={false}
-        horizontal
-        data={days}
-        renderItem={({ item, index }) => (
-          <DayBubble
-            height={60}
-            fontSize={15}
-            key={index}
-            index={index}
-            isSelected={selectedDays.includes(item)}
-            selectBubble={() => selectDayHandler(item)}
+        <View style={{ flexDirection: "row" }}>
+          <FlatList
+            overScrollMode="never"
+            style={styles.flatlist}
+            showsHorizontalScrollIndicator={false}
+            horizontal
+            data={days}
+            renderItem={({ item, index }) => (
+              <DayBubble
+                height={60}
+                fontSize={15}
+                key={index}
+                index={index}
+                isSelected={selectedDays.includes(item)}
+                selectBubble={() => selectDayHandler(item)}
+              />
+            )}
           />
-        )}
-      />
+        </View>
 
-      <Text style={Styles.errorText}>{daysError}</Text>
+        <Text style={Styles.errorText}>{daysError}</Text>
 
-      <View style={{ marginTop: 10 }}>
-        <SaveIcon onPress={addScheduleHandler} />
+        <View style={{ marginTop: 10 }}>
+          <SaveIcon isLoading={isLoading} onPress={addScheduleHandler} />
+        </View>
       </View>
-    </View>
+    </KeyboardAwareScrollView>
   );
 };
 

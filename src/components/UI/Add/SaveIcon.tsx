@@ -7,16 +7,22 @@ import Icon from "react-native-vector-icons/FontAwesome5";
 
 import Styles from "../../../constants/Styles";
 import Colors from "../../../constants/Colors";
+import Loading from "../Loading";
 
 interface Props {
+  isLoading: boolean;
   onPress: () => void;
 }
 
-const SaveIcon: React.FC<Props> = ({ onPress }) => {
+const SaveIcon: React.FC<Props> = ({ isLoading, onPress }) => {
   return (
-    <TouchableHighlight underlayColor="none" onPress={onPress}>
+    <TouchableHighlight underlayColor="none" disabled={isLoading} onPress={onPress}>
       <View style={[styles.container, Styles.shadow]}>
-        <Icon name="check" size={rfValue(40)} color="#FFF" />
+        {isLoading ? (
+          <Loading color="#FFF" />
+        ) : (
+          <Icon name="check" size={rfValue(40)} color="#FFF" />
+        )}
       </View>
     </TouchableHighlight>
   );
