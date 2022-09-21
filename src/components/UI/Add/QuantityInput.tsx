@@ -10,19 +10,14 @@ import Styles from "../../../constants/Styles";
 import Colors from "../../../constants/Colors";
 
 interface Props {
-  setQuantity: (quantity: number) => void;
-  inputRef: React.Ref<FormikProps<{ quantity: string }>>;
+  inputRef: React.Ref<FormikProps<{ quantity: number }>>;
 }
 
 const ErrorMessages = {
   empty: "Preencha a quantidade",
 };
 
-const QuantityInput: React.FC<Props> = ({ setQuantity, inputRef }) => {
-  function submitHandler(quantity: string) {
-    setQuantity(parseFloat(quantity));
-  }
-
+const QuantityInput: React.FC<Props> = ({ inputRef }) => {
   const quantitySchema = yup.object({
     quantity: yup.number().typeError("Número inválido").required(ErrorMessages.empty),
   });
@@ -31,11 +26,9 @@ const QuantityInput: React.FC<Props> = ({ setQuantity, inputRef }) => {
     <View style={{ width: vw(80) }}>
       <Formik
         innerRef={inputRef}
-        initialValues={{ quantity: "" }}
+        initialValues={{ quantity: -1 }}
         validationSchema={quantitySchema}
-        onSubmit={(values) => {
-          submitHandler(values.quantity);
-        }}
+        onSubmit={() => undefined}
       >
         {(fprops) => (
           <>
@@ -59,11 +52,12 @@ const QuantityInput: React.FC<Props> = ({ setQuantity, inputRef }) => {
                 keyboardType="numeric"
                 placeholder="Quantidade"
                 onChangeText={fprops.handleChange("quantity")}
-                value={fprops.values.quantity.toString()}
-                onBlur={() => {
-                  fprops.handleBlur("quantity");
-                  submitHandler(fprops.values.quantity);
-                }}
+                value={
+                  fprops.values.quantity > 0
+                    ? fprops.values.quantity.toString()
+                    : undefined
+                }
+                onBlur={fprops.handleBlur("quantity")}
               />
               <View
                 style={{

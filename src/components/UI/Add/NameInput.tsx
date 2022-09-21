@@ -10,7 +10,6 @@ import Styles from "../../../constants/Styles";
 import Colors from "../../../constants/Colors";
 
 interface Props {
-  setName: (name: string) => void;
   inputRef: React.Ref<FormikProps<{ name: string }>>;
 }
 
@@ -18,11 +17,7 @@ const ErrorMessages = {
   empty: "Preencha o nome",
 };
 
-const NameInput: React.FC<Props> = ({ setName, inputRef }) => {
-  function submitHandler(name: string) {
-    setName(name);
-  }
-
+const NameInput: React.FC<Props> = ({ inputRef }) => {
   const nameSchema = yup.object({
     name: yup.string().typeError("Nome inválido").required(ErrorMessages.empty),
   });
@@ -33,7 +28,7 @@ const NameInput: React.FC<Props> = ({ setName, inputRef }) => {
         innerRef={inputRef}
         initialValues={{ name: "" }}
         validationSchema={nameSchema}
-        onSubmit={(values) => submitHandler(values.name)}
+        onSubmit={() => undefined}
       >
         {(fprops) => (
           <>
@@ -48,10 +43,7 @@ const NameInput: React.FC<Props> = ({ setName, inputRef }) => {
                 placeholder="Nome do remédio"
                 onChangeText={fprops.handleChange("name")}
                 value={fprops.values.name}
-                onBlur={() => {
-                  fprops.handleBlur("name");
-                  submitHandler(fprops.values.name);
-                }}
+                onBlur={fprops.handleBlur("name")}
               />
             </View>
             <Text style={Styles.errorText}>

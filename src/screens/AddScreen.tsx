@@ -27,8 +27,6 @@ const AddScreen: React.FC<Props> = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [hour, setHour] = useState("00");
   const [minutes, setMinutes] = useState("00");
-  const [name, setName] = useState("");
-  const [quantity, setQuantity] = useState(-1);
   const [selectedDays, setSelectedDays] = useState<number[]>([]);
 
   const [daysError, setDaysError] = useState("");
@@ -42,7 +40,7 @@ const AddScreen: React.FC<Props> = ({ navigation }) => {
   }
 
   const nameInputRef = useRef<FormikProps<{ name: string }>>(null);
-  const quantityInputRef = useRef<FormikProps<{ quantity: string }>>(null);
+  const quantityInputRef = useRef<FormikProps<{ quantity: number }>>(null);
 
   async function addScheduleHandler(): Promise<void> {
     try {
@@ -60,9 +58,11 @@ const AddScreen: React.FC<Props> = ({ navigation }) => {
 
       if (
         selectedDays.length <= 0 ||
-        name.length <= 0 ||
-        quantity <= 0 ||
+        !nameInputRef.current?.values.name ||
+        nameInputRef.current?.values.name.length <= 0 ||
         nameInputRef.current?.errors.name ||
+        !quantityInputRef.current?.values.quantity ||
+        quantityInputRef.current?.values.quantity <= 0 ||
         quantityInputRef.current?.errors.quantity
       ) {
         return;
@@ -70,7 +70,12 @@ const AddScreen: React.FC<Props> = ({ navigation }) => {
 
       setIsLoading(true);
 
-      await addScheduleAction(`${hour}:${minutes}`, name, quantity, selectedDays);
+      await addScheduleAction(
+        `${hour}:${minutes}`,
+        nameInputRef.current.values.name,
+        quantityInputRef.current.values.quantity,
+        selectedDays,
+      );
 
       navigation.goBack();
     } finally {
@@ -85,9 +90,9 @@ const AddScreen: React.FC<Props> = ({ navigation }) => {
           <TimePicker setHour={setHour} setMinutes={setMinutes} />
         </ScrollView>
 
-        <NameInput setName={setName} inputRef={nameInputRef} />
+        <NameInput inputRef={nameInputRef} />
 
-        <QuantityInput setQuantity={setQuantity} inputRef={quantityInputRef} />
+        <QuantityInput inputRef={quantityInputRef} />
 
         <View style={{ flexDirection: "row" }}>
           <FlatList
