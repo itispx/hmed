@@ -44,7 +44,7 @@ const QuantityInput: React.FC<Props> = ({ inputRef }) => {
               <TextInput
                 style={{
                   padding: 10,
-                  width: vw(69),
+                  width: vw(65),
                   height: 50,
                   fontSize: 20,
                   color: Colors.background,
@@ -61,10 +61,11 @@ const QuantityInput: React.FC<Props> = ({ inputRef }) => {
               />
               <View
                 style={{
+                  position: "absolute",
+                  right: 0,
                   justifyContent: "center",
                   alignItems: "center",
                   paddingRight: 10,
-                  width: vw(10),
                   height: 50,
                 }}
               >
