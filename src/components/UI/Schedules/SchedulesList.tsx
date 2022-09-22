@@ -28,9 +28,8 @@ const SchedulesList: React.FC<Props> = ({ style }) => {
     const schedulesArr = schedules
       .filter((item) => item.days.includes(selectedDay))
       .map((item) => {
-        const currentTime = new Date().toLocaleTimeString();
-
-        const scheduleTime = stringToDate(item.time).toLocaleTimeString();
+        const currentTime = new Date();
+        const scheduleTime = stringToDate(item.time);
 
         const today = new Date().getDay();
         let taken = false;
@@ -40,9 +39,25 @@ const SchedulesList: React.FC<Props> = ({ style }) => {
           taken = true;
         }
 
-        // TODO Calculate title
+        let title = "";
 
-        return { ...item, taken };
+        if (taken) {
+          title = "Aplicado";
+        } else if (Math.abs(scheduleTime.getTime() - currentTime.getTime()) / 36e5 < 1) {
+          if (scheduleTime.getMinutes() >= currentTime.getMinutes()) {
+            title = `Daqui à ${
+              scheduleTime.getMinutes() - currentTime.getMinutes()
+            } minutos`;
+          } else {
+            title = `Daqui à ${
+              scheduleTime.getMinutes() - currentTime.getMinutes() + 60
+            } minutos`;
+          }
+        } else {
+          title = "Em breve";
+        }
+
+        return { ...item, taken, title };
       })
       .sort((a, b) => {
         const aConverted = stringToDate(a.time).getTime();
@@ -71,12 +86,3 @@ const styles = StyleSheet.create({
 });
 
 export default SchedulesList;
-
-// {
-//   id: 1,
-//   time: "10:00",
-//   title: "Aplicado às 10:04",
-//   name: "Tylenol",
-//   amount: 30,
-//   taken: true,
-// },
