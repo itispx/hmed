@@ -8,6 +8,7 @@ import useAppSelector from "../../../hooks/useAppSelector";
 import { stringToDate } from "../../../library/string-to-date";
 
 import Colors from "../../../constants/Colors";
+import { weekdays } from "../../../constants/values";
 
 import Icon from "react-native-vector-icons/FontAwesome5";
 import ScheduleInterface from "../../../interfaces/schedule-interface";
@@ -22,9 +23,14 @@ function findNotTaken(item: ScheduleInterface) {
   }
 }
 
+interface SelectorInterface extends ScheduleInterface {
+  title: string;
+}
+
 const Next: React.FC = () => {
-  const schedule = useAppSelector((state) => {
-    const today = new Date().getDay();
+  const schedule = useAppSelector<SelectorInterface | undefined>((state) => {
+    const now = new Date();
+    const today = now.getDay();
 
     const schedulesToday = state.schedules.schedules
       .filter((i) => i.days.includes(today))
@@ -38,7 +44,23 @@ const Next: React.FC = () => {
     for (let i = 0; i < schedulesToday.length; i++) {
       const schedule = findNotTaken(schedulesToday[i]);
       if (schedule) {
-        return schedule;
+        let title = "";
+
+        const scheduleTime = stringToDate(schedule.time);
+
+        if (Math.abs(scheduleTime.getTime() - now.getTime()) / 36e5 < 1) {
+          if (scheduleTime.getMinutes() >= now.getMinutes()) {
+            title = `Daqui à ${scheduleTime.getMinutes() - now.getMinutes()} minutos`;
+          } else {
+            title = `Daqui à ${
+              scheduleTime.getMinutes() - now.getMinutes() + 60
+            } minutos`;
+          }
+        } else {
+          title = "Em breve";
+        }
+
+        return { ...schedule, title };
       }
     }
 
@@ -54,7 +76,34 @@ const Next: React.FC = () => {
         });
 
       if (schedulesIndex[0]) {
-        return schedulesIndex[0];
+        let title = "";
+
+        const scheduleTime = stringToDate(schedulesIndex[0].time);
+
+        if (Math.abs(scheduleTime.getTime() - now.getTime()) / 36e5 < 1) {
+          if (scheduleTime.getMinutes() >= now.getMinutes()) {
+            title = `Daqui à ${scheduleTime.getMinutes() - now.getMinutes()} minutos`;
+          } else {
+            title = `Daqui à ${
+              scheduleTime.getMinutes() - now.getMinutes() + 60
+            } minutos`;
+          }
+        } else {
+          const closest: number = schedulesIndex[0].days.reduce((a, b) => {
+            const aDiff = Math.abs(a - today);
+            const bDiff = Math.abs(b - today);
+
+            if (aDiff == bDiff) {
+              return a > b ? a : b;
+            } else {
+              return bDiff < aDiff ? b : a;
+            }
+          });
+
+          title = weekdays[closest];
+        }
+
+        return { ...schedulesIndex[0], title };
       }
 
       index = index === 6 ? 0 : index + 1;
@@ -95,6 +144,9 @@ const Next: React.FC = () => {
           }}
         >
           {schedule.time}
+        </Text>
+        <Text style={{ paddingLeft: 10, fontSize: rfValue(15), color: Colors.grey }}>
+          {schedule.title}
         </Text>
       </View>
     </View>

@@ -11,6 +11,7 @@ import {
 import { vh, rfValue } from "../../../library/viewport-units";
 
 import Colors from "../../../constants/Colors";
+import { weekdays, months } from "../../../constants/values";
 
 import logoImage from "../../../../assets/logo-light.png";
 
@@ -22,34 +23,9 @@ const Header: React.FC = () => {
 
     const day = today.getDate();
 
-    const weekdayValues = [
-      "Domingo",
-      "Segunda-feira",
-      "Terça-feira",
-      "Quarta-feira",
-      "Quinta-feira",
-      "Sexta-feira",
-      "Sábado",
-    ];
+    const weekday = weekdays[today.getDay()];
 
-    const weekday = weekdayValues[today.getDay()];
-
-    const monthValues = [
-      "Janeiro",
-      "Fevereiro",
-      "Março",
-      "Abril",
-      "Maio",
-      "Junho",
-      "Julho",
-      "Agosto",
-      "Setembro",
-      "Outubro",
-      "Novembro",
-      "Dezembro",
-    ];
-
-    const month = monthValues[today.getMonth()];
+    const month = months[today.getMonth()];
 
     setDate(`${day} de ${month}, ${weekday}`);
   }, []);

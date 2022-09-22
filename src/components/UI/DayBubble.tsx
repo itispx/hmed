@@ -3,6 +3,7 @@ import { StyleSheet, View, Text, TouchableHighlight } from "react-native";
 
 import Styles from "../../constants/Styles";
 import Colors from "../../constants/Colors";
+import { abvWeekdays } from "../../constants/values";
 
 interface Props {
   height?: number;
@@ -20,9 +21,7 @@ const DayBubble: React.FC<Props> = ({
   selectBubble,
 }) => {
   const [title] = useState(() => {
-    const values = ["DOM", "SEG", "TER", "QUA", "QUI", "SEX", "SAB"];
-
-    return values[index];
+    return abvWeekdays[index];
   });
 
   return (
