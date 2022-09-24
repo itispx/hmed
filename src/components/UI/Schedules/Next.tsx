@@ -42,11 +42,11 @@ const Next: React.FC = () => {
       });
 
     for (let i = 0; i < schedulesToday.length; i++) {
-      const schedule = findNotTaken(schedulesToday[i]);
-      if (schedule) {
+      const currentSchedule = findNotTaken(schedulesToday[i]);
+      if (currentSchedule) {
         let title = "";
 
-        const scheduleTime = stringToDate(schedule.time);
+        const scheduleTime = stringToDate(currentSchedule.time);
 
         if (Math.abs(scheduleTime.getTime() - now.getTime()) / 36e5 < 1) {
           if (scheduleTime.getMinutes() >= now.getMinutes()) {
@@ -60,11 +60,11 @@ const Next: React.FC = () => {
           title = "Em breve";
         }
 
-        return { ...schedule, title };
+        return { ...currentSchedule, title };
       }
     }
 
-    let index = today + 1;
+    let index = today === 7 ? 0 : today + 1;
     while (index !== today) {
       const schedulesIndex = state.schedules.schedules
         .filter((i) => i.days.includes(index))
@@ -106,7 +106,9 @@ const Next: React.FC = () => {
         return { ...schedulesIndex[0], title };
       }
 
-      index = index === 6 ? 0 : index + 1;
+      index = index >= 6 ? 0 : index + 1;
+
+      console.log({ index });
     }
   });
 

@@ -8,6 +8,8 @@ import KeyboardAwareScrollView from "../components/KeyboardAwareScrollView";
 
 import { initializeStateAction } from "../actions/schedulesActions";
 
+import Colors from "../constants/Colors";
+
 import Header from "../components/UI/Home/Header";
 import Loading from "../components/UI/Loading";
 import Schedules from "../components/UI/Schedules/Schedules";
@@ -31,7 +33,11 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
   }
 
   return isLoading ? (
-    <Loading />
+    <View
+      style={{ flex: 1, justifyContent: "center", backgroundColor: Colors.background }}
+    >
+      <Loading color={Colors.accent} />
+    </View>
   ) : (
     <>
       <KeyboardAwareScrollView>
