@@ -107,8 +107,6 @@ const Next: React.FC = () => {
       }
 
       index = index >= 6 ? 0 : index + 1;
-
-      console.log({ index });
     }
   });
 
