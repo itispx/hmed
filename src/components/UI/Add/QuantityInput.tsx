@@ -23,7 +23,7 @@ const QuantityInput: React.FC<Props> = ({ inputRef }) => {
       .number()
       .typeError("Número inválido")
       .required(ErrorMessages.empty)
-      .min(0, "Preencha a quantidade"),
+      .min(1, "Preencha a quantidade"),
   });
 
   return (
