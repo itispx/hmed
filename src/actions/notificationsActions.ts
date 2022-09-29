@@ -16,14 +16,11 @@ export async function addScheduleNotificationAction(schedule: {
     // Send notification 5 minutes before
     let minute = parseInt(schedule.time.substring(3, 6));
 
-    if (minute === 0) {
-      minute = 55;
-      hour--;
-    } else if (minute < 5) {
-      minute = 60 - minute;
-      hour--;
+    if (minute < 5) {
+      minute = 60 - (5 - minute);
+      hour === 0 ? (hour = 23) : hour--;
     } else {
-      minute = minute - 5;
+      minute -= 5;
     }
 
     const notificationID = await Notifications.scheduleNotificationAsync({
