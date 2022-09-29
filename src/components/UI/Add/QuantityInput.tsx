@@ -19,7 +19,11 @@ const ErrorMessages = {
 
 const QuantityInput: React.FC<Props> = ({ inputRef }) => {
   const quantitySchema = yup.object({
-    quantity: yup.number().typeError("Número inválido").required(ErrorMessages.empty),
+    quantity: yup
+      .number()
+      .typeError("Número inválido")
+      .required(ErrorMessages.empty)
+      .min(0, "Preencha a quantidade"),
   });
 
   return (
@@ -53,7 +57,7 @@ const QuantityInput: React.FC<Props> = ({ inputRef }) => {
                 placeholder="Quantidade"
                 onChangeText={fprops.handleChange("quantity")}
                 value={
-                  fprops.values.quantity > 0
+                  fprops.values.quantity >= 0
                     ? fprops.values.quantity.toString()
                     : undefined
                 }
