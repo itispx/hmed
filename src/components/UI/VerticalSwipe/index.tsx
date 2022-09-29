@@ -43,6 +43,8 @@ const VerticalSwipe: React.FC<Props> = ({
   return (
     <View style={{ height: listHeight, width: width }}>
       <FlatList
+        nestedScrollEnabled
+        removeClippedSubviews={true}
         overScrollMode="never"
         showsVerticalScrollIndicator={false}
         onMomentumScrollBegin={() => {

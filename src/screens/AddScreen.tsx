@@ -86,7 +86,8 @@ const AddScreen: React.FC<Props> = ({ navigation }) => {
   return (
     <KeyboardAwareScrollView scrollViewProps={{ nestedScrollEnabled: true }}>
       <View style={styles.container}>
-        <ScrollView horizontal>
+        {/* This is mainly to prevent the nested scrolls warning */}
+        <ScrollView horizontal nestedScrollEnabled scrollEnabled={false}>
           <TimePicker setHour={setHour} setMinutes={setMinutes} />
         </ScrollView>
 
