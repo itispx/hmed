@@ -22,12 +22,18 @@
     "android": {
       "package": "com.hmed",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/icon.png",
-        "backgroundColor": "#FFFFFF"
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#011826"
       }
     },
     "plugins": [
-      ["expo-notifications", { "icon": ".//assets/icon.png", "color": "#004358" }]
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/notification-icon.png",
+          "color": "#1F8A70"
+        }
+      ]
     ],
     "extra": {
       "eas": {
