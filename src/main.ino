@@ -236,6 +236,14 @@ int8_t getValidPosition(const Rule* rule){
     }
     return -1;
 }
+uint8_t pin_for_weekday(uint8_t weekday){
+    switch (weekday){
+        case 7:
+            return 11;
+        default:
+            return weekday + 2;
+    }
+}
 #pragma endregion
 
 void getCommand(char* str, char* buffer){
@@ -319,10 +327,17 @@ void loop(){
             Serial.println();
             #endif
 
-            // Aqui vai qualquer código que deva funcionar quando atinge o horário.
-
+            on_clock(&rule);
         }
     }
+}
+
+void on_clock(Rule* rule){
+    uint8_t pin = pin_for_weekday(rule->weekday);
+    pinMode(pin, OUTPUT);
+    digitalWrite(pin, HIGH);
+    delay(1200);
+    digitalWrite(pin, LOW);
 }
 
 
