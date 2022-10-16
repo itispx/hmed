@@ -7,6 +7,7 @@
 #define baudRate 9600 // bluetooth
 #define delayTime 500 // ms
 #define checkInterval 40000 // Milisegundos
+#define blinkingInterval 500 // Milisegundos
 #define perDayReg 4 // Registros/dia armazenáveis na memória.
 #define debug
 
@@ -38,7 +39,7 @@ struct Rule{
 Rule* currentRule = new Rule;
 
 #pragma region time
-void updateCurrentRule(){
+void updateCurrentRule() {
     #ifdef debug
     Serial.println("--updateCurrentRule:start");
     #endif
@@ -54,7 +55,7 @@ void updateCurrentRule(){
     #endif
 }
 
-Rule* ruleFromTimestamp(uint32_t timestamp){
+Rule* ruleFromTimestamp(uint32_t timestamp) {
     #ifdef debug
     Serial.println("--ruleFromTimestamp:start");
     #endif
@@ -70,7 +71,7 @@ Rule* ruleFromTimestamp(uint32_t timestamp){
 
     return rule;
 }
-void ruleFromTimestamp(Rule* rule, uint32_t timestamp){
+void ruleFromTimestamp(Rule* rule, uint32_t timestamp) {
     #ifdef debug
     Serial.println("--ruleFromTimestamp:start");
     #endif
@@ -84,7 +85,7 @@ void ruleFromTimestamp(Rule* rule, uint32_t timestamp){
     #endif
 }
 
-void setCurrentTime(char* data){
+void setCurrentTime(char* data) {
     #ifdef debug
     Serial.println("--setCurrentTime:start");
     #endif
@@ -98,13 +99,13 @@ void setCurrentTime(char* data){
     Serial.println("--setCurrentTime:end");
     #endif
 }
-uint32_t getCurrentTime(){
+uint32_t getCurrentTime() {
     return currentTime + ((millis() - timeOffset) / 1000);
 }
 #pragma endregion
 
 #pragma region eeprom
-int8_t regExists(const Rule* rule){
+int8_t regExists(const Rule* rule) {
     /*
         Return:
             -1: Register does not exist.
@@ -118,10 +119,10 @@ int8_t regExists(const Rule* rule){
     #define mult perDayReg*3 // 3=casas utilizadas pra armazenar uma regra.
 
     // Sim, boa parte da capacidade da EEPROM é inutilizada
-    for(uint8_t i = rule->weekday*mult; i < (rule->weekday+1)*mult; i+=3){
+    for(uint8_t i = rule->weekday*mult; i < (rule->weekday+1)*mult; i+=3) {
         if (EEPROM.read(i) == rule->weekday &&
             EEPROM.read(i+1) == rule->hour &&
-            EEPROM.read(i+2) == rule->minute){
+            EEPROM.read(i+2) == rule->minute) {
             #ifdef debug
             ret = i;
             #else
@@ -137,7 +138,7 @@ int8_t regExists(const Rule* rule){
     #endif
 }
 
-uint8_t createReg(const Rule* rule){
+uint8_t createReg(const Rule* rule) {
     /*
         Return:
             -1: Not enough space.
@@ -149,10 +150,10 @@ uint8_t createReg(const Rule* rule){
     #endif
     #define mult perDayReg*3 // 3=casas utilizadas pra armazenar uma regra.
 
-    if (regExists(rule) == -1){
+    if (regExists(rule) == -1) {
         const uint8_t p = rule->weekday*mult;
         int8_t pos = getValidPosition(rule);
-        if (pos == -1){
+        if (pos == -1) {
           return -1;
         }
         EEPROM.write(p, rule->weekday);
@@ -168,7 +169,7 @@ uint8_t createReg(const Rule* rule){
     return 1;
 }
 
-int8_t deleteRule(const Rule* rule){
+int8_t deleteRule(const Rule* rule) {
     /*
         Return:
             -1: Register does not exist.
@@ -184,43 +185,43 @@ int8_t deleteRule(const Rule* rule){
 #pragma endregion
 
 #pragma region rule_manipulation
-bool isValidRule(Rule* rule){
+bool isValidRule(Rule* rule) {
     if (rule->weekday < 0 || rule->weekday > 6) return false;
     if (rule->hour < 0 || rule->hour > 23) return false;
     if (rule->minute < 0 || rule->minute > 59) return false;
     return true;
 }
-uint8_t countRules(){
+uint8_t countRules() {
     #define mult perDayReg * 3
     uint8_t count = 0;
 
-    for(uint8_t i = 0; i < 7*mult; i+=3){
+    for(uint8_t i = 0; i < 7*mult; i+=3) {
         uint8_t d = EEPROM.read(i);
-        if (d >= 0 && d <= 6){
+        if (d >= 0 && d <= 6) {
             count++;
         }
     }
     return count;
 }
-void listRules(Rule* ruleArray){
+void listRules(Rule* ruleArray) {
     #define mult perDayReg * 3
     uint8_t count = 0;
 
-    for(uint8_t i = 0; i < 7*mult; i+=3){
+    for(uint8_t i = 0; i < 7*mult; i+=3) {
         uint8_t d = EEPROM.read(i);
-        if (d >= 0 && d <= 6){
+        if (d >= 0 && d <= 6) {
             Rule r;
             r.weekday = d;
             r.hour = EEPROM.read(i+1);
             r.minute = EEPROM.read(i+2);
-            if (isValidRule(&r)){
+            if (isValidRule(&r)) {
                 ruleArray[count] = r;
                 count++;
             }
         }
     }
 }
-int8_t getValidPosition(const Rule* rule){
+int8_t getValidPosition(const Rule* rule) {
     /*
         Return:
             -1: Not enough space. All slots are filled.
@@ -228,31 +229,31 @@ int8_t getValidPosition(const Rule* rule){
     */
     #define mult perDayReg*3 // 3=casas utilizadas pra armazenar uma regra.
 
-    for(uint8_t i = rule->weekday*mult; i < (rule->weekday+1)*mult; i+=3){
+    for(uint8_t i = rule->weekday*mult; i < (rule->weekday+1)*mult; i+=3) {
         if (EEPROM.read(i) == 255 &&
             EEPROM.read(i+1) == 255 &&
-            EEPROM.read(i+2) == 255){
+            EEPROM.read(i+2) == 255) {
             return i;
         }
     }
     return -1;
 }
-uint8_t pin_for_weekday(uint8_t weekday){
-    switch (weekday){
+uint8_t pin_for_weekday(uint8_t weekday) {
+    switch (weekday) {
         default:
             return weekday + 2;
     }
 }
 #pragma endregion
 
-void getCommand(char* str, char* buffer){
+void getCommand(char* str, char* buffer) {
     strncpy(buffer, str, 2);
     #ifdef debug
     Serial.println(buffer);
     #endif
 }
 
-void setup(){
+void setup() {
     Serial.begin(9600);
     Serial.println("----BEGIN----");
 
@@ -277,7 +278,7 @@ void setup(){
     createReg(&rule4);
 }
 
-void loop(){
+void loop() {
     delay(delayTime);
     unsigned long ms = millis();
 
@@ -291,21 +292,21 @@ void loop(){
     clockTime += (ms - lastMs);
     lastMs = ms;
 
-    if (digitalRead(btnPort) == HIGH){
+    if (digitalRead(btnPort) == HIGH) {
         on_button();
     }
 
-    if (Serial.available()){
+    if (Serial.available()) {
         Serial.println("Serial!");
         on_serial();
     }
 
-    if (bluetooth.available()){
+    if (bluetooth.available()) {
         Serial.println("Bluetooth!");
         on_bluetooth();
     }
 
-    if (clockTime >= checkInterval && ruleChanged){
+    if (clockTime >= checkInterval && ruleChanged) {
         clockTime = 0;
         ruleChanged = false;
         #ifdef debug
@@ -315,7 +316,7 @@ void loop(){
 
         updateCurrentRule();
         int8_t exists = regExists(currentRule);
-        if (exists != -1){
+        if (exists != -1) {
             #ifdef debug
             Serial.print("Rule! ");
             Serial.println(getCurrentTime());
@@ -337,23 +338,23 @@ void loop(){
     }
 }
 
-void on_clock(Rule* rule){
+void on_clock(Rule* rule) {
     uint8_t pin = pin_for_weekday(rule->weekday);
     pinMode(pin, OUTPUT);
     for (uint8_t iter = 0; digitalRead(btnPort) != HIGH; iter++)
     {
         digitalWrite(pin, iter & 1);
-        delay(500);
+        delay(blinkingInterval);
     }
 }
 
-void on_button(){
-    for (uint8_t i = 0; i < 7; i++){
+void on_button() {
+    for (uint8_t i = 0; i < 7; i++) {
         digitalWrite(i + 2, LOW);
     }
 }
 
-void on_bluetooth(){
+void on_bluetooth() {
     int available = bluetooth.available();
 
     char datachar[available];
@@ -371,7 +372,7 @@ void on_bluetooth(){
         setCurrentTime(datachar);
         bluetooth.print(currentTime);
     }
-    else if (strcmp(cmd, "cr") == 0){ // cr=createReg. Ex: cr11630
+    else if (strcmp(cmd, "cr") == 0) { // cr=createReg. Ex: cr11630
         Rule rule;
         // cr02222
         char buff[3] = {0};
@@ -387,7 +388,7 @@ void on_bluetooth(){
         rule.minute = (uint8_t)atoi(buff);
         memset(buff, 0, 2);
 
-        if (!isValidRule(&rule)){
+        if (!isValidRule(&rule)) {
             Serial.println("Algo de errado aconteceu com a formatação.");
             bluetooth.print(-2);
         }
@@ -402,7 +403,7 @@ void on_bluetooth(){
             Serial.println();
             #endif
             int8_t res = createReg(&rule);
-            switch (res){
+            switch (res) {
                 case 1:
                     Serial.println("Registro ja existe.");
                     break;
@@ -416,10 +417,10 @@ void on_bluetooth(){
             bluetooth.print(res);
         }
     }
-    else if (strcmp(cmd, "ls") == 0){
+    else if (strcmp(cmd, "ls") == 0) {
         Rule rules[countRules()];
         listRules(rules);
-        for (Rule r : rules){
+        for (Rule r : rules) {
             bluetooth.print(r.weekday);
             bluetooth.print('-');
             bluetooth.print(r.hour);
@@ -430,7 +431,7 @@ void on_bluetooth(){
         delay(150);
         delete[] rules;
     }
-    else if (strcmp(cmd, "dr") == 0){
+    else if (strcmp(cmd, "dr") == 0) {
         Rule rule;
         // dr02222
         char buff[3] = {0};
@@ -446,7 +447,7 @@ void on_bluetooth(){
         rule.minute = (uint8_t)atoi(buff);
         memset(buff, 0, 2);
 
-        if (!isValidRule(&rule)){
+        if (!isValidRule(&rule)) {
             Serial.println("Algo de errado aconteceu com a formatação.");
             bluetooth.print(-2);
         }
@@ -461,7 +462,7 @@ void on_bluetooth(){
             Serial.println();
             #endif
             int8_t res = deleteRule(&rule);
-            switch (res){
+            switch (res) {
                 case -1:
                     Serial.println("Registro nao existe.");
                     break;
@@ -479,7 +480,7 @@ void on_bluetooth(){
     delete[] datachar;
 }
 
-void on_serial(){
+void on_serial() {
     int available = Serial.available();
     char datachar[available];
     Serial.readBytesUntil('\n', datachar, available);
@@ -495,7 +496,7 @@ void on_serial(){
     if (strcmp(cmd, "st") == 0) { // st=setTime. Ex: st1657311350
         setCurrentTime(datachar);
     }
-    else if (strcmp(cmd, "cr") == 0){ // cr=createReg. Ex: cr 0 10:28
+    else if (strcmp(cmd, "cr") == 0) { // cr=createReg. Ex: cr 0 10:28
         Rule rule;
         char buff[3] = {0};
         strncpy(buff, datachar+3, 1);
@@ -510,7 +511,7 @@ void on_serial(){
         rule.minute = (uint8_t)atoi(buff);
         memset(buff, 0, 2);
 
-        if (!isValidRule(&rule)){
+        if (!isValidRule(&rule)) {
             Serial.println("Algo de errado aconteceu com a formatação.");
         }
         else{
@@ -524,7 +525,7 @@ void on_serial(){
             Serial.println();
             #endif
             int8_t res = createReg(&rule);
-            switch (res){
+            switch (res) {
                 case 1:
                     Serial.println("Registro ja existe.");
                     break;
@@ -537,11 +538,11 @@ void on_serial(){
             }
         }
     }
-    else if (strcmp(cmd, "ls") == 0){
+    else if (strcmp(cmd, "ls") == 0) {
         Rule rules[countRules()];
         listRules(rules);
         Serial.println("List reg");
-        for (Rule r : rules){
+        for (Rule r : rules) {
             Serial.print(r.weekday);
             Serial.print(' ');
             Serial.print(r.hour);
@@ -552,7 +553,7 @@ void on_serial(){
         delay(150);
         delete[] rules;
     }
-    else if (strcmp(cmd, "dr") == 0){
+    else if (strcmp(cmd, "dr") == 0) {
         Rule rule;
 
         char buff[3] = {0};
@@ -568,7 +569,7 @@ void on_serial(){
         rule.minute = (uint8_t)atoi(buff);
         memset(buff, 0, 2);
 
-        if (!isValidRule(&rule)){
+        if (!isValidRule(&rule)) {
             Serial.println("Algo de errado aconteceu com a formatação.");
         }
         else{
@@ -582,7 +583,7 @@ void on_serial(){
             Serial.println();
             #endif
             int8_t res = deleteRule(&rule);
-            switch (res){
+            switch (res) {
                 case -1:
                     Serial.println("Registro nao existe.");
                     break;
