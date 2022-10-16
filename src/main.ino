@@ -246,6 +246,13 @@ uint8_t pin_for_weekday(uint8_t weekday) {
             return weekday + 2;
     }
 }
+void print_rule(Rule* rule){
+    Serial.print(rule->weekday);
+    Serial.print(' ');
+    Serial.print(rule->hour);
+    Serial.print(' ');
+    Serial.println(rule->minute);
+}
 #pragma endregion
 
 void getCommand(char* str, char* buffer) {
@@ -293,11 +300,7 @@ void loop() {
     Serial.println(getCurrentTime());
     
     Rule* rule = ruleFromTimestamp(getCurrentTime());
-    Serial.print(rule->weekday);
-    Serial.print(' ');
-    Serial.print(rule->hour);
-    Serial.print(' ');
-    Serial.println(rule->minute);
+    print_rule(rule);
     delete rule;
     #endif
 
@@ -327,6 +330,8 @@ void loop() {
         #ifdef debug
         Serial.print("Check! Time (ms):");
         Serial.println(getCurrentTime());
+        Serial.print("Current rule: ");
+        print_rule(currentRule);
         #endif
 
         int8_t exists = regExists(currentRule);
@@ -339,12 +344,7 @@ void loop() {
             rule.weekday = EEPROM.read(exists);
             rule.hour = EEPROM.read(exists+1);
             rule.minute = EEPROM.read(exists+2);
-            Serial.print(rule.weekday);
-            Serial.print(", ");
-            Serial.print(rule.hour);
-            Serial.print(":");
-            Serial.print(rule.minute);
-            Serial.println();
+            print_rule(&rule);
             #endif
 
             on_clock(&rule);
