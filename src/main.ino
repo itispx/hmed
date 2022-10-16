@@ -17,7 +17,7 @@ unsigned long timeOffset = 0; // Milisegundos
 uint32_t currentTime = 0; // Segundos
 uint16_t clockTime = 0; // Segundos
 
-bool ruleChanged = false;
+bool ruleChanged = true;
 
 // Referências ao "dia" devem ser interpretados como referências aos dias da semana
 // (domingo, segunda-feira, terça-feita, etc)
@@ -267,7 +267,7 @@ void setup() {
     // Para fim de testes. 1657311350 equivale a 20:15:50 no horário GMT. 17:15:50 no horário de Brasília.
     // Para o sistema, hoje é 08/07/2022, as 17:15:50, numa sexta-feira.
     // O número deve ser um timestamp UNIX.
-    setCurrentTime("st1657311350");
+    setCurrentTime("st1657311300");
     Rule rule1 = Rule{5, 17, 16}; // Sexta-feira, as 17:16 // Apenas esse deve disparar "hoje".
     Rule rule2 = Rule{2, 17, 16}; // Terça-feira, as 17:16
     Rule rule3 = Rule{6, 8, 21}; // Sábado, as 8:21
