@@ -265,6 +265,12 @@ void print_rule(Rule* rule){
     Serial.print(' ');
     Serial.println(rule->minute);
 }
+void clear_rules(){
+    for (int i = 0 ; i < EEPROM.length() ; i++) {
+        EEPROM.write(i, 255);
+        if (i % 10 == 0) Serial.println("Cleared 10...");
+    }
+}
 #pragma endregion
 
 void getCommand(char* str, char* buffer) {
@@ -503,9 +509,7 @@ void on_bluetooth() {
         #ifdef debug
         Serial.println("Clear");
         #endif
-        for (int i = 0 ; i < EEPROM.length() ; i++) {
-            EEPROM.write(i, 255);
-        }
+        clear_rules();
     }
     else{
         bluetooth.print("error: unknown command");
@@ -631,9 +635,7 @@ void on_serial() {
         #ifdef debug
         Serial.println("Clear");
         #endif
-        for (int i = 0 ; i < EEPROM.length() ; i++) {
-            EEPROM.write(i, 255);
-        }
+        clear_rules();
     }
     delete[] datachar;
 }
