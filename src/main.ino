@@ -93,6 +93,8 @@ void setCurrentTime(char* data) {
     timeOffset = millis();
     currentTime = strtoul(data+2, NULL, 0);
 
+    updateCurrentRule();
+
     #ifdef debug
     Serial.print("Set time (seconds): ");
     Serial.println(getCurrentTime());
@@ -269,6 +271,7 @@ void setup() {
     // O número deve ser um timestamp UNIX.
     setCurrentTime("st1657311300");
     Rule rule1 = Rule{5, 17, 16}; // Sexta-feira, as 17:16 // Apenas esse deve disparar "hoje".
+    Rule rule1 = Rule{5, 17, 19}; // Sexta-feira, as 17:16 // Apenas esse deve disparar "hoje".
     Rule rule2 = Rule{2, 17, 16}; // Terça-feira, as 17:16
     Rule rule3 = Rule{6, 8, 21}; // Sábado, as 8:21
     Rule rule4 = Rule{0, 23, 59}; // Domingo, as 23:59
@@ -313,7 +316,10 @@ void loop() {
         on_bluetooth();
     }
 
-    if (clockTime >= checkInterval && ruleChanged) {
+    if (clockTime >= checkInterval) {
+        updateCurrentRule();
+        if (!ruleChanged) return;
+
         clockTime = 0;
         ruleChanged = false;
         #ifdef debug
@@ -321,7 +327,6 @@ void loop() {
         Serial.println(getCurrentTime());
         #endif
 
-        updateCurrentRule();
         int8_t exists = regExists(currentRule);
         if (exists != -1) {
             #ifdef debug
