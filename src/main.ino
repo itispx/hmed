@@ -3,6 +3,7 @@
 
 #define rxPort 10
 #define txPort 9
+#define btnPort 11
 #define baudRate 9600 // bluetooth
 #define delayTime 500 // ms
 #define checkInterval 40000 // Milisegundos
@@ -238,8 +239,6 @@ int8_t getValidPosition(const Rule* rule){
 }
 uint8_t pin_for_weekday(uint8_t weekday){
     switch (weekday){
-        case 7:
-            return 11;
         default:
             return weekday + 2;
     }
@@ -259,6 +258,8 @@ void setup(){
 
     pinMode(rxPort, INPUT);
     pinMode(txPort, OUTPUT);
+
+    pinMode(btnPort, INPUT);
     delay(1200);
     bluetooth.begin(baudRate);
 
@@ -289,6 +290,10 @@ void loop(){
 
     clockTime += (ms - lastMs);
     lastMs = ms;
+
+    if (digitalRead(btnPort) == HIGH){
+        on_button();
+    }
 
     if (Serial.available()){
         Serial.println("Serial!");
@@ -336,10 +341,13 @@ void on_clock(Rule* rule){
     uint8_t pin = pin_for_weekday(rule->weekday);
     pinMode(pin, OUTPUT);
     digitalWrite(pin, HIGH);
-    delay(1200);
-    digitalWrite(pin, LOW);
 }
 
+void on_button(){
+    for (uint8_t i = 0; i < 7; i++){
+        digitalWrite(i + 2, LOW);
+    }
+}
 
 void on_bluetooth(){
     int available = bluetooth.available();
