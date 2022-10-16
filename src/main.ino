@@ -616,6 +616,9 @@ void on_serial() {
         }
     }
     else if (strcmp(cmd, "cl") == 0) { // cl=clear.
+        #ifdef debug
+        Serial.println("Clear");
+        #endif
         for (int i = 0 ; i < EEPROM.length() ; i++) {
             EEPROM.write(i, 255);
         }
