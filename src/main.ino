@@ -6,7 +6,7 @@
 #define btnPort 11
 #define baudRate 9600 // bluetooth
 #define delayTime 500 // ms
-#define checkInterval 40000 // Milisegundos
+#define checkInterval 10000 // Milisegundos
 #define blinkingInterval 500 // Milisegundos
 #define perDayReg 4 // Registros/dia armazenáveis na memória.
 #define debug
@@ -299,7 +299,7 @@ void setup() {
     Rule rule2 = Rule{2, 17, 16}; // Terça-feira, as 17:16
     Rule rule3 = Rule{6, 8, 21}; // Sábado, as 8:21
     Rule rule4 = Rule{0, 23, 59}; // Domingo, as 23:59
-    Rule rule5 = Rule{5, 17, 19};
+    Rule rule5 = Rule{5, 17, 19}; // Sexta-feira, as 17:19
     createReg(&rule1);
     createReg(&rule2);
     createReg(&rule3);
