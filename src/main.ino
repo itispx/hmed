@@ -328,7 +328,7 @@ void loop() {
         clockTime = 0;
         ruleChanged = false;
         #ifdef debug
-        Serial.print("Check! Time (ms):");
+        Serial.print("=====================================================Check! Time (ms):");
         Serial.println(getCurrentTime());
         Serial.print("Current rule: ");
         print_rule(currentRule);
@@ -487,6 +487,11 @@ void on_bluetooth() {
             bluetooth.print(res);
         }
     }
+    else if (strcmp(cmd, "cl") == 0) { // cl=clear.
+        for (int i = 0 ; i < EEPROM.length() ; i++) {
+            EEPROM.write(i, 255);
+        }
+    }
     else{
         bluetooth.print("error: unknown command");
     }
@@ -607,4 +612,10 @@ void on_serial() {
             }
         }
     }
+    else if (strcmp(cmd, "cl") == 0) { // cl=clear.
+        for (int i = 0 ; i < EEPROM.length() ; i++) {
+            EEPROM.write(i, 255);
+        }
+    }
+    delete[] datachar;
 }
