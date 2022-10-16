@@ -298,6 +298,7 @@ void loop() {
     Serial.print(rule->hour);
     Serial.print(' ');
     Serial.println(rule->minute);
+    delete rule;
     #endif
 
     clockTime += (ms - lastMs);
