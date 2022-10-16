@@ -340,7 +340,11 @@ void loop(){
 void on_clock(Rule* rule){
     uint8_t pin = pin_for_weekday(rule->weekday);
     pinMode(pin, OUTPUT);
-    digitalWrite(pin, HIGH);
+    for (uint8_t iter = 0; digitalRead(btnPort) != HIGH; iter++)
+    {
+        digitalWrite(pin, iter & 1);
+        delay(500);
+    }
 }
 
 void on_button(){
