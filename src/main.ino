@@ -114,10 +114,10 @@ int8_t regExists(const Rule* rule) {
             n: Register position on the EEPROM.
     */
     #ifdef debug
+    int8_t ret = -1;
     Serial.println("--regExists:start");
     #endif
 
-    int8_t ret = -1;
     #define mult perDayReg*3 // 3=casas utilizadas pra armazenar uma regra.
 
     // Sim, boa parte da capacidade da EEPROM é inutilizada
@@ -148,6 +148,7 @@ uint8_t createReg(const Rule* rule) {
             1: Register already exists.
     */
     #ifdef debug
+    int8_t ret = -1;
     Serial.println("--createReg:start");
     #endif
     #define mult perDayReg*3 // 3=casas utilizadas pra armazenar uma regra.
@@ -156,19 +157,30 @@ uint8_t createReg(const Rule* rule) {
         const uint8_t p = rule->weekday*mult;
         int8_t pos = getValidPosition(rule);
         if (pos == -1) {
-          return -1;
+            #ifdef debug
+            ret = -1;
+            #else
+            return -1;
+            #endif
         }
         EEPROM.write(p, rule->weekday);
         EEPROM.write(p+1, rule->hour);
         EEPROM.write(p+2, rule->minute);
+        #ifdef debug
+        ret = 0;
+        #else
         return 0;
+        #endif
     }
 
     #ifdef debug
-    Serial.println("--createReg:end");
+    Serial.print("--createReg:end ");
+    Serial.println(ret);
+    return ret;
+    #else
+    return 1;
     #endif
 
-    return 1;
 }
 
 int8_t deleteRule(const Rule* rule) {
