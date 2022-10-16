@@ -287,6 +287,13 @@ void loop() {
     Serial.print(ms - lastMs);
     Serial.print(' ');
     Serial.println(getCurrentTime());
+    
+    Rule* rule = ruleFromTimestamp(getCurrentTime());
+    Serial.print(rule->weekday);
+    Serial.print(' ');
+    Serial.print(rule->hour);
+    Serial.print(' ');
+    Serial.println(rule->minute);
     #endif
 
     clockTime += (ms - lastMs);
