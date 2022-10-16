@@ -271,14 +271,15 @@ void setup() {
     // O número deve ser um timestamp UNIX.
     setCurrentTime("st1657311300");
     Rule rule1 = Rule{5, 17, 16}; // Sexta-feira, as 17:16 // Apenas esse deve disparar "hoje".
-    Rule rule1 = Rule{5, 17, 19}; // Sexta-feira, as 17:16 // Apenas esse deve disparar "hoje".
     Rule rule2 = Rule{2, 17, 16}; // Terça-feira, as 17:16
     Rule rule3 = Rule{6, 8, 21}; // Sábado, as 8:21
     Rule rule4 = Rule{0, 23, 59}; // Domingo, as 23:59
+    Rule rule5 = Rule{5, 17, 19}; // Sexta-feira, as 17:16 // Apenas esse deve disparar "hoje".
     createReg(&rule1);
     createReg(&rule2);
     createReg(&rule3);
     createReg(&rule4);
+    createReg(&rule5);
 }
 
 void loop() {
