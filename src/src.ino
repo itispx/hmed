@@ -582,16 +582,16 @@ void on_serial() {
         if (count > 0){
             for (uint8_t i = 0; i < count; i++) {
                 Serial.print(rules[i].weekday);
-                Serial.print(' ');
+                Serial.print(" ");
                 Serial.print(rules[i].hour);
-                Serial.print(' ');
+                Serial.print(" ");
                 Serial.print(rules[i].minute);
-                Serial.print('\n');
+                Serial.print("\n");
             }
-            Serial.println();
         }else{
-            Serial.println("Empty");
+            Serial.print("Empty");
         }
+        Serial.println();
         
         delay(500);
         delete[] rules;
