@@ -588,14 +588,14 @@ void on_serial() {
                 Serial.print(rules[i].minute);
                 Serial.print("\n");
             }
-        }else{
+            delay(200);
+            delete[] rules;
+        }
+        else{
             Serial.print("Empty");
         }
         Serial.println();
         
-        delay(500);
-        delete[] rules;
-        delay(500);
     }
     else if (strcmp(cmd, "dr") == 0) {
         Rule rule;
