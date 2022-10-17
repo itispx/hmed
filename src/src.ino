@@ -5,7 +5,7 @@
 #define txPort 9
 #define btnPort 11
 #define baudRate 9600 // bluetooth
-#define delayTime 500 // ms
+#define delayTime 800 // ms
 #define checkInterval 10000 // Milisegundos
 #define blinkingInterval 500 // Milisegundos
 #define perDayReg 4 // Registros/dia armazenáveis na memória.
@@ -268,7 +268,7 @@ void print_rule(Rule* rule){
 void clear_rules(){
     for (int i = 0 ; i < EEPROM.length() ; i++) {
         EEPROM.write(i, 255);
-        if (i % 10 == 0) Serial.println("Cleared 10...");
+        if (i % 100 == 0) Serial.println("Cleared 100...");
     }
 }
 #pragma endregion
