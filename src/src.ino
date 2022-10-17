@@ -500,6 +500,9 @@ void on_bluetooth() {
         Serial.println("Clear");
         #endif
         clear_rules();
+        #ifdef debug
+        Serial.println("Clear end");
+        #endif
     }
     else{
         bluetooth.print("error: unknown command");
