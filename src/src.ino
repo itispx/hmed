@@ -374,7 +374,7 @@ void on_clock(Rule* rule) {
     pinMode(pin, OUTPUT);
     for (uint8_t iter = 0; digitalRead(btnPort) != HIGH; iter++)
     {
-        digitalWrite(pin, iter & 1);
+        digitalWrite(pin, iter % 2);
         delay(blinkingInterval);
     }
     digitalWrite(pin, LOW);
