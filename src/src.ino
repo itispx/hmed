@@ -578,8 +578,9 @@ void on_serial() {
             Serial.print(r.minute);
             Serial.println();
         }
-        delay(500);
+        delay(200);
         delete[] rules;
+        delay(200);
     }
     else if (strcmp(cmd, "dr") == 0) {
         Rule rule;
