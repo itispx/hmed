@@ -5,7 +5,7 @@
 #define txPort 9
 #define btnPort 11
 #define baudRate 9600 // bluetooth
-#define delayTime 800 // ms
+#define delayTime 1200 // ms
 #define checkInterval 10000 // Milisegundos
 #define blinkingInterval 500 // Milisegundos
 #define perDayReg 4 // Registros/dia armazenáveis na memória.
@@ -301,10 +301,10 @@ void setup() {
     Rule rule4 = Rule{0, 23, 59}; // Domingo, as 23:59
     Rule rule5 = Rule{5, 17, 19}; // Sexta-feira, as 17:19
     createReg(&rule1);
-    createReg(&rule2);
-    createReg(&rule3);
-    createReg(&rule4);
-    createReg(&rule5);
+    //createReg(&rule2);
+    //createReg(&rule3);
+    //createReg(&rule4);
+    //createReg(&rule5);
 }
 
 void loop() {
@@ -324,10 +324,6 @@ void loop() {
 
     clockTime += (ms - lastMs);
     lastMs = ms;
-
-    if (digitalRead(btnPort) == HIGH) {
-        on_button();
-    }
 
     if (Serial.available()) {
         Serial.println("Serial!");
@@ -377,12 +373,6 @@ void on_clock(Rule* rule) {
     {
         digitalWrite(pin, iter & 1);
         delay(blinkingInterval);
-    }
-}
-
-void on_button() {
-    for (uint8_t i = 0; i < 7; i++) {
-        digitalWrite(i + 2, LOW);
     }
 }
 
@@ -588,7 +578,7 @@ void on_serial() {
             Serial.print(r.minute);
             Serial.println();
         }
-        delay(150);
+        delay(500);
         delete[] rules;
     }
     else if (strcmp(cmd, "dr") == 0) {
