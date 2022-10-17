@@ -101,6 +101,12 @@ Retorna:
 - **-1** caso tal registro não exista.
 - **-2** caso a formatação do comando esteja errado.
 
+### Limpar registros
+
+```vim
+>>> cl
+```
+
 ### Modificar relógio interno
 
 Pelo monitor serial:
@@ -125,9 +131,10 @@ Retorna o horário interno depois de modificado.
 # Valores padrão
 Por padrão, o horário interno segue a timestamp *1657311350*, que corresponde à 06/07/2022, 17:15:30
 
-Já possui 4 horários registrados:
+Já possui alguns horários registrados:
 
 - Sexta-feira, as 17:16
+- Sexta-feira, as 17:19
 - Terça-feira, as 17:16
 - Sábado, as 8:21
 - Domingo, as 23:59
