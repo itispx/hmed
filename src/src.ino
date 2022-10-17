@@ -353,11 +353,13 @@ void loop() {
             #ifdef debug
             Serial.print("Rule! ");
             Serial.println(getCurrentTime());
+            #endif
 
             Rule rule = Rule();
             rule.weekday = EEPROM.read(exists);
             rule.hour = EEPROM.read(exists+1);
             rule.minute = EEPROM.read(exists+2);
+            #ifdef debug
             print_rule(&rule);
             #endif
 
