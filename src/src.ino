@@ -351,6 +351,7 @@ void loop() {
 
         int8_t exists = regExists(currentRule);
         if (exists != -1) {
+            exists = 14; //teste
             #ifdef debug
             Serial.print("Rule! ");
             Serial.println(getCurrentTime());
