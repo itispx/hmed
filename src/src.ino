@@ -382,7 +382,7 @@ void on_clock(Rule* rule) {
 void on_bluetooth() {
     int available = bluetooth.available();
 
-    char datachar[available];
+    char datachar[available] = {0};
     bluetooth.readBytes(datachar, available);
 
     #ifdef debug
@@ -420,12 +420,7 @@ void on_bluetooth() {
         else{
             #ifdef debug
             Serial.print("Create reg ");
-            Serial.print(rule.weekday);
-            Serial.print(' ');
-            Serial.print(rule.hour);
-            Serial.print(' ');
-            Serial.print(rule.minute);
-            Serial.println();
+            print_rule(&rule);
             #endif
             int8_t res = createReg(&rule);
             switch (res) {
@@ -443,17 +438,27 @@ void on_bluetooth() {
         }
     }
     else if (strcmp(cmd, "ls") == 0) {
-        Rule rules[4];
-        listRules(rules);
-        for (Rule r : rules) {
-            bluetooth.print(r.weekday);
-            bluetooth.print('-');
-            bluetooth.print(r.hour);
-            bluetooth.print('-');
-            bluetooth.print(r.minute);
-            bluetooth.println();
+        uint8_t count;
+        countRules(&count);
+        Rule rules[count + 1] = {0};
+        Serial.println("List reg");
+        count = listRules(rules);
+        if (count > 0){
+            for (uint8_t i = 0; i < count; i++) {
+                Serial.print(rules[i].weekday);
+                Serial.print(" ");
+                Serial.print(rules[i].hour);
+                Serial.print(" ");
+                Serial.print(rules[i].minute);
+                Serial.print("\n");
+            }
         }
-        delay(150);
+        else{
+            Serial.print("Empty");
+        }
+        Serial.println();
+
+        delay(200);
         delete[] rules;
     }
     else if (strcmp(cmd, "dr") == 0) {
@@ -516,8 +521,9 @@ void on_bluetooth() {
 
 void on_serial() {
     int available = Serial.available();
-    char datachar[available];
-    Serial.readBytesUntil('\n', datachar, available);
+    char datachar[available] = {0};
+    Serial.readBytes(datachar, available);
+    //Serial.readBytesUntil('\n', datachar, available);
 
     #ifdef debug
     Serial.print("Received data: ");
@@ -551,12 +557,7 @@ void on_serial() {
         else{
             #ifdef debug
             Serial.print("Create reg ");
-            Serial.print(rule.weekday);
-            Serial.print(' ');
-            Serial.print(rule.hour);
-            Serial.print(' ');
-            Serial.print(rule.minute);
-            Serial.println();
+            print_rule(&rule);
             #endif
             int8_t res = createReg(&rule);
             switch (res) {
@@ -641,6 +642,13 @@ void on_serial() {
         Serial.println("Clear");
         #endif
         clear_rules();
+        #ifdef debug
+        Serial.println("Clear end");
+        #endif
     }
+    else{
+        Serial.println("error: unknown command");
+    }
+
     delete[] datachar;
 }
