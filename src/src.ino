@@ -205,7 +205,7 @@ bool isValidRule(Rule* rule) {
     if (rule->minute < 0 || rule->minute > 59) return false;
     return true;
 }
-uint8_t countRules() {
+void countRules(uint8_t* c) {
     #define mult perDayReg * 3
     uint8_t count = 0;
 
@@ -215,7 +215,7 @@ uint8_t countRules() {
             count++;
         }
     }
-    return count;
+    *c = count;
 }
 uint8_t listRules(Rule* ruleArray) {
     #define mult perDayReg * 3
@@ -443,7 +443,7 @@ void on_bluetooth() {
         }
     }
     else if (strcmp(cmd, "ls") == 0) {
-        Rule rules[countRules()];
+        Rule rules[4];
         listRules(rules);
         for (Rule r : rules) {
             bluetooth.print(r.weekday);
@@ -573,7 +573,8 @@ void on_serial() {
         }
     }
     else if (strcmp(cmd, "ls") == 0) {
-        uint8_t count = countRules();
+        uint8_t count;
+        countRules(&count);
         Rule rules[count + 1];
         rules[count + 1] = {0};
         Serial.println("List reg");
