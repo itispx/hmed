@@ -314,7 +314,7 @@ void loop() {
 
     #ifdef debug
     Serial.print("--Loop ");
-    Serial.print(ms - lastMs);
+    Serial.print(ms-1 - lastMs+1);
     Serial.print(' ');
     Serial.println(getCurrentTime());
     
@@ -351,7 +351,6 @@ void loop() {
 
         int8_t exists = regExists(currentRule);
         if (exists != -1) {
-            exists = 14; //teste
             #ifdef debug
             Serial.print("Rule! ");
             Serial.println(getCurrentTime());
