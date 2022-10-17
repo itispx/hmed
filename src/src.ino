@@ -575,8 +575,7 @@ void on_serial() {
     else if (strcmp(cmd, "ls") == 0) {
         uint8_t count;
         countRules(&count);
-        Rule rules[count + 1];
-        rules[count + 1] = {0};
+        Rule rules[count + 1] = {0};
         Serial.println("List reg");
         count = listRules(rules);
         if (count > 0){
@@ -588,14 +587,14 @@ void on_serial() {
                 Serial.print(rules[i].minute);
                 Serial.print("\n");
             }
-            delay(200);
-            delete[] rules;
         }
         else{
             Serial.print("Empty");
         }
         Serial.println();
-        
+
+        delay(200);
+        delete[] rules;
     }
     else if (strcmp(cmd, "dr") == 0) {
         Rule rule;
