@@ -411,7 +411,7 @@ void on_bluetooth() {
         memset(buff, 0, 2);
 
         if (!isValidRule(&rule)) {
-            Serial.println("Algo de errado aconteceu com a formatação.");
+            Serial.println("Algo de errado aconteceu com a formatacao.");
             bluetooth.print(-2);
         }
         else{
@@ -470,7 +470,7 @@ void on_bluetooth() {
         memset(buff, 0, 2);
 
         if (!isValidRule(&rule)) {
-            Serial.println("Algo de errado aconteceu com a formatação.");
+            Serial.println("Algo de errado aconteceu com a formatacao.");
             bluetooth.print(-2);
         }
         else{
@@ -581,9 +581,8 @@ void on_serial() {
             Serial.print(r.minute);
             Serial.println();
         }
-        delay(200);
+        delay(400);
         delete[] rules;
-        delay(200);
     }
     else if (strcmp(cmd, "dr") == 0) {
         Rule rule;
