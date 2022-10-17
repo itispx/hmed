@@ -9,7 +9,7 @@
 #define checkInterval 10000 // Milisegundos
 #define blinkingInterval 500 // Milisegundos
 #define perDayReg 4 // Registros/dia armazenáveis na memória.
-#define debug
+//#define debug
 
 SoftwareSerial bluetooth(rxPort, txPort);
 unsigned long lastMs = millis(); // Milisegundos
@@ -217,7 +217,7 @@ uint8_t countRules() {
     }
     return count;
 }
-void listRules(Rule* ruleArray) {
+uint8_t listRules(Rule* ruleArray) {
     #define mult perDayReg * 3
     uint8_t count = 0;
 
@@ -234,6 +234,7 @@ void listRules(Rule* ruleArray) {
             }
         }
     }
+    return count;
 }
 int8_t getValidPosition(const Rule* rule) {
     /*
@@ -573,16 +574,20 @@ void on_serial() {
     }
     else if (strcmp(cmd, "ls") == 0) {
         Rule rules[countRules()];
-        listRules(rules);
         Serial.println("List reg");
-        for (Rule r : rules) {
-            Serial.print(r.weekday);
-            Serial.print(' ');
-            Serial.print(r.hour);
-            Serial.print(' ');
-            Serial.print(r.minute);
-            Serial.println();
+        if (listRules(rules) > 0){
+            for (Rule r : rules) {
+                Serial.print(r.weekday);
+                Serial.print(' ');
+                Serial.print(r.hour);
+                Serial.print(' ');
+                Serial.print(r.minute);
+                Serial.println();
+            }
+        }else{
+            Serial.println("Empty");
         }
+        
         delay(400);
         delete[] rules;
     }
