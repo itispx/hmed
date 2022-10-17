@@ -524,8 +524,7 @@ void on_serial() {
     int available = Serial.available();
     char datachar[available] = {0};
     Serial.readBytes(datachar, available);
-    //Serial.readBytesUntil('\n', datachar, available);
-
+    
     #ifdef debug
     Serial.print("Received data: ");
     Serial.println(datachar);
