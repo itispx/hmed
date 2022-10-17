@@ -583,8 +583,9 @@ void on_serial() {
                 Serial.print(rules[i].hour);
                 Serial.print(' ');
                 Serial.print(rules[i].minute);
-                Serial.println();
+                Serial.print('\n');
             }
+            Serial.println();
         }else{
             Serial.println("Empty");
         }
