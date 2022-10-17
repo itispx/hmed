@@ -577,7 +577,7 @@ void on_serial() {
         Serial.println("List reg");
         uint8_t count = listRules(rules);
         if (count > 0){
-            for (uint8_t i; i < count; i++) {
+            for (uint8_t i = 0; i < count; i++) {
                 Serial.print(rules[i].weekday);
                 Serial.print(' ');
                 Serial.print(rules[i].hour);
