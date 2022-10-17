@@ -377,6 +377,7 @@ void on_clock(Rule* rule) {
         digitalWrite(pin, iter & 1);
         delay(blinkingInterval);
     }
+    digitalWrite(pin, LOW);
 }
 
 void on_bluetooth() {
