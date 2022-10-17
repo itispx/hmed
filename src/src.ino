@@ -575,20 +575,21 @@ void on_serial() {
     else if (strcmp(cmd, "ls") == 0) {
         Rule rules[countRules()];
         Serial.println("List reg");
-        if (listRules(rules) > 0){
-            for (Rule r : rules) {
-                Serial.print(r.weekday);
+        uint8_t count = listRules(rules);
+        if (count > 0){
+            for (uint8_t i; i < count; i++) {
+                Serial.print(rules[i].weekday);
                 Serial.print(' ');
-                Serial.print(r.hour);
+                Serial.print(rules[i].hour);
                 Serial.print(' ');
-                Serial.print(r.minute);
+                Serial.print(rules[i].minute);
                 Serial.println();
             }
         }else{
             Serial.println("Empty");
         }
         
-        delay(400);
+        delay(200);
         delete[] rules;
     }
     else if (strcmp(cmd, "dr") == 0) {
