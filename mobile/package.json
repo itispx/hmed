@@ -9,7 +9,6 @@
     "ios": "expo run:android",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
-    "prepare": "cd .. && husky install mobile/.husky",
     "build": "eas build --profile production --platform android"
   },
   "dependencies": {
@@ -58,7 +57,6 @@
     "eslint-plugin-react": "^7.31.8",
     "eslint-plugin-react-native": "^4.0.0",
     "eslint-prettier": "^0.0.0-empty",
-    "husky": "^8.0.0",
     "prettier": "^2.7.1",
     "stylelint-config-prettier": "^9.0.3",
     "typescript": "^4.8.3"
