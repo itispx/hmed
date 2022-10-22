@@ -32,17 +32,23 @@ const ScheduleItem: React.FC<ScheduleDisplayInterface> = ({
             { backgroundColor: taken ? Colors.accent : Colors.primary },
           ]}
         >
-          <Text style={styles.timeText}>{time}</Text>
+          <Text style={styles.time}>{time}</Text>
         </View>
 
         <View style={styles.innerContainer}>
-          <View style={styles.titleContainer}>
-            {title && <Text style={styles.title}>{title}</Text>}
-            <Text style={[styles.name, { color: taken ? Colors.grey : Colors.primary }]}>
-              {name}, {quantity}mg
-            </Text>
-          </View>
+          {title && <Text style={styles.title}>{title}</Text>}
 
+          <Text style={[styles.name, { color: taken ? Colors.grey : Colors.primary }]}>
+            {name}
+          </Text>
+          <Text
+            style={[styles.quantity, { color: taken ? Colors.grey : Colors.primary }]}
+          >
+            {quantity}mg
+          </Text>
+        </View>
+
+        <View style={styles.iconContainer}>
           <Icon
             name="check"
             size={rfValue(40)}
@@ -58,7 +64,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     marginVertical: 9,
-    height: 90,
+    minHeight: 90,
     width: vw(90),
     borderRadius: 9,
     backgroundColor: "#FFF",
@@ -67,37 +73,38 @@ const styles = StyleSheet.create({
   timeContainer: {
     justifyContent: "center",
     alignItems: "center",
-    height: "100%",
     width: "30%",
   },
-  timeText: {
+  time: {
     fontSize: rfValue(30),
     fontWeight: "bold",
     color: "#FFF",
   },
   innerContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    width: "70%",
+    flex: 1,
     paddingLeft: 10,
     paddingRight: 15,
   },
-  titleContainer: {
-    justifyContent: "space-evenly",
-    paddingVertical: 10,
-    height: "100%",
-  },
   title: {
+    alignSelf: "flex-start",
+    marginTop: 3,
     paddingVertical: 3,
-    paddingHorizontal: 6,
+    paddingHorizontal: 9,
     borderRadius: 3,
+    backgroundColor: Colors.grey,
     fontSize: rfValue(16),
     color: "#FFF",
-    backgroundColor: Colors.grey,
   },
   name: {
     fontSize: rfValue(23),
+  },
+  quantity: {
+    fontSize: rfValue(24),
+    fontWeight: "600",
+  },
+  iconContainer: {
+    justifyContent: "center",
+    paddingHorizontal: 10,
   },
 });
 
