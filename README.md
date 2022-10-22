@@ -1,7 +1,7 @@
 <p align="center">
   <img
     alt="HMED Logo"
-    src="assets/notification-icon.png"
+    src="mobile/assets/notification-icon.png"
     height="200"
     style="margin-top: 20px; margin-bottom: 20px;"
   />
