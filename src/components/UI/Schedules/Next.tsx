@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text } from "react-native";
+import { StyleSheet, View, Text } from "react-native";
 
 import { rfValue } from "../../../library/viewport-units";
 
@@ -111,23 +111,16 @@ const Next: React.FC = () => {
   });
 
   return schedule ? (
-    <View style={{ padding: 15, paddingBottom: 0, backgroundColor: "#FFF" }}>
-      <View style={{ flexDirection: "row", alignItems: "center" }}>
-        <Text
-          style={{
-            fontSize: rfValue(18),
-            color: Colors.grey,
-            fontWeight: "bold",
-          }}
-        >
-          Próximo remédio{" "}
-        </Text>
-        <Text style={{ fontSize: rfValue(18), color: Colors.grey }}>
-          - {schedule.name}, {schedule.quantity}mg
-        </Text>
+    <View style={styles.container}>
+      <View style={styles.medicationContainer}>
+        <Text style={styles.nextMedication}>Próximo remédio - </Text>
+        <View style={styles.nameContainer}>
+          <Text style={styles.name}>{schedule.name}, </Text>
+          <Text style={styles.quantity}>{schedule.quantity}mg</Text>
+        </View>
       </View>
 
-      <View style={{ flexDirection: "row", alignItems: "center" }}>
+      <View style={styles.timeContainer}>
         <Icon
           name="clock"
           solid
@@ -135,22 +128,56 @@ const Next: React.FC = () => {
           color={Colors.primary}
           style={{ padding: 5 }}
         />
-        <Text
-          style={{
-            marginBottom: 5,
-            fontSize: rfValue(60),
-            fontWeight: "bold",
-            color: Colors.primary,
-          }}
-        >
-          {schedule.time}
-        </Text>
-        <Text style={{ paddingLeft: 10, fontSize: rfValue(15), color: Colors.grey }}>
-          {schedule.title}
-        </Text>
+        <Text style={styles.time}>{schedule.time}</Text>
+        <Text style={styles.day}>{schedule.title}</Text>
       </View>
     </View>
   ) : null;
 };
+
+const styles = StyleSheet.create({
+  container: {
+    padding: 15,
+    paddingBottom: 0,
+    backgroundColor: "#FFF",
+  },
+  medicationContainer: {
+    flexDirection: "row",
+  },
+  nextMedication: {
+    fontSize: rfValue(18),
+    color: Colors.grey,
+    fontWeight: "bold",
+  },
+  nameContainer: {
+    flex: 1,
+    flexDirection: "row",
+    flexWrap: "wrap",
+  },
+  name: {
+    fontSize: rfValue(18),
+    color: Colors.grey,
+  },
+  quantity: {
+    fontSize: rfValue(19),
+    color: Colors.grey,
+    fontWeight: "600",
+  },
+  timeContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  time: {
+    marginBottom: 5,
+    fontSize: rfValue(60),
+    fontWeight: "bold",
+    color: Colors.primary,
+  },
+  day: {
+    paddingLeft: 10,
+    fontSize: rfValue(15),
+    color: Colors.grey,
+  },
+});
 
 export default Next;
