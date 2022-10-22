@@ -9,7 +9,7 @@
     "ios": "expo run:android",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
-    "prepare": "husky install",
+    "prepare": "cd .. && husky install mobile/.husky",
     "build": "eas build --profile production --platform android"
   },
   "dependencies": {
